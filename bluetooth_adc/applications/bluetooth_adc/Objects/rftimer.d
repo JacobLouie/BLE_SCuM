@@ -1,0 +1,10 @@
+.\objects\rftimer.o: ..\..\rftimer.c
+.\objects\rftimer.o: ..\..\rftimer.h
+.\objects\rftimer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\rftimer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\rftimer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\rftimer.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\rftimer.o: ..\..\Memory_Map.h
+.\objects\rftimer.o: ..\..\gpio.h
+.\objects\rftimer.o: ..\..\radio.h
+.\objects\rftimer.o: ..\..\scm3c_hw_interface.h

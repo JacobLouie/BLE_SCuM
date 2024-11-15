@@ -1,0 +1,11 @@
+.\objects\radio.o: ..\..\radio.c
+.\objects\radio.o: ..\..\radio.h
+.\objects\radio.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\radio.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\radio.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\radio.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\radio.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\radio.o: ..\..\gpio.h
+.\objects\radio.o: ..\..\memory_map.h
+.\objects\radio.o: ..\..\rftimer.h
+.\objects\radio.o: ..\..\scm3c_hw_interface.h

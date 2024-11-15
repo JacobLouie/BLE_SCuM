@@ -1,0 +1,11 @@
+.\objects\scm3c_hw_interface.o: ..\..\scm3c_hw_interface.c
+.\objects\scm3c_hw_interface.o: ..\..\scm3c_hw_interface.h
+.\objects\scm3c_hw_interface.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\scm3c_hw_interface.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\scm3c_hw_interface.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\scm3c_hw_interface.o: ..\..\memory_map.h
+.\objects\scm3c_hw_interface.o: ..\..\optical.h
+.\objects\scm3c_hw_interface.o: ..\..\radio.h
+.\objects\scm3c_hw_interface.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\scm3c_hw_interface.o: ..\..\rftimer.h
+.\objects\scm3c_hw_interface.o: ..\..\scum_defs.h

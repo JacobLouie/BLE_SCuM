@@ -1,0 +1,16 @@
+--cpu Cortex-M0
+".\objects\bluetooth_adc.o"
+".\objects\adc.o"
+".\objects\cm0dsasm.o"
+".\objects\gpio.o"
+".\objects\optical.o"
+".\objects\radio.o"
+".\objects\retarget.o"
+".\objects\rftimer.o"
+".\objects\scm3c_hw_interface.o"
+".\objects\spi.o"
+".\objects\uart.o"
+--strict --scatter ".\Objects\bluetooth_adc.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\bluetooth_adc.map" -o .\Objects\bluetooth_adc.axf

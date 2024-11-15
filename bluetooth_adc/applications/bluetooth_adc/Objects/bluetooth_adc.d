@@ -1,0 +1,9 @@
+.\objects\bluetooth_adc.o: Bluetooth_adc.c
+.\objects\bluetooth_adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\bluetooth_adc.o: ../../optical.h
+.\objects\bluetooth_adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\bluetooth_adc.o: ../../scm3c_hw_interface.h
+.\objects\bluetooth_adc.o: ../../radio.h
+.\objects\bluetooth_adc.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\bluetooth_adc.o: ../../rftimer.h
+.\objects\bluetooth_adc.o: ../../memory_map.h
