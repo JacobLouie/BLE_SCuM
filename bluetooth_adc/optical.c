@@ -188,12 +188,17 @@ void optical_sfd_isr(void) {
 
         // Do correction on LC
         if (count_LC > (optical_vars.LC_target + 0)) {
-            optical_vars.LC_code -= 1;
+					// changed, now hits target (jacob)
+					if (count_LC > (optical_vars.LC_target - 100)) {
+            optical_vars.LC_code -= 3;
+					}
+          else  optical_vars.LC_code -= 1;
         }
-				// changed, now hits target (jacob)
+				
         if (count_LC < (optical_vars.LC_target - 0)) {
+					// changed, now hits target (jacob)
 					if (count_LC < (optical_vars.LC_target - 100)) {
-            optical_vars.LC_code += 10; //was 10 (jacob)
+            optical_vars.LC_code += 3;
 					}
           else  optical_vars.LC_code += 1;
         }

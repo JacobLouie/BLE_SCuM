@@ -1155,7 +1155,7 @@ void initialize_mote() {
                               // needed for 3WB cal
 
     // Select banks for GPIO outputs
-    GPO_control(6, 6, 0,
+    GPO_control(3, 3, 0,
                 6);  // 0 in 3rd arg connects clk_3wb to GPO8 for 3WB cal
 
     // Set GPI enables
