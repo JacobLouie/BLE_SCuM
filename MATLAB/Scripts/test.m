@@ -1,6 +1,6 @@
 %switches
 startInterval = 1;
-endInterval =  300000;%19900;%900000;%2500;
+endInterval =  220000;%19900;%300000;%%900000;%2500;
 middleFreq = 2.50e+06;
 adcCLKperiod = (62.5*10^-9);
 risingEdgeOffset = 0; %time in uS

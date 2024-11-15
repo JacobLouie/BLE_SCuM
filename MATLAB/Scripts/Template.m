@@ -11,9 +11,13 @@ F1 = 3*10^6;     % 3MHz signal
 %F1 = 1.75*10^6;  % 1.75MHz signal
 %F1 = 4*10^6;     % 2MHz signal
 
+% Magnitude
+%Magnitude = 15; % +-15
+Magnitude = 1023; % +-1000
+
 % 1 = 802.15.4
 % 2 = BLE
-MODE = 1;
+MODE = 2;
 %---------------------------------------------------%
 % Data rate
 fs1 = 128*10^6; % 16MHz Clock (sampling frequency)
@@ -24,8 +28,8 @@ else StopTime1 = 0.95e-6; end       % need 16 samples for BLE
 
 t1 = (0:dt1:StopTime1)'; 
 % For ploting
-data1 = 15*cos(2*pi*F1*t1); 
-data2 = 15*sin(2*pi*F1*t1);
+data1 = Magnitude*cos(2*pi*F1*t1); 
+data2 = Magnitude*sin(2*pi*F1*t1);
 
 %---------------------------------------------------%
 % Sample rate
@@ -37,40 +41,23 @@ Template2 = zeros(1,length(t2),'double')';
 
 i = 1;
 for t = t2
-    Template1(i) = round(15*cos(2*pi*F1*t)); 
-    Template2(i) = round(15*sin(2*pi*F1*t)); 
+    Template1(i) = round(Magnitude*cos(2*pi*F1*t)); 
+    Template2(i) = round(Magnitude*sin(2*pi*F1*t)); 
     i = i + 1;
 end    
 % clear figure
 clf
-%{
 % Plot cosine
-plot(t1*10^9,data1,Color="b",LineWidth = 2);
+plot(t1,data1,Color="b",LineWidth = 2);
 hold on;
-grid on;
-stem(t2*10^9,Template1,Color="b");
-title("2MHz Cos (16 MHz sample rate)", "FontSize",18, LineWidth = 2);
-ylabel('ADC (Template -15:15)', "FontSize",15);
-xlabel('micro seconds', "FontSize",15);
-xticks(0:62.5:7*62.5);
-pbaspect([3 2 1]);
-ax = gca;
-exportgraphics(ax,'2MHz.jpg','Resolution',300);
-%}
+stem(t2,Template1,Color="b");
+title("2MHz Cos", "FontSize",28, LineWidth = 2);
 %hold on;
-
 % Plot sine
-plot(t1*10^9,data2,Color="r",LineWidth = 2);
+plot(t1,data2,Color="r");
 hold on;
-grid on;
-stem(t2*10^9,Template2,Color="r");
-title("3MHz Cos (16 MHz sample rate)", "FontSize",18, LineWidth = 2);
-ylabel('ADC (Template -15:15)', "FontSize",15);
-xlabel('micro seconds', "FontSize",15);
-xticks(0:62.5:7*62.5);
-pbaspect([3 2 1]);
-ax = gca;
-exportgraphics(ax,'3MHz.jpg','Resolution',300);
+stem(t2,Template2,Color="r");
+%hold on;
 
 
 % Verilog text
@@ -78,15 +65,15 @@ exportgraphics(ax,'3MHz.jpg','Resolution',300);
 for i = 1:length(Template1)
     % check if negative
     if Template1(i) < 0 
-        VerilogCosTemplate(i,1) = "assign Template_Cos3MHz["+(i-1)+"] = -5'd"+(abs(Template1(i)))+";";
+        VerilogCosTemplate(i,1) = "assign Template_Cos3MHz["+(i-1)+"] = -11'd"+(abs(Template1(i)))+";";
     else
-        VerilogCosTemplate(i,1) = "assign Template_Cos3MHz["+(i-1)+"] = 5'd"+Template1(i)+";";
+        VerilogCosTemplate(i,1) = "assign Template_Cos3MHz["+(i-1)+"] = 11'd"+Template1(i)+";";
     end
     % check if negative
     if Template2(i) < 0 
-        VerilogSinTemplate(i,1) = "assign Template_Sin3MHz["+(i-1)+"] = -5'd"+(abs(Template2(i)))+";";
+        VerilogSinTemplate(i,1) = "assign Template_Sin3MHz["+(i-1)+"] = -11'd"+(abs(Template2(i)))+";";
     else
-        VerilogSinTemplate(i,1) = "assign Template_Sin3MHz["+(i-1)+"] = 5'd"+Template2(i)+";";
+        VerilogSinTemplate(i,1) = "assign Template_Sin3MHz["+(i-1)+"] = 11'd"+Template2(i)+";";
     end
 end
 

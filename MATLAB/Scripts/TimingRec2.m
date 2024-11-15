@@ -10,22 +10,18 @@ MODE = 1;
 % Raw binary data needs to be inversed
 % 1 = Invert 
 % 0 = No Invert
-Inverse_Data = 1;
+Inverse_Data = 0;
 
 %for OFFSET = 0:7
 OFFSET  = 0;
 
 % Templates were made in another matlab file (Template.m)
 %3MHz Templates
-%Cos3MHzTemp     = [1023;391;-723;-945;0;945;723;-391;-1023;-391;723;945;0;-945;-723;391];
 Cos3MHzTemp     = [15;6;-11;-14;0;14;11;-6;-15;-6;11;14;0;-14;-11;6];
-%Sin3MHzTemp     = [0;945;723;-391;-1023;-391;723;945;0;-945;-723;391;1023;391;-723;-945];
 Sin3MHzTemp     = [0;14;11;-6;-15;-6;11;14;0;-14;-11;6;15;6;-11;-14];
 
 % 2MHz Templates
-%Cos2MHzTemp     = [1023;723;0;-723;-1023;-723;0;723;1023;723;0;-723;-1023;-723;0;723];
 Cos2MHzTemp     = [15;11;0;-11;-15;-11;0;11;15;11;0;-11;-15;-11;0;11];
-%Sin2MHzTemp     = [0;723;1023;723;0;-723;-1023;-723;0;723;1023;723;0;-723;-1023;-723];
 Sin2MHzTemp     = [0;11;15;11;0;-11;-15;-11;0;11;15;11;0;-11;-15;-11];
 
 % 2.5MHz Templates
@@ -67,9 +63,9 @@ elseif MODE == 3
 end
 
 DATA_LENGTH = 8;
-MFDATALENGTH = 2000;
+MFDATALENGTH = 2000;%31250;
 BUFFER_SIZE = 11;
-
+%{
 I_data              = zeros(1,length(data.y),'double')';
 Q_data_RAW          = zeros(1,length(data.y),'double')';
 % Signed buffer
@@ -95,6 +91,9 @@ for i = 1:length(Q_data)
     end
     Q_data_RAW(i) = typecast(uint8(bin2dec(tempStringQ)),'int8');
 end
+%}
+I_data = data.I;
+Q_data = data.Q;
 
 %Timing Recovery constants
 sample_point    = 1; %1
@@ -253,9 +252,10 @@ for i = 1:MFDATALENGTH*8
     tau = typecast(int32(bitshift(fi(tau_int,1,32,0),tau_shift*-1)),'int32');
     
 end
-Low_MHz_Score = nonzeros(Low_MHz_Score');
-High_MHz_Score = nonzeros(High_MHz_Score');
-difference = Low_MHz_Score-High_MHz_Score;
+%Low_MHz_Score = nonzeros(Low_MHz_Score');
+%High_MHz_Score = nonzeros(High_MHz_Score');
+%difference = Low_MHz_Score-High_MHz_Score;
+
 %{
 updateNow = find(update_data == 1);
 diffUpdateData = zeros(1,length(updateNow),'double')';
@@ -269,10 +269,18 @@ if exist('VerilogMFOut','var') == 1
         end
 end  
 
+if exist('FPGAoutput','var') == 1
+        if (istable( FPGAoutput ) == 1)
+            FPGAoutput = table2array(FPGAoutput);
+        end
+end  
+
 % Search for Full Packets
 
-%DataToSearch = value;
-DataToSearch = VerilogMFOut(1:2000);
+DataToSearch = value;
+%DataToSearch = VerilogMFOut(1:MFDATALENGTH);
+%DataToSearch = FPGAoutput(1:MFDATALENGTH);
+
 if (Inverse_Data == 1)
     strBin = num2str(~DataToSearch);            % invert binary (1->0, 0->1)
 else
@@ -308,18 +316,20 @@ end
 
 
 stem(corrOffset,Score + Score2);
+
 if (FindLocations > 0)
+    
 title("OFFSET: " + OFFSET + ", xcorr With Binary Key," + ...
     " MF Packets Found = " + length(FindLocations) + " @ " + FindLocations);
 else
      title("OFFSET: " + OFFSET + ", xcorr With Binary Key," + ...
     " MF Packets Found = 0");
 end
-
-xlim([-230 2000]);
+   
+xlim([-230 MFDATALENGTH]);
 ylim([0 250])
 fontsize(gcf,24,"points");
-
+    
 %disp("Sample Point: " + sample_point)
 %disp("e_k_shift: " + e_k_shift);
 %disp("tau_shift: " + tau_shift);
