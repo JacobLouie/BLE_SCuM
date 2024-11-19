@@ -11,13 +11,19 @@ if sys.platform.startswith("win"):
 else:
     #sys.path.append("/home/brandonhippe/bhippe@pdx.edu Shared/Brandon Hippe/Research Projects/SCuM BLE/Code")
     #sys.path.append("/home/brandonhippe/bhippe@pdx.edu Shared/Brandon Hippe/Research Projects/SCuM BLE/Code/Modules")
-    sys.path.append("/mnt/c/Users/6RF4001/OneDrive - HKUST (Guangzhou)/PSU Backup/scum-ble-main(Brandon)/scum-ble-main/Python/Modules")
-    sys.path.append("/mnt/c/Users/6RF4001/OneDrive - HKUST (Guangzhou)/PSU Backup/scum-ble-main(Brandon)/scum-ble-main/Python/Modules/ble_hardware")
+    # Jacob path
+    sys.path.append("/mnt/c/Users/6RF4001/Desktop/BLE_SCuM/ADALM-PLUTO/Modules") 
+    sys.path.append("/mnt/c/Users/6RF4001/Desktop/BLE_SCuM/ADALM-PLUTO/Modules/ble_hardware") 
+    sys.path.append("/mnt/c/Users/6RF4001/Desktop/BLE_SCuM/ADALM-PLUTO/Modules/link_layer") 
+    sys.path.append("/mnt/c/Users/6RF4001/Desktop/BLE_SCuM/ADALM-PLUTO/Modules/phy") 
 
+# old
 #from Modules.pluto_tx import PlutoTransmitter
 #from Modules.pluto_rx import PlutoReceiver
 #from Python.Modules.helpers import hex2bin
 #from ble_packet_decode import packet_decode
+
+# Jacob path
 from Modules.ble_hardware.pluto_tx import PlutoTransmitter
 from Modules.ble_hardware.pluto_rx import PlutoReceiver
 from Modules.helpers import hex2bin
