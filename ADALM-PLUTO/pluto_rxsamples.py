@@ -44,7 +44,7 @@ if __name__ == "__main__":
     print(f"Raw PDU: 0x{packet_decode(packet, 37)}")
     packet_bits = hex2bin(packet)
 
-    tx_sdr = PlutoTransmitter(center_freq, IF, bit_time, 0.5, -70)
+    tx_sdr = PlutoTransmitter(center_freq, IF, bit_time, 0.5, -70, "ip:192.168.2.1")
     tx_sdr.set_packet(packet_bits)
     rx_sdr = PlutoReceiver(center_freq, IF, bit_time, 0.5, samples_per_bit)
     rx_sdr.set_rx_freq(center_freq)
