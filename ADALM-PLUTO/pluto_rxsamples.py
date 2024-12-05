@@ -6,8 +6,13 @@ import threading
 
 import sys
 if sys.platform.startswith("win"):
-    sys.path.append("I:\Shared drives\west\Brandon Hippe\Research Projects\SCuM BLE\Code")
-    sys.path.append("I:\Shared drives\west\Brandon Hippe\Research Projects\SCuM BLE\Code\Modules")
+    #sys.path.append("I:\Shared drives\west\Brandon Hippe\Research Projects\SCuM BLE\Code")
+    #sys.path.append("I:\Shared drives\west\Brandon Hippe\Research Projects\SCuM BLE\Code\Modules")
+    # Jacob path
+    sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules")
+    sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\ble_hardware")
+    sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\link_layer")
+    sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\phy")
 else:
     #sys.path.append("/home/brandonhippe/bhippe@pdx.edu Shared/Brandon Hippe/Research Projects/SCuM BLE/Code")
     #sys.path.append("/home/brandonhippe/bhippe@pdx.edu Shared/Brandon Hippe/Research Projects/SCuM BLE/Code/Modules")
