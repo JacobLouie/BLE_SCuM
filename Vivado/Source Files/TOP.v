@@ -44,7 +44,7 @@ module TOP(
 	    .I_in(I_BPF), 
 	    .Q_in(Q_BPF), // Set Low if no Input
         .update_data(update),	
-	    .sample_point(2),       // 2
+	    .sample_point(1),       // 2
 	    .e_k_shift(2),          // 2
         .tau_shift(11)          // 11
     );
