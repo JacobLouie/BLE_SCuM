@@ -145,13 +145,12 @@ module Matched_Filter(
      
     // Initialize Templates for 802.15.4
     // Array size 8 of 5 bit values (ADC + Sign)
-    wire signed [10:0] Template_Cos2MHz [0:15];              // Cosine   2MHz
-    wire signed [10:0] Template_Sin2MHz [0:15];              // Sine     2MHz
-    wire signed [10:0] Template_Cos3MHz [0:15];              // Cosine   3MHz
-    wire signed [10:0] Template_Sin3MHz [0:15];              // Sine     3MHz
+    wire signed [4:0] Template_Cos2MHz [0:15];              // Cosine   2MHz
+    wire signed [4:0] Template_Sin2MHz [0:15];              // Sine     2MHz
+    wire signed [4:0] Template_Cos3MHz [0:15];              // Cosine   3MHz
+    wire signed [4:0] Template_Sin3MHz [0:15];              // Sine     3MHz
     
     // Cosine 2MHz
-    
     assign Template_Cos2MHz[0] = 5'd15;
     assign Template_Cos2MHz[1] = 5'd11;
     assign Template_Cos2MHz[2] = 5'd0;
@@ -377,16 +376,6 @@ module Matched_Filter(
         else begin
             // Data length is 16 bits long for BLE
             for (j = 0; j < 16; j = j + 1) begin
-//                // Low MHz
-//                temp_score1 = Template_Cos2MHz[j] * I_Buffer[j];
-//                temp_score2 = Template_Sin2MHz[j] * I_Buffer[j];
-//                temp_score5 = Template_Cos2MHz[j] * Q_Buffer[j];
-//                temp_score6 = Template_Sin2MHz[j] * Q_Buffer[j];
-//                // High MHz
-//                temp_score3 = Template_Cos25MHz[j] * I_Buffer[j];
-//                temp_score4 = Template_Sin25MHz[j] * I_Buffer[j];
-//                temp_score7 = Template_Cos25MHz[j] * Q_Buffer[j];
-//                temp_score8 = Template_Sin25MHz[j] * Q_Buffer[j];
                 // Low MHz
                 temp_score1 = Template_Cos2MHz[j] * I_Buffer[j];
                 temp_score2 = Template_Sin2MHz[j] * I_Buffer[j];
