@@ -63,7 +63,7 @@ elseif MODE == 3
 end
 
 DATA_LENGTH = 8;
-MFDATALENGTH = 2000;%31250;
+MFDATALENGTH = 19000;%31250;%2000;
 BUFFER_SIZE = 11;
 %{
 I_data              = zeros(1,length(data.y),'double')';
@@ -92,8 +92,31 @@ for i = 1:length(Q_data)
     Q_data_RAW(i) = typecast(uint8(bin2dec(tempStringQ)),'int8');
 end
 %}
+I_data              = zeros(1,length(data.I),'double')';
+Q_data              = zeros(1,length(data.Q),'double')';
+
 I_data = data.I;
 Q_data = data.Q;
+
+% Convert to decimal into 2's complemnet 
+
+% Signed buffer
+for i = 1:length(data.I)
+    tempStringI = dec2bin(data.I(i),8);
+    if tempStringI(5) - '0' == 1
+        tempStringI = ['1111',tempStringI(5:8)];
+    end
+    I_data(i) = typecast(uint8(bin2dec(tempStringI)),'int8');
+end
+
+% Signed buffer
+for i = 1:length(data.Q)
+    tempStringI = dec2bin(data.Q(i),8);
+    if tempStringI(5) - '0' == 1
+        tempStringI = ['1111',tempStringI(5:8)];
+    end
+    Q_data(i) = typecast(uint8(bin2dec(tempStringI)),'int8');
+end
 
 %Timing Recovery constants
 sample_point    = 1; %1
@@ -319,8 +342,8 @@ stem(corrOffset,Score + Score2);
 
 if (FindLocations > 0)
     
-title("OFFSET: " + OFFSET + ", xcorr With Binary Key," + ...
-    " MF Packets Found = " + length(FindLocations) + " @ " + FindLocations);
+%title("OFFSET: " + OFFSET + ", xcorr With Binary Key," + ...
+%    " MF Packets Found = " + length(FindLocations) + " @ " + FindLocations);
 else
      title("OFFSET: " + OFFSET + ", xcorr With Binary Key," + ...
     " MF Packets Found = 0");
