@@ -80,7 +80,6 @@ module Timing_Recovery_BLE(
 		end
 		else begin
 			if(do_error_calc) begin
-			
                 if (select == 1) begin
                     i_1 <= I_k[4'd8];
                     q_1 <= Q_k[4'd8];
@@ -154,7 +153,6 @@ module Timing_Recovery_BLE(
 	end
 	
 	// Calculate a new error value when buffer holds current estimate of symbol period
-    
 	assign do_error_calc = (select == 1) ? ((shift_counter) == $signed(3'b111 + dtau)):
 	                       ((shift_counter) == $signed(4'b1111 + dtau));
 
