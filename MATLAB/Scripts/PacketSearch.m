@@ -3,7 +3,7 @@
 % 0 = No Invert
 Inverse_Data = 0;
 
-MFDATALENGTH = 31250;%2000;;
+MFDATALENGTH = 19000;%31250;%2000;;
 
 if exist('VerilogMFOut','var') == 1
         if (istable( VerilogMFOut ) == 1)
@@ -18,8 +18,8 @@ if exist('FPGAoutput','var') == 1
         end
 end  
 
-%DataToSearch = VerilogMFOut(1:MFDATALENGTH);
-DataToSearch = FPGAoutput(1:MFDATALENGTH);
+DataToSearch = VerilogMFOut(1:MFDATALENGTH);
+%DataToSearch = FPGAoutput(1:MFDATALENGTH);
 
 if (Inverse_Data == 1)
     strBin = num2str(~DataToSearch);            % invert binary (1->0, 0->1)
@@ -79,11 +79,11 @@ for i = 1:length(totScore)
         packCount = packCount + 1;
     end
 end
-
+packCount = floor(MFDATALENGTH/208);
 disp("Packets Found: " + FindTotal + " of " + packCount);
 
-TotChip = packCount * 208;
+TotChip = MFDATALENGTH;
 disp("Chip Rate: " + chipCount + "/" + TotChip + " = " + chipCount/TotChip);
-disp("@-60dBm");
+%disp("@-60dBm");
 
 
