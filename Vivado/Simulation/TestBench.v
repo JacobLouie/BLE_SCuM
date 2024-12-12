@@ -32,7 +32,9 @@ module TestBench();
         
            
         fd = $fopen("../../../../VerilogMFOut.txt", "w");
-        #1248000    // 802.15.4
+        //#1248000    // 802.15.4
+        #21250000    // 802.15.4
+        
         //#800000   //BLE
         $fclose(fd);
    end
@@ -60,7 +62,8 @@ module TestBench();
     );    
    
     Timing_Recovery_BLE Synch(
-        .clk(clk),			   
+        .clk(clk),	
+        .select(select),		   
 	    .rst(rst), 
 	    .I_in(I_data), 
 	    .Q_in(Q_data), // Set Low if no Input
