@@ -12,8 +12,8 @@ F1 = 3*10^6;     % 3MHz signal
 %F1 = 4*10^6;     % 2MHz signal
 
 % Magnitude
-%Magnitude = 15; % +-15
-Magnitude = 1023; % +-1000
+Magnitude = 15; % +-15
+%Magnitude = 1023; % +-1000
 
 % 1 = 802.15.4
 % 2 = BLE
