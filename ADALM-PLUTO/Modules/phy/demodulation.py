@@ -1,4 +1,4 @@
-from math import pi, atan2, sin, cos
+from math import pi, atan2, sin, cos, ceil, log2, isfinite
 from functools import reduce
 import numpy as np
 from scipy import signal
@@ -121,7 +121,76 @@ def clock_recovery_if_correction(scum_if: float, samples_per_symbol: int) -> tup
     return (-re_mult, -im_mult)
 
 
-def clock_recovery_gen(ifreq: float, symbol_rate: float, samples_per_bit: int, e_k_shift: int, tau_shift: int, high_pos: int) -> Generator[tuple[bool, dict], tuple[int, int, bool], None]:
+def calc_gamma(adc_depth: float, samples_per_symbol: int) -> float:
+    if isfinite(adc_depth):
+        return (4 * 5e-3 * (samples_per_symbol ** 2)) / (2 ** (4 * adc_depth + 2))
+    else:
+        return (4 * 5e-3 * (samples_per_symbol ** 2)) / (2 ** 2)
+
+
+def clock_recovery_gen(ifreq: float, symbol_time: float, samples_per_symbol: int, adc_depth: float, high_pos: int) -> Generator[tuple[bool, dict], tuple[int, int, bool], None]:
+    '''
+    Generator to recover the clock of a (G)FSK signal
+    '''
+    I_k = deque(np.zeros(samples_per_symbol + 3, dtype=int), maxlen=samples_per_symbol + 3)
+    Q_k = deque(np.zeros(samples_per_symbol + 3, dtype=int), maxlen=samples_per_symbol + 3)
+    shift_counter = 0
+    gamma = calc_gamma(adc_depth, samples_per_symbol)
+    dtau, i_1, q_1, i_2, q_2, i_3, q_3, i_4, q_4 = [0] * 9
+
+    # sample_pos = high_pos
+    sample_pos = (samples_per_symbol - 1) // 2 - 2
+    error_calc_counter = 0
+    # update_data = shift_counter == sample_pos
+    update_data = ((shift_counter % samples_per_symbol) == ((samples_per_symbol - dtau - 3) % samples_per_symbol)) or (error_calc_counter == 3)
+
+
+    re_mult, im_mult = clock_recovery_if_correction(ifreq * symbol_time, samples_per_symbol)
+
+    while True:
+        i_data, q_data, preamble_detected = yield update_data, locals()
+
+        I_k.append(i_data)
+        Q_k.append(q_data)        
+
+        i_1 = I_k[0 + samples_per_symbol]
+        q_1 = Q_k[0 + samples_per_symbol]
+        i_2 = I_k[0]
+        q_2 = Q_k[0]
+        i_3 = I_k[2 + samples_per_symbol]
+        q_3 = Q_k[2 + samples_per_symbol]
+        i_4 = I_k[2]
+        q_4 = Q_k[2]
+
+        re1 = (i_1*i_1 - q_1*q_1)  * (i_2*i_2 - q_2*q_2) + 4*(i_1*q_1*i_2*q_2)
+        re2 = (i_3*i_3 - q_3*q_3)  * (i_4*i_4 - q_4*q_4) + 4*(i_3*q_3*i_4*q_4)
+        im1 = 2 * ((i_2 * i_2 * i_1 * q_1) + (q_1 * q_1 * i_2 * q_2) - (i_1 * i_1 * i_2 * q_2) - (q_2 * q_2 * i_1 * q_1))
+        im2 = 2 * ((i_4 * i_4 * i_3 * q_3) + (q_3 * q_3 * i_4 * q_4) - (i_3 * i_3 * i_4 * q_4) - (q_4 * q_4 * i_3 * q_3))
+
+        y1 = (re_mult * re1) + (im_mult * im1)
+        y2 = (re_mult * re2) + (im_mult * im2)
+
+        e_k = y2 - y1
+
+        do_error_calc = ((shift_counter % samples_per_symbol) == ((samples_per_symbol - dtau - 1) % samples_per_symbol)) or (error_calc_counter == 1)
+
+        if do_error_calc:
+            shift_counter = 0
+            dtau = round(e_k * gamma * (samples_per_symbol // 2))
+        else:
+            shift_counter += 1
+
+        if error_calc_counter != 0:
+            error_calc_counter = error_calc_counter - 1
+        elif preamble_detected:
+            # error_calc_counter = (samples_per_symbol >> 1) - sample_pos
+            error_calc_counter = (samples_per_symbol - 1) // 2 + 3
+
+        # update_data = (shift_counter) % samples_per_symbol == (sample_pos) % samples_per_symbol
+        update_data = ((shift_counter % samples_per_symbol) == ((samples_per_symbol - dtau - 3) % samples_per_symbol)) or (error_calc_counter == 3)
+
+
+def clock_recovery_gen_old(ifreq: float, symbol_time: float, samples_per_bit: int, e_k_shift: int, tau_shift: int, high_pos: int) -> Generator[tuple[bool, dict], tuple[int, int, bool], None]:
     '''
     Generator to recover the clock of a (G)FSK signal
     '''
@@ -135,7 +204,7 @@ def clock_recovery_gen(ifreq: float, symbol_rate: float, samples_per_bit: int, e
     update_data = shift_counter == sample_pos
     do_error_calc = ((shift_counter % samples_per_bit) == ((samples_per_bit + dtau - 1) % samples_per_bit)) or (error_calc_counter == 1)
 
-    re_mult, im_mult = clock_recovery_if_correction(ifreq * symbol_rate, samples_per_bit)
+    re_mult, im_mult = clock_recovery_if_correction(ifreq * symbol_time, samples_per_bit)
 
     while True:
         i_data, q_data, preamble_detected = yield update_data, locals()
@@ -182,7 +251,22 @@ def clock_recovery_gen(ifreq: float, symbol_rate: float, samples_per_bit: int, e
         update_data = shift_counter == sample_pos
 
 
-def cdr(ifreq: float, df: float, symbol_rate: float, samples_per_bit: int, adc_data: np.typing.NDArray[np.complex128], fsk_amp: int, search_for: np.typing.NDArray[int], e_k_shift: int, tau_shift: int, high_pos: int, plot=None) -> List[List[int]]:
+def clock_recovery_gen_mf(samples_per_symbol: int) -> Generator[tuple[bool, dict], bool, None]:
+    sample_counter = 0
+    p_mf_bit = False
+    while True:
+        mf_bit = yield sample_counter == (samples_per_symbol - 1) // 2, locals()
+        # mf_bit = yield sample_counter == 0, locals()
+
+        if mf_bit ^ p_mf_bit:
+            sample_counter = -1
+
+        p_mf_bit = mf_bit
+        sample_counter += 1
+        sample_counter %= samples_per_symbol
+
+
+def cdr(ifreq: float, df: float, symbol_rate: float, samples_per_bit: int, adc_data: np.typing.NDArray[np.complex128], fsk_amp: int, search_for: np.typing.NDArray[int], e_k_shift: int, tau_shift: int, high_pos: int, mf_clock_rec: bool=False) -> List[List[int]]:
     '''
     Perform clock and data recovery on a signal
     '''
@@ -190,24 +274,28 @@ def cdr(ifreq: float, df: float, symbol_rate: float, samples_per_bit: int, adc_d
     clock_period = None
     period_counts = defaultdict(int)
 
-    preamble_detect = preamble_detection_gen(samples_per_bit)
-    preamble_detect.send(None)
-    clocks_generated = clock_recovery_gen(ifreq, symbol_rate, samples_per_bit, e_k_shift, tau_shift, high_pos)
-    clocks_generated.send(None)
+    if mf_clock_rec:
+        clocks_generated = clock_recovery_gen_mf(samples_per_bit)
+        clocks_generated.send(None)
+        clock_val = 0
+    else:
+        preamble_detect = preamble_detection_gen(samples_per_bit)
+        preamble_detect.send(None)
+        clocks_generated = clock_recovery_gen_old(ifreq, symbol_rate, samples_per_bit, e_k_shift, tau_shift, high_pos)
+        # clocks_generated = clock_recovery_gen(ifreq, symbol_rate, samples_per_bit, 4, high_pos)
+        clocks_generated.send(None)
 
     datastream = np.array([], dtype=int)
     high_clocks = np.array([], dtype=int)
     preamble = False
-    for ix, (sample, corr_result) in enumerate(zip(adc_data, matched_filter_score_gen(adc_data, ifreq, df, samples_per_bit, symbol_rate, fsk_amp))):
-        clock_val, _ = clocks_generated.send((int(sample.real), int(sample.imag), preamble))
-        preamble = preamble_detect.send(corr_result > 0)
+    for ix, (sample, mf_bit) in enumerate(zip(adc_data, matched_filter_score_gen(adc_data, ifreq, df, samples_per_bit, symbol_rate, fsk_amp))):
+        if not mf_clock_rec:
+            clock_val, _ = clocks_generated.send((int(sample.real), int(sample.imag), preamble))
+            preamble = preamble_detect.send(mf_bit)
 
         if clock_val == 1 and last_clock == 0:
             high_clocks = np.concatenate((high_clocks, [ix]))
-            if corr_result > 0:
-                bin_val = 1
-            else:
-                bin_val = 0
+            bin_val = int(mf_bit)
                 
             datastream = np.concatenate((datastream, [bin_val]))
 
@@ -219,6 +307,16 @@ def cdr(ifreq: float, df: float, symbol_rate: float, samples_per_bit: int, adc_d
         last_clock = clock_val
         if clock_period is not None:
             clock_period += 1
+        
+        if mf_clock_rec:
+            clock_val, _ = clocks_generated.send(mf_bit)
+
+    if mf_clock_rec and clock_val == 1 and last_clock == 0:
+        high_clocks = np.concatenate((high_clocks, [ix]))
+        datastream = np.concatenate((datastream, [int(mf_bit)]))
+
+        if clock_period is not None:
+            period_counts[clock_period] += 1
 
     if len(datastream) < len(search_for):
         return [], high_clocks, len(search_for), datastream

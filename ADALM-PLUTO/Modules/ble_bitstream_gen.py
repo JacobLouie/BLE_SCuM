@@ -1,12 +1,14 @@
 import random
-from os import path, pardir
+import os
+from pathlib import Path
+
+
+packets_path = os.path.join(Path(__file__).parent.parent.parent, "Packet Strings")
 
 
 def bitstream_gen(numPackets, totalBits):
-    random.seed()
-
-    with open(path.join(path.dirname(__file__), pardir, "Text Files/testpacket.txt")) as f:
-        packet_bits = hex2bin(f.readline())
+    with open(os.path.join(packets_path, "connectable.txt")) as f:
+        packet_bits = f.read()
 
     bits = totalBits - (numPackets * len(packet_bits))
     bitstream = bin(random.getrandbits(bits))[2:]
@@ -24,7 +26,6 @@ def bitstream_gen(numPackets, totalBits):
 
 
 if __name__ == "__main__":
-    from Python.Modules.helpers import hex2bin
     random.seed()
 
     max_packets = 2000
@@ -36,7 +37,6 @@ if __name__ == "__main__":
     print(sorted(indexes))
     print(len(bitstream))
 
-    with open("Text Files/random_bits_10kb.txt", "w") as f:
+    with open(os.path.join(packets_path, "random_bits_10kb.txt"), "w") as f:
         f.write(bitstream)
-else:
-    from Python.Modules.helpers import hex2bin
+

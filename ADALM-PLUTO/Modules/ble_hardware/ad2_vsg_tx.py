@@ -1,8 +1,8 @@
 import pyvisa
 from ctypes import *
-import sys
+from . import Transmitter
 import os
-from threading import current_thread
+import sys
 
 # load the dynamic library, get constants path (the path is OS specific)
 if sys.platform.startswith("win"):
@@ -21,12 +21,13 @@ else:
 
 sys.path.append(constants_path)
 from dwfconstants import *
-from time import sleep
 
 
-class AD2Transmitter:
-    def __init__(self, tx_freq, symbol_time=1e-6, bt=0.5, tx_power=-50,):
-        self.tx_freq = tx_freq
+class AD2Transmitter(Transmitter):
+    '''
+    Transmitter using Analog Discovery 2 and E4438C Vector Signal Generator
+    '''
+    def __init__(self, tx_freq: float, symbol_time: float, bt: float, tx_power: float, *args, **kwargs):
         self.packet = None
         if sys.platform.startswith("win"):
             dwf = cdll.dwf
@@ -55,9 +56,8 @@ class AD2Transmitter:
         hzSys = c_double()
         dwf.FDwfDigitalOutInternalClockInfo(hdwf, byref(hzSys))
         self.hzSys = hzSys
-        self.symbol_time = symbol_time
-        self.df = bt / (symbol_time * 2)
 
+        self.vsg = False
         if sys.platform.startswith("win"):
             rm = pyvisa.ResourceManager()
             devs = rm.list_resources()
@@ -74,25 +74,28 @@ class AD2Transmitter:
 
                     self.vsg = inst
                     break
+
+        super().__init__(tx_freq, symbol_time, bt, tx_power, *args, **kwargs)
+
+        if self.vsg:
             self.vsg.write_raw(b'RAD:CUST:DATA EXT')
             self.vsg.write_raw(b'RAD:CUST:FILT GAUS')
             self.vsg.write_raw(f'RAD:CUST:MOD:FSK:DEV {self.df}')
             self.vsg.write_raw(f'RAD:CUST:SRAT {1/symbol_time}')
-            self.vsg.write_raw(f'POW {tx_power}')
-            self.vsg.write_raw(f'FREQ:FIXED {self.tx_freq}')
         else:
             self.vsg = False
             print("VSG not supported on this platform, manual configuration required")
             print(f"FSK Deviation: {self.df}")
             print(f"Symbol Rate: {1/symbol_time}")
-            print(f"Power: {tx_power}")
-            print(f"Frequency: {self.tx_freq}")
 
             while input("Configuration complete? (y/n) ").lower() == 'n':
                 continue
         
 
-    def set_tx_freq(self, tx_freq):
+    def set_tx_freq(self, tx_freq: float) -> None:
+        '''
+        Set the transmit frequency
+        '''
         self.tx_freq = tx_freq
         if self.vsg:
             self.vsg.write_raw(f'FREQ:FIXED {self.tx_freq}')
@@ -101,10 +104,15 @@ class AD2Transmitter:
             while input("Frequency configured? (y/n) ").lower() == 'n':
                 continue
 
-    def set_packet(self, packet):
+    def set_packet(self, packet: str) -> None:
+        '''
+        Set the packet to be transmitted'''
         self.packet = packet
 
-    def set_tx_power(self, power):
+    def set_tx_power(self, power: float) -> None:
+        '''
+        Set the transmit power
+        '''
         if not -136 <= power <= 20:
             raise ValueError("Power must be in the range -136 to 20 dB")
         
@@ -115,43 +123,23 @@ class AD2Transmitter:
             while input("Power configured? (y/n) ").lower() == 'n':
                 continue
 
-    def transmit(self, cycles=1, cycle_time=0.1):
-        if self.packet is None:
-            raise ValueError("No packet to transmit")
-        
-        if cycles is not None:
-            for _ in range(cycles):
-                self.single_transmit()
-                sleep(cycle_time - (len(self.packet) * self.symbol_time))
-        else:
-            t = current_thread()
-            t.alive = True
-            while t.alive:
-                self.single_transmit()
-                sleep(cycle_time - (len(self.packet) * self.symbol_time))
-
-    def single_transmit(self):
-        # Generate Clock
+    def single_transmit(self) -> None:
+        '''
+        Send a single packet
+        '''
+        # Generate Clock & Data
         self.gen_clock()
-
-        # Generate Data
         self.gen_data()
 
-        # Set running time
+        # Transmit the packet
         dwf.FDwfDigitalOutRunSet(self.ad2, c_double(len(self.packet) * self.symbol_time))
-
-        # Start output
         dwf.FDwfDigitalOutConfigure(self.ad2, c_int(1))
-
-        # Reset
         dwf.FDwfDigitalOutReset(self.ad2)
 
-    def close(self):
-        dwf.FDwfDeviceClose(self.ad2)
-        if self.vsg:
-            self.vsg.close()
-
-    def gen_clock(self):
+    def gen_clock(self) -> None:
+        '''
+        Create a symbol clock to send to VSG
+        '''
         # Prepare AD2 Clock Output
         # 1MHz pulse on IO pin 0
         dwf.FDwfDigitalOutEnableSet(self.ad2, c_int(0), c_int(1))
@@ -160,7 +148,10 @@ class AD2Transmitter:
         # 1 tick high, 1 tick low
         dwf.FDwfDigitalOutCounterSet(self.ad2, c_int(1), c_int(0), c_int(1))
 
-    def gen_data(self):
+    def gen_data(self) -> None:
+        '''
+        Send data symbols to VSG
+        '''
         # Prepare AD2 Data Output
         rgbdata=(c_ubyte*((len(self.packet)+7)>>3))(0)
 
@@ -176,3 +167,12 @@ class AD2Transmitter:
         # 1MHz sample rate
         dwf.FDwfDigitalOutDividerSet(self.ad2, c_int(pin), c_int(int(self.hzSys.value/self.symbol_time))) # set sample rate
         dwf.FDwfDigitalOutDataSet(self.ad2, c_int(pin), byref(rgbdata), c_int(len(self.packet)))
+
+    def close(self) -> None:
+        '''
+        Close the transmitter
+        '''
+        dwf.FDwfDeviceClose(self.ad2)
+        if self.vsg:
+            self.vsg.close()
+
