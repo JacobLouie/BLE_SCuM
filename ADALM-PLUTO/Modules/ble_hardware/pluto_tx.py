@@ -18,7 +18,7 @@ class PlutoTransmitter(Transmitter):
     def __init__(self, tx_freq: float, symbol_time: float, bt: float, tx_power: float, ifreq: float, sdr=None, *args, **kwargs) -> None:
         self.ifreq = ifreq
         if sdr is None:
-            self.sdr = adi.Pluto("ip:192.168.2.1")
+            self.sdr = adi.Pluto()
         elif isinstance(sdr, str):
             self.sdr = adi.Pluto(sdr)
         else:
@@ -43,7 +43,7 @@ class PlutoTransmitter(Transmitter):
         '''
         self.sdr.tx_destroy_buffer()
         self.packet = packet
-        self.samples = createFSK(self.packet, 2 ** 14, self.ifreq, self.df, samples_per_bit= int(self.sample_rate * self.symbol_time), bit_time=self.symbol_time)
+        self.samples = createFSK(self.packet, 2 ** 14, self.ifreq, self.df, samples_per_bit=int(self.sample_rate * self.symbol_time), bit_time=self.symbol_time)
 
     def set_tx_power(self, power: float) -> None:
         '''

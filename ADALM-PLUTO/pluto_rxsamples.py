@@ -6,33 +6,16 @@ import threading
 from argparse import ArgumentParser
 
 import sys
-if sys.platform.startswith("win"):
-    #sys.path.append("I:\Shared drives\west\Brandon Hippe\Research Projects\SCuM BLE\Code")
-    #sys.path.append("I:\Shared drives\west\Brandon Hippe\Research Projects\SCuM BLE\Code\Modules")
-    # Jacob path
-    sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules")
-    sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\ble_hardware")
-    sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\link_layer")
-    sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\phy")
-else:
-    #sys.path.append("/home/brandonhippe/bhippe@pdx.edu Shared/Brandon Hippe/Research Projects/SCuM BLE/Code")
-    #sys.path.append("/home/brandonhippe/bhippe@pdx.edu Shared/Brandon Hippe/Research Projects/SCuM BLE/Code/Modules")
-    # Jacob path
-    sys.path.append(r"/mnt/c/Users/6RF4001/Desktop/BLE_SCuM/ADALM-PLUTO/Modules") 
-    sys.path.append(r"/mnt/c/Users/6RF4001/Desktop/BLE_SCuM/ADALM-PLUTO/Modules/ble_hardware") 
-    sys.path.append(r"/mnt/c/Users/6RF4001/Desktop/BLE_SCuM/ADALM-PLUTO/Modules/link_layer") 
-    sys.path.append(r"/mnt/c/Users/6RF4001/Desktop/BLE_SCuM/ADALM-PLUTO/Modules/phy") 
 
-# old
-#from Modules.pluto_tx import PlutoTransmitter
-#from Modules.pluto_rx import PlutoReceiver
-#from Python.Modules.helpers import hex2bin
-#from ble_packet_decode import packet_decode
+sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules")
+sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\ble_hardware")
+sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\link_layer")
+sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\phy")
 
-# Jacob path
+
 from Modules.ble_hardware import PlutoTransmitter, PlutoReceiver
 from Modules.helpers import hex2bin
-from Modules.link_layer.ble_packet_decode import packet_decode
+from Modules.link_layer import packet_decode
 
 
 if __name__ == "__main__":
@@ -42,13 +25,13 @@ if __name__ == "__main__":
     parser.add_argument("-d", '--decimate', action='store_true', help="Decimate the received samples")
 
     args = parser.parse_args()
-    
-    center_freq = 2.404e9 # Hz
+
+    center_freq = 2.402e9 # Hz
     IF = 2.5e6 # Hz
     num_samples = 25000000
     sample_rate = 16e6 # Hz
-    bit_time = 0.5e-6 # s   802.15.4
-    #bit_time = 1e-6 # s   BLE
+    bit_time = 0.5e-6 # s   // 802.15.4
+    #bit_time = 1.0e-6 # s  // BLE
     samples_per_bit = sample_rate * bit_time
     packet_cycle_time = 0.5e-3 # s
 
@@ -58,18 +41,27 @@ if __name__ == "__main__":
     packet_bits = hex2bin(packet)
 
     tx_sdr = PlutoTransmitter(center_freq, bit_time, 0.5, -70, IF)
-    tx_sdr.set_sample_rate(sample_rate)
     tx_sdr.set_packet(packet_bits)
-    rx_sdr = PlutoReceiver(center_freq, bit_time, 0.5, sample_rate, IF)
-    rx_sdr.set_rx_freq(center_freq)
-    rx_sdr.set_rx_gain(70.0, 'manual')
+    #rx_sdr = PlutoReceiver(center_freq, bit_time, 0.5, sample_rate, IF)
+    #rx_sdr.set_rx_freq(center_freq)
+    #rx_sdr.set_rx_gain(70.0, 'manual')
 
     print("Starting transmitter!")
     tx_thread = threading.Thread(target=tx_sdr.transmit, args=(None, packet_cycle_time))
     tx_thread.start()
+    print("start")
+    #samples = rx_sdr.receive(num_samples)
 
-    samples = rx_sdr.receive(num_samples)
+    while 1:    
+        x = input("Any key to exit")
 
+        if not x :
+            print("Exiting the Program.")
+            exit()
+
+        else:
+            print(".")
+    
     tx_thread.alive = False
     tx_thread.join()
 

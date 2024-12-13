@@ -1,5 +1,8 @@
 __all__ = ["Transmitter", "Receiver", "AD2Transmitter", "PlutoTransmitter", "PlutoReceiver"]
 
+from threading import current_thread
+from time import sleep
+
 class Transmitter:
     def __init__(self, tx_freq: float, symbol_time: float, bt: float, tx_power: float, *args, **kwargs):
         self.set_tx_freq(tx_freq)
@@ -7,6 +10,8 @@ class Transmitter:
         self.symbol_time = symbol_time
         self.bt = bt
         self.df = bt / (symbol_time * 2)
+        self.sample_rate = 16_000_000 # Default sample rate
+        self.packet = ""
 
     def set_tx_power(self, tx_power: float):
         raise NotImplementedError("set_tx_power must be implemented by subclass")
@@ -17,8 +22,27 @@ class Transmitter:
     def set_packet(self, packet: str):
         raise NotImplementedError("set_packet must be implemented by subclass")
 
-    def transmit(self, packet_cycle_time: float):
-        raise NotImplementedError("transmit must be implemented by subclass")
+    def transmit(self, cycles=None, cycle_time=1e-3):
+        if len(self.packet) == 0:
+            raise ValueError("No packet to transmit")
+        
+        sleep_time = cycle_time - (self.symbol_time * len(self.packet))
+
+        if cycles is None:
+            t = current_thread()
+            t.alive = True
+
+            while t.alive:
+                self.single_transmit()
+                sleep(sleep_time)
+        else:
+            for _ in range(cycles):
+                self.single_transmit()
+                sleep(sleep_time)
+
+    
+    def single_transmit(self):
+        raise NotImplementedError("single_transmit must be implemented by subclass")
 
     def close(self):
         raise NotImplementedError("close must be implemented by subclass")
