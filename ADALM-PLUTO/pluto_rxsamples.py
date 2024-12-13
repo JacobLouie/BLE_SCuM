@@ -43,11 +43,12 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     
-    center_freq = 2.402e9 # Hz
+    center_freq = 2.404e9 # Hz
     IF = 2.5e6 # Hz
-    num_samples = 250000
+    num_samples = 25000000
     sample_rate = 16e6 # Hz
-    bit_time = 0.5e-6 # s
+    bit_time = 0.5e-6 # s   802.15.4
+    #bit_time = 1e-6 # s   BLE
     samples_per_bit = sample_rate * bit_time
     packet_cycle_time = 0.5e-3 # s
 
