@@ -1565,6 +1565,7 @@ void LC_monotonic(int LC_code) {
 
     // coarse=24, mid=0, fine=10 worked at Inria for Tx Frequency
     LC_FREQCHANGE(coarse, mid, fine);
+		printf("coarse: %d, mid: %d, fine %d\r\n",coarse,mid,fine);
 }
 
 void set_LC_current(unsigned int current) {

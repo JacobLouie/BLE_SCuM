@@ -38,8 +38,8 @@ int main(void){
 	
 	ANALOG_CFG_REG__10 = 0x0018; // turn off divider
 	
-	//coarse = 24, mid = 3, fine = 21
-	
+
+	LC_FREQCHANGE(23,15,3);
 	// Program analog scan chain
   analog_scan_chain_write();
   analog_scan_chain_load();
@@ -62,27 +62,27 @@ int main(void){
 	//SWEEP CODE
 	
 	/*
-	mid = 12;
+	mid = 10;
 	fine = 0;
 	
 	while(mid < 31){
 		while(fine < 31){
-			LC_FREQCHANGE(24,mid,fine);
+			LC_FREQCHANGE(23,mid,fine);
 			fine++;
 			for(i=0; i<100; i++);
 		}
 		mid++;
-		if (mid == 14) mid = 12; fine = 0; //21-23 for TX 802.15.4
+		if (mid == 25) mid = 10; fine = 0; //21-23 for TX 802.15.4
 		//18-12
 	}
 	*/
 	/*
-	fine = 0;
+	fine = 1;
 	while(fine < 31){
-			LC_FREQCHANGE(24,12,fine); //18 //20 //13
+			LC_FREQCHANGE(23,15,fine); //18 //20 //13
 			fine++;
 			for(i=0; i<100; i++);
-			if (fine == 31) fine = 0;
+			if (fine == 15) fine = 1;
 	}
 	*/
 	printf("done\r\n");
