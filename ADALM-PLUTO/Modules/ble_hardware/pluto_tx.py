@@ -23,7 +23,7 @@ class PlutoTransmitter(Transmitter):
             self.sdr = adi.Pluto(sdr)
         else:
             self.sdr = sdr
-        
+            
         super().__init__(tx_freq, symbol_time, bt, tx_power, ifreq, *args, **kwargs)
     
         self.packet = None

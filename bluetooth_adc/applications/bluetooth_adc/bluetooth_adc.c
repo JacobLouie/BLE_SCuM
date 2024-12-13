@@ -61,7 +61,7 @@ int main(void){
 	
 	//SWEEP CODE
 	
-	/*
+	
 	mid = 3;
 	fine = 0;
 	
@@ -75,8 +75,8 @@ int main(void){
 		if (mid == 10) mid = 3; fine = 0; //21-23 for TX 802.15.4
 		//18-12
 	}
-	*/
 	
+	/*
 	fine = 8;
 	while(fine < 31){
 			LC_FREQCHANGE(24,6,fine); //18 //20 //13
@@ -84,7 +84,7 @@ int main(void){
 			for(i=0; i<100; i++);
 			if (fine == 16) fine = 8;
 	}
-	
+	*/
 	printf("done\r\n");
 	
 	while(1);
