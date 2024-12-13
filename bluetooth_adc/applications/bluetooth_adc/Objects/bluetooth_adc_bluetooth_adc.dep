@@ -1,6 +1,6 @@
 Dependencies for Project 'bluetooth_adc', Target 'bluetooth_adc': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (.\Bluetooth_adc.c)(0x675BB7E5)(-c --cpu Cortex-M0 -D__EVAL --li -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\bluetooth_adc.o --omf_browse .\objects\bluetooth_adc.crf --depend .\objects\bluetooth_adc.d)
+F (.\Bluetooth_adc.c)(0x675BE385)(-c --cpu Cortex-M0 -D__EVAL --li -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\bluetooth_adc.o --omf_browse .\objects\bluetooth_adc.crf --depend .\objects\bluetooth_adc.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (../../optical.h)(0x66AD4BD3)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -32,7 +32,7 @@ I (..\..\radio.h)(0x6466B0BC)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 I (..\..\scm3c_hw_interface.h)(0x642F2E00)
-I (..\..\scum_defs.h)(0x675BA995)
+I (..\..\scum_defs.h)(0x675BE319)
 F (..\..\optical.h)(0x66AD4BD3)()
 F (..\..\radio.c)(0x64ADC068)(-c --cpu Cortex-M0 -D__EVAL --li -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\radio.o --omf_browse .\objects\radio.crf --depend .\objects\radio.d)
 I (..\..\radio.h)(0x6466B0BC)
@@ -74,9 +74,9 @@ I (..\..\optical.h)(0x66AD4BD3)
 I (..\..\radio.h)(0x6466B0BC)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\..\rftimer.h)(0x642F2E00)
-I (..\..\scum_defs.h)(0x675BA995)
+I (..\..\scum_defs.h)(0x675BE319)
 F (..\..\scm3c_hw_interface.h)(0x642F2E00)()
-F (..\..\scum_defs.h)(0x675BA995)()
+F (..\..\scum_defs.h)(0x675BE319)()
 F (..\..\spi.c)(0x64A6EEF0)(-c --cpu Cortex-M0 -D__EVAL --li -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\spi.o --omf_browse .\objects\spi.crf --depend .\objects\spi.d)
 I (..\..\spi.h)(0x642F2E00)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
