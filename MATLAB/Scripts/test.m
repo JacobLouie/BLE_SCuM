@@ -1,6 +1,6 @@
 %switches
 startInterval = 1;
-endInterval =  1990000;%19900;%300000;%%900000;%2500;
+endInterval =  491000;%19900;%300000;%%900000;%2500
 middleFreq = 2.50e+06;
 adcCLKperiod = (62.5*10^-9);
 risingEdgeOffset = 0; %time in uS
@@ -129,6 +129,7 @@ frequencyPlotY = frequencyPlot * 10^-6;
 %for t = 1:(diffSigIndex(1) - 1);
 %    frequencyPlot(t) = frequencyPlot(diffSigIndex);
 %end
+
 
 subplot(2,1,2);
 f = plot(data.x(startInterval:endInterval),frequencyPlotY,'LineWidth',1.5);

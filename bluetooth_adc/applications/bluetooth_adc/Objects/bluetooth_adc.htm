@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\bluetooth_adc.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\bluetooth_adc.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Dec 13 16:23:01 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Dec 13 20:17:44 2024
 <BR><P>
 <H3>Maximum Stack Usage =        256 bytes + Unknown(Functions without stacksize, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -221,19 +221,19 @@ Global Symbols
 
 <P><STRONG><a name="[f6]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, rt_memcpy.o(.emb_text), UNUSED)
 
-<P><STRONG><a name="[2c]"></a>main</STRONG> (Thumb, 122 bytes, Stack size 0 bytes, bluetooth_adc.o(.text))
+<P><STRONG><a name="[2c]"></a>main</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, bluetooth_adc.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192 + Unknown Stack Size
 <LI>Call Chain = main &rArr; initialize_mote &rArr; LC_monotonic &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxNow
-<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxEnable
+<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxNow
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxEnable
 <LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;perform_calibration
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initialize_mote
 <LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crc_check
-<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_write
-<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_load
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LC_FREQCHANGE
+<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_write
+<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_load
+<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LC_FREQCHANGE
 <LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPO_control
 <LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPI_control
 </UL>
@@ -532,7 +532,7 @@ Global Symbols
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rfOff
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;optical_enable
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;optical_getCalibrationFinshed
-<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxEnable
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxEnable
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -565,8 +565,8 @@ Global Symbols
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;scm3c_hw_interface_get_HF_CLOCK_fine
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;scm3c_hw_interface_get_HF_CLOCK_coarse
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LC_monotonic
-<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_write
-<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_load
+<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_write
+<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_load
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ext_gpio8_activehigh_isr
 <LI><a href="#[e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OPTICAL_SFD_Handler
@@ -619,13 +619,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;repeat_rx_tx
 </UL>
 
-<P><STRONG><a name="[3a]"></a>radio_rxNow</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, radio.o(.text))
+<P><STRONG><a name="[3b]"></a>radio_rxNow</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, radio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[17]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cb_endFrame_rx_radio
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;receive_packet_length
 <LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[39]"></a>radio_rxEnable</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, radio.o(.text))
+<P><STRONG><a name="[3a]"></a>radio_rxEnable</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, radio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[17]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cb_endFrame_rx_radio
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;receive_packet_length
 <LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;perform_calibration
@@ -636,8 +636,8 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rftimer_set_callback
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rftimer_setCompareIn
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rftimer_readCounter
-<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxNow
-<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxEnable
+<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxNow
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxEnable
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;repeat_rx_tx
 <LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;receive_packet
@@ -694,8 +694,8 @@ Global Symbols
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_getCrcOk
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_getIFestimate
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_getLQIchipErrors
-<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxNow
-<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxEnable
+<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxNow
+<LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;radio_rxEnable
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> radio.o(.text)
 </UL>
@@ -703,7 +703,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;receive_packet_length
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;send_packet
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LC_FREQCHANGE
+<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LC_FREQCHANGE
 </UL>
 
 <P><STRONG><a name="[18]"></a>default_radio_rx_cb</STRONG> (Thumb, 46 bytes, Stack size 16 bytes, radio.o(.text))
@@ -1083,7 +1083,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[be]"></a>flipChar</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, scm3c_hw_interface.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LC_FREQCHANGE
+<BR><BR>[Called By]<UL><LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LC_FREQCHANGE
 </UL>
 
 <P><STRONG><a name="[3f]"></a>clear_asc_bit</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, scm3c_hw_interface.o(.text))
@@ -1393,13 +1393,13 @@ Global Symbols
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initialize_mote
 </UL>
 
-<P><STRONG><a name="[38]"></a>analog_scan_chain_load</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, scm3c_hw_interface.o(.text))
+<P><STRONG><a name="[39]"></a>analog_scan_chain_load</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, scm3c_hw_interface.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;optical_sfd_isr
 <LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initialize_mote
 <LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[37]"></a>analog_scan_chain_write</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, scm3c_hw_interface.o(.text))
+<P><STRONG><a name="[38]"></a>analog_scan_chain_write</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, scm3c_hw_interface.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = analog_scan_chain_write
 </UL>
 <BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;optical_sfd_isr
@@ -1407,7 +1407,7 @@ Global Symbols
 <LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[3b]"></a>LC_FREQCHANGE</STRONG> (Thumb, 114 bytes, Stack size 48 bytes, scm3c_hw_interface.o(.text))
+<P><STRONG><a name="[37]"></a>LC_FREQCHANGE</STRONG> (Thumb, 114 bytes, Stack size 48 bytes, scm3c_hw_interface.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = LC_FREQCHANGE
 </UL>
 <BR>[Calls]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flipChar
@@ -1423,7 +1423,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LC_FREQCHANGE
+<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LC_FREQCHANGE
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;build_TX_channel_table
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;build_RX_channel_table
@@ -1467,8 +1467,8 @@ Global Symbols
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;optical_init
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_asc_bit
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clear_asc_bit
-<LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_write
-<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_load
+<LI><a href="#[38]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_write
+<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;analog_scan_chain_load
 <LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPO_control
 <LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPI_control
 </UL>
