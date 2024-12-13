@@ -57,6 +57,7 @@ if __name__ == "__main__":
     packet_bits = hex2bin(packet)
 
     tx_sdr = PlutoTransmitter(center_freq, bit_time, 0.5, -70, IF)
+    tx_sdr.set_sample_rate(sample_rate)
     tx_sdr.set_packet(packet_bits)
     rx_sdr = PlutoReceiver(center_freq, bit_time, 0.5, sample_rate, IF)
     rx_sdr.set_rx_freq(center_freq)

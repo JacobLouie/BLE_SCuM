@@ -9,7 +9,7 @@ def create_gaussian_filter(df: float, samples_per_bit: int, bit_time: float) -> 
     '''
     bandwidth_time = 2 * df * bit_time
     alpha = sqrt(log(2) / 2) / bandwidth_time
-    t = np.linspace(-bit_time / 2, bit_time / 2, samples_per_bit)
+    t = np.linspace(-bit_time / 2, bit_time / 2, int(samples_per_bit))
     gaussian = (sqrt(pi) / alpha) * np.exp(-(pi * t / alpha) ** 2)
     return gaussian
 

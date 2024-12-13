@@ -18,7 +18,7 @@ class PlutoTransmitter(Transmitter):
     def __init__(self, tx_freq: float, symbol_time: float, bt: float, tx_power: float, ifreq: float, sdr=None, *args, **kwargs) -> None:
         self.ifreq = ifreq
         if sdr is None:
-            self.sdr = adi.Pluto()
+            self.sdr = adi.Pluto("ip:192.168.2.1")
         elif isinstance(sdr, str):
             self.sdr = adi.Pluto(sdr)
         else:
