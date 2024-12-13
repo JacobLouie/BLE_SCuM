@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    center_freq = 2.402e9 # Hz
+    center_freq = 2.404e9 # Hz
     IF = 2.5e6 # Hz
     num_samples = 25000000
     sample_rate = 16e6 # Hz
@@ -42,26 +42,16 @@ if __name__ == "__main__":
 
     tx_sdr = PlutoTransmitter(center_freq, bit_time, 0.5, -70, IF)
     tx_sdr.set_packet(packet_bits)
-    #rx_sdr = PlutoReceiver(center_freq, bit_time, 0.5, sample_rate, IF)
-    #rx_sdr.set_rx_freq(center_freq)
-    #rx_sdr.set_rx_gain(70.0, 'manual')
+    rx_sdr = PlutoReceiver(center_freq, bit_time, 0.5, sample_rate, IF)
+    rx_sdr.set_rx_freq(center_freq)
+    rx_sdr.set_rx_gain(70.0, 'manual')
 
     print("Starting transmitter!")
     tx_thread = threading.Thread(target=tx_sdr.transmit, args=(None, packet_cycle_time))
     tx_thread.start()
-    print("start")
-    #samples = rx_sdr.receive(num_samples)
-
-    while 1:    
-        x = input("Any key to exit")
-
-        if not x :
-            print("Exiting the Program.")
-            exit()
-
-        else:
-            print(".")
     
+    samples = rx_sdr.receive(num_samples)
+
     tx_thread.alive = False
     tx_thread.join()
 
