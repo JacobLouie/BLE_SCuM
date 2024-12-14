@@ -5,15 +5,12 @@ import csv
 import threading
 from argparse import ArgumentParser
 
-
-import sys
 import keyboard
-
+import sys
 sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules")
 sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\ble_hardware")
 sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\link_layer")
 sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\phy")
-
 
 from Modules.ble_hardware import PlutoTransmitter, PlutoReceiver
 from Modules.helpers import hex2bin
@@ -30,23 +27,24 @@ if __name__ == "__main__":
 
     center_freq = 2.404e9 # Hz
     IF = 2.5e6 # Hz
-    num_samples = 250000
+    num_samples = 5000000
     sample_rate = 16e6 # Hz
     bit_time = 0.5e-6 # s   // 802.15.4
     #bit_time = 1.0e-6 # s  // BLE
     samples_per_bit = sample_rate * bit_time
-    packet_cycle_time = 0.5e-3 # s
+    packet_cycle_time = 0#0.5e-3 # s
 
     #packet = '1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
-    packet = 'AAAAAAAAAAAAAAA0F0F0F0F0F0FFF0F0F0F0F0AAAAAAAAAAAAAAA'
+    #packet = 'AAAAAAAAAAAAAAA0F0F0F0F0F0FFF0F0F0F0F0AAAAAAAAAAAAAAA'
+    #packet = 'FFFFFFAAAAAAAAA0F0F0F0F0F0FFF0F0F0F0F0AAAAAAAAAFFFFFF'
+    packet = 'FFFFFFF0F0F0F0F0F0F0F0F0F0F0F0FFF0F0F0F0F0F0FFFFFFFFF'
     print(f"Packet: 0x{packet}")
     #print(f"Raw PDU: 0x{packet_decode(packet, 37)}")
     packet_bits = hex2bin(packet*500)
 
-    tx_sdr = PlutoTransmitter(center_freq, bit_time, 0.5, -40, IF,'ip:192.168.2.1')
+    tx_sdr = PlutoTransmitter(center_freq, bit_time, 0.5, -40, IF, 'ip:192.168.2.1')
     tx_sdr.set_packet(packet_bits)
-    tx_sdr.set_tx_freq(2.404e9)
-
+    '''
     print("Starting transmitter!")
     while True:
         # Your loop logic here
@@ -60,12 +58,7 @@ if __name__ == "__main__":
             print("Loop terminated by user")
             break
     exit()
-    
-
-    
-    
-    print("done")
-
+    '''
     rx_sdr = PlutoReceiver(center_freq, bit_time, 0.5, sample_rate, IF)
     rx_sdr.set_rx_freq(center_freq)
     rx_sdr.set_rx_gain(70.0, 'manual')

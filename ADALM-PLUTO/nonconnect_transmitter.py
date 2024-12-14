@@ -23,7 +23,8 @@ if __name__ == "__main__":
     #    sdr = PlutoTransmitter(freqs[37], symbol_time, bt, tx_power, ifreq)
     sdr = PlutoTransmitter(freqs[37], symbol_time, bt, tx_power, ifreq)
 
-    packet = hex2bin('AAAAAAAAAAAAAAA0F0F0F0F0FFF0F0F0F0F0F0AAAAAAAAAAAAAAA')
+    #packet = hex2bin('AAAAAAAAAAAAAAA0F0F0F0F0FFF0F0F0F0F0F0AAAAAAAAAAAAAAA')
+    packet = hex2bin('FFFFFFF0F0F0F0F0F0F0F0F0F0F0F0FFF0F0F0F0F0F0FFFFFFFFF')
     sdr.set_packet(packet)
 
     while True:

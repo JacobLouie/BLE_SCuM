@@ -26,7 +26,10 @@ class Transmitter:
         if len(self.packet) == 0:
             raise ValueError("No packet to transmit")
         
-        #sleep_time = cycle_time - (self.symbol_time * len(self.packet))
+        if cycle_time > 0:
+            sleep_time = cycle_time - (self.symbol_time * len(self.packet))
+        else:
+            sleep_time = 0
 
         if cycles is None:
             t = current_thread()
@@ -34,11 +37,11 @@ class Transmitter:
 
             while t.alive:
                 self.single_transmit()
-                #sleep(sleep_time)
+                sleep(sleep_time)
         else:
             for _ in range(cycles):
                 self.single_transmit()
-                #sleep(sleep_time)
+                sleep(sleep_time)
 
     
     def single_transmit(self):
