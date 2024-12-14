@@ -38,7 +38,7 @@ if __name__ == "__main__":
     packet_cycle_time = 0.5e-3 # s
 
     #packet = '1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
-    packet = 'AAAAAAAAAAAAAAA0F0F0F0F0F0F0F0F0F0F0F0AAAAAAAAAAAAAAA'
+    packet = 'AAAAAAAAAAAAAAA0F0F0F0F0F0FFF0F0F0F0F0AAAAAAAAAAAAAAA'
     print(f"Packet: 0x{packet}")
     #print(f"Raw PDU: 0x{packet_decode(packet, 37)}")
     packet_bits = hex2bin(packet*500)
