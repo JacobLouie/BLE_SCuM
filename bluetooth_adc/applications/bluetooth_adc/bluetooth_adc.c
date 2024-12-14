@@ -37,7 +37,8 @@ int main(void){
 	GPO_control(3,3,3,6);		// ADC CLK, I and Q_BPF, HCLK
 	
 	ANALOG_CFG_REG__10 = 0x0018; // turn off divider
-	//LC_FREQCHANGE(24,6,10);
+	//LC_FREQCHANGE(24,6,15);
+	LC_FREQCHANGE(24,5,20);
 	// Program analog scan chain
   analog_scan_chain_write();
   analog_scan_chain_load();
@@ -60,7 +61,7 @@ int main(void){
 	//SWEEP CODE
 	
 	/*
-	mid = 4;
+	mid = 6;
 	fine = 0;
 	
 	while(mid < 31){
@@ -70,19 +71,19 @@ int main(void){
 			for(i=0; i<100; i++);
 		}
 		mid++;
-		if (mid == 8) mid = 4; fine = 0; //21-23 for TX 802.15.4
+		if (mid == 8) mid = 6; fine = 0; //21-23 for TX 802.15.4
 		//18-12
 	}
 	*/
-	
-	fine = 5;
+	/*
+	fine = 15;
 	while(fine < 31){
 			LC_FREQCHANGE(24,6,fine); //18 //20 //13
 			fine++;
 			for(i=0; i<100; i++);
-			if (fine == 25) fine = 5;
+			if (fine == ) fine = 15;
 	}
-	
+	*/
 	printf("done\r\n");
 	
 	while(1);
