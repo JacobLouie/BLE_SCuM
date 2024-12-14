@@ -1,6 +1,5 @@
 `timescale 1ns / 1ns
 //////////////////////////////////////////////////////////////////////////////////
-// Company: Portland State University
 // Engineer: Jacob Louie
 // 
 // Create Date: 12/09/2023 01:52:37 PM
