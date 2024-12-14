@@ -38,7 +38,7 @@ int main(void){
 	
 	ANALOG_CFG_REG__10 = 0x0018; // turn off divider
 	//LC_FREQCHANGE(24,6,15);
-	LC_FREQCHANGE(24,5,20);
+	//LC_FREQCHANGE(24,5,20);
 	// Program analog scan chain
   analog_scan_chain_write();
   analog_scan_chain_load();
