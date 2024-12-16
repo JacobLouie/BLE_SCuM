@@ -37,7 +37,10 @@ int main(void){
 	GPO_control(3,3,3,6);		// ADC CLK, I and Q_BPF, HCLK
 	
 	ANALOG_CFG_REG__10 = 0x0018; // turn off divider
-	LC_FREQCHANGE(24,6,10);
+	//LC_FREQCHANGE(24,4,6);		//-500kHz from true 2.04GHz CF
+	//LC_FREQCHANGE(24,3,13);		//-500kHz from true 2.04GHz CF
+	//LC_FREQCHANGE(24,1,11);		//-500kHz from true 2.04GHz CF
+	
 	// Program analog scan chain
   analog_scan_chain_write();
   analog_scan_chain_load();
