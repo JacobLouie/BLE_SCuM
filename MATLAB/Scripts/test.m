@@ -1,6 +1,6 @@
 %switches
 startInterval = 1;
-endInterval =  1990000;%300000;%%900000;%2500
+endInterval =  450000;%1990000;%450000;%300000;%%900000;%2500
 middleFreq = 2.50e+06;
 adcCLKperiod = (62.5*10^-9);
 risingEdgeOffset = 0; %time in uS
@@ -305,8 +305,8 @@ strfind(decodeDataHex, '556B7D9171F14373CC31328D04EE0C2872F924DD6DD05B437EF6')
 %strfind(decodeDataHex, 'AD6FB22E')
 
 %change scale
-data.x = data.x / 10^6;
 %}
+data.x = data.x / 10^6;
 clear counter; clear highOrLow; clear time;
 
 

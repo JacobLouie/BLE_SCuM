@@ -10,7 +10,7 @@ MODE = 1;
 % Raw binary data needs to be inversed
 % 1 = Invert 
 % 0 = No Invert
-Inverse_Data = 0;
+Inverse_Data = 1;
 
 %for OFFSET = 0:7
 OFFSET  = 0;
@@ -63,7 +63,7 @@ elseif MODE == 3
 end
 
 DATA_LENGTH = 8;
-MFDATALENGTH = 99375;%19000;%31250;%2000;
+MFDATALENGTH = 31250;%56250;%19000;%31250;%2000;
 BUFFER_SIZE = 11;
 %{
 I_data              = zeros(1,length(data.y),'double')';
