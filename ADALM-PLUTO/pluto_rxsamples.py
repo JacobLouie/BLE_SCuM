@@ -34,13 +34,13 @@ if __name__ == "__main__":
     samples_per_bit = sample_rate * bit_time
     packet_cycle_time = 0#0.5e-3 # s
 
-    #packet = '1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
+    packet = '1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
     #packet = 'AAAAAAAAAAAAAAA0F0F0F0F0F0FFF0F0F0F0F0AAAAAAAAAAAAAAA'
-    packet = 'F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F'
+    #packet = 'F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F'
     #packet = 'FFFFFFF0F0F0F0F0F0F0F0F0F0F0F0FFF0F0F0F0F0F0FFFFFFFFF'
     print(f"Packet: 0x{packet}")
     #print(f"Raw PDU: 0x{packet_decode(packet, 37)}")
-    packet_bits = hex2bin(packet*500)
+    packet_bits = hex2bin(packet*1)
 
     tx_sdr = PlutoTransmitter(center_freq, bit_time, 0.5, -40, IF, 'ip:192.168.2.1')
     tx_sdr.set_packet(packet_bits)
@@ -59,6 +59,7 @@ if __name__ == "__main__":
             break
     exit()
     '''
+
     rx_sdr = PlutoReceiver(center_freq, bit_time, 0.5, sample_rate, IF)
     rx_sdr.set_rx_freq(center_freq)
     rx_sdr.set_rx_gain(70.0, 'manual')
