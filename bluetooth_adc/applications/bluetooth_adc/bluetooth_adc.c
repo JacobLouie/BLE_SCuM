@@ -42,7 +42,10 @@ int main(void){
 
 	//LC_FREQCHANGE(24,3,11);		//-500kHz from true 2.04GHz CF
 	//LC_FREQCHANGE(24,3,12);		//-500kHz from true 2.04GHz CF
-	LC_FREQCHANGE(24,3,12);		//-500kHz from true 2.04GHz CF
+	//LC_FREQCHANGE(24,3,12);		//-500kHz from true 2.04GHz CF
+	
+	LC_FREQCHANGE(19,15,16);		//-500kHz from true 2.04GHz CF (cutout chip)
+	
 	// Program analog scan chain
   analog_scan_chain_write();
   analog_scan_chain_load();
