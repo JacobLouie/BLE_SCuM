@@ -34,7 +34,7 @@ class PlutoTransmitter(Transmitter):
         '''
         Set the transmit frequency
         '''
-        # self.tx_freq = int(tx_freq - self.ifreq)
+        #self.tx_freq = int(tx_freq - self.ifreq)
         self.tx_freq = int(tx_freq)
         self.sdr.tx_lo = self.tx_freq
 
@@ -44,7 +44,7 @@ class PlutoTransmitter(Transmitter):
         '''
         self.sdr.tx_destroy_buffer()
         self.packet = packet
-        # self.samples = createFSK(self.packet, 2 ** 14, self.ifreq, self.df, samples_per_bit=int(self.sample_rate * self.symbol_time), bit_time=self.symbol_time)
+        #self.samples = createFSK(self.packet, 2 ** 14, self.ifreq, self.df, samples_per_bit=int(self.sample_rate * self.symbol_time), bit_time=self.symbol_time)
         self.samples = createFSK(self.packet, 2 ** 14, 0, self.df, samples_per_bit=int(self.sample_rate * self.symbol_time), bit_time=self.symbol_time)
 
 

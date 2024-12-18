@@ -4,7 +4,7 @@ from Modules.progressbar import printProgressBar
 from Modules.ble_hardware import AD2Transmitter, PlutoTransmitter
 
 if __name__ == "__main__":
-    freqs = {37: 2.404e09, 38: 2.426e09, 39: 2.480e09}
+    freqs = {37: 2.402e09, 38: 2.426e09, 39: 2.480e09}
     symbol_time = 0.5e-6
     bt = 0.5
     tx_power = -40
@@ -15,7 +15,7 @@ if __name__ == "__main__":
     packet = hex2bin(whiten_fullPacket(packet_gen('8e89bed6', 'ADV_NONCONN_IND', '90d7ebb19299', [['FLAGS', '06'], ['COMPLETE_LOCAL_NAME', 'SCUM3']]), 37))
     rawPDU = packet_decode(packet, 37)
 
-    print(f"Raw PDU: 0x{rawPDU}")
+    #print(f"Raw PDU: 0x{rawPDU}")
     
     #if input("Use AD2 or Pluto? (a/p) ").lower() == 'a':
     #    sdr = AD2Transmitter(freqs[37], symbol_time, bt, tx_power)
@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     #packet = hex2bin('AAAAAAAAAAAAAAA0F0F0F0F0FFF0F0F0F0F0F0AAAAAAAAAAAAAAA')
     packet = hex2bin('FFFFFFF0F0F0F0F0F0F0F0F0F0F0F0FFF0F0F0F0F0F0FFFFFFFFF')
-    sdr.set_packet(packet)
+    sdr.set_packet(packet*25)
 
     while True:
         try:
@@ -38,6 +38,6 @@ if __name__ == "__main__":
             #printProgressBar(i + 1, amt, prefix="Progress:", suffix="Complete", length=50)
             for ch in channels:
                 sdr.set_tx_freq(freqs[ch])
-                sdr.transmit(1)
+                sdr.transmit(1,0)
 
     sdr.close()

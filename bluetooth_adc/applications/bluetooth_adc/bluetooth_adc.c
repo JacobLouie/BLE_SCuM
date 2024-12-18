@@ -35,17 +35,15 @@ int main(void){
 	
 	GPI_control(0,0,0,0);
 	GPO_control(3,3,3,6);		// ADC CLK, I and Q_BPF, HCLK
+	//GPO_control(3,6,1,1);	// ADC CLK, I and Q_LC
 	
 	ANALOG_CFG_REG__10 = 0x0018; // turn off divider
 	//LC_FREQCHANGE(24,4,6);		//-500kHz from true 2.04GHz CF
-	//LC_FREQCHANGE(24,0,13);		//-500kHz from true 2.04GHz CF
 
-	//LC_FREQCHANGE(24,3,11);		//-500kHz from true 2.04GHz CF
-	//LC_FREQCHANGE(24,3,12);		//-500kHz from true 2.04GHz CF
-	//LC_FREQCHANGE(24,3,12);		//-500kHz from true 2.04GHz CF
-	
-	LC_FREQCHANGE(19,15,16);		//-500kHz from true 2.04GHz CF (cutout chip)
-	
+	//LC_FREQCHANGE(20,12,12);		
+	LC_FREQCHANGE(20,12,3);	//-500kHz from true 2.04GHz CF
+
+
 	// Program analog scan chain
   analog_scan_chain_write();
   analog_scan_chain_load();
@@ -68,27 +66,27 @@ int main(void){
 	//SWEEP CODE
 	
 	/*
-	mid = 3;
+	mid = 15;
 	fine = 0;
 	
 	while(mid < 31){
 		while(fine < 31){
-			LC_FREQCHANGE(24,mid,fine);
+			LC_FREQCHANGE(20,mid,fine);
 			fine++;
 			for(i=0; i<100; i++);
 		}
 		mid++;
-		if (mid == 5) mid = 3; fine = 0; //21-23 for TX 802.15.4
+		if (mid == 16) mid = 15; fine = 0; //21-23 for TX 802.15.4
 		//18-12
 	}
 	*/
 	/*
 	fine = 15;
 	while(fine < 31){
-			LC_FREQCHANGE(24,6,fine); //18 //20 //13
+			LC_FREQCHANGE(20,15,fine); //18 //20 //13
 			fine++;
 			for(i=0; i<100; i++);
-			if (fine == ) fine = 15;
+			if (fine == 31) fine = 15;
 	}
 	*/
 	printf("done\r\n");
