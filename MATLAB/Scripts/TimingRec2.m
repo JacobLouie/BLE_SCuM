@@ -10,7 +10,7 @@ MODE = 1;
 % Raw binary data needs to be inversed
 % 1 = Invert 
 % 0 = No Invert
-Inverse_Data = 1;
+Inverse_Data = 0;
 
 %for OFFSET = 0:7
 OFFSET  = 0;

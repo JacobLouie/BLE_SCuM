@@ -316,8 +316,8 @@ diffUpdateData(1) = sample_point;
     % -----------------------------------------------------------------------------------------
     % Search for Full Packets
     
-    %DataToSearch = value;
-    DataToSearch = VerilogMFOut(1:2000);
+    DataToSearch = value;
+    %DataToSearch = VerilogMFOut(1:2000);
     if (Inverse_Data == 1)
         strBin = num2str(~DataToSearch);            % invert binary (1->0, 0->1)
     else
