@@ -63,7 +63,7 @@ elseif MODE == 3
 end
 
 DATA_LENGTH = 8;
-MFDATALENGTH = 12500;%50000;%31250;%56250;%19000;%2000;
+MFDATALENGTH = 20000;%50000;%31250;%56250;%19000;%2000;
 BUFFER_SIZE = 11;
 %{
 I_data              = zeros(1,length(data.y),'double')';
