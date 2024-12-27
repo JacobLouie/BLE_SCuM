@@ -34,7 +34,7 @@ if __name__ == "__main__":
     samples_per_bit = sample_rate * bit_time
     packet_cycle_time = 0#0.5e-3 # s
 
-    packet = '1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
+    packet = 'f0f01556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
     #packet = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
     #packet = 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
     #packet = 'F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F'
