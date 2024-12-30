@@ -5,9 +5,9 @@ from Modules.ble_hardware import AD2Transmitter, PlutoTransmitter
 
 if __name__ == "__main__":
     freqs = {37: 2.402e09, 38: 2.426e09, 39: 2.480e09}
-    symbol_time = 0.5e-6
+    symbol_time = 1.0e-6
     bt = 0.5
-    tx_power = -40
+    tx_power = -50
     ifreq = 2.5e6 #1.25e6
 
     channels = [37, 38, 39]
@@ -24,8 +24,10 @@ if __name__ == "__main__":
     sdr = PlutoTransmitter(freqs[37], symbol_time, bt, tx_power, ifreq)
 
     #packet = hex2bin('AAAAAAAAAAAAAAA0F0F0F0F0FFF0F0F0F0F0F0AAAAAAAAAAAAAAA')
-    packet = hex2bin('FFFFFFF0F0F0F0F0F0F0F0F0F0F0F0FFF0F0F0F0F0F0FFFFFFFFF')
-    sdr.set_packet(packet*25)
+    #packet = hex2bin('FFFFFFF0F0F0F0F0F0F0F0F0F0F0F0FFF0F0F0F0F0F0FFFFFFFFF')
+    #packet = hex2bin('F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F')
+    packet = hex2bin('f0f01556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6')
+    sdr.set_packet(packet*100)
 
     while True:
         try:
