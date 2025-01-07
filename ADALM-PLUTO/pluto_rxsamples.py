@@ -27,10 +27,11 @@ if __name__ == "__main__":
 
     center_freq = 2.402e9 # Hz
     IF = 2.5e6 # Hz
-    num_samples = 8000000
+    num_samples = 6000000
     sample_rate = 16e6 # Hz
-    bit_time = 1.0e-6 # s  // 802.15.4
+    bit_time = 1e-6 # s  // 802.15.4
     #bit_time = 2.0e-6 # s   // BLE
+    df = 0.5
     samples_per_bit = sample_rate * bit_time
     packet_cycle_time = 0#0.5e-3 # s
 
@@ -44,8 +45,9 @@ if __name__ == "__main__":
     #print(f"Raw PDU: 0x{packet_decode(packet, 37)}")
     packet_bits = hex2bin(packet*100)
 
-    tx_sdr = PlutoTransmitter(center_freq, bit_time, 0.5, -50, IF, 'ip:192.168.2.1')
+    tx_sdr = PlutoTransmitter(center_freq, bit_time, df, -40, IF)
     tx_sdr.set_packet(packet_bits)
+
     '''
     print("Starting transmitter!")
     while True:
@@ -61,7 +63,7 @@ if __name__ == "__main__":
             break
     exit()
     '''
-    rx_sdr = PlutoReceiver(center_freq, bit_time, 0.5, sample_rate, IF)
+    rx_sdr = PlutoReceiver(center_freq, bit_time, df, sample_rate, IF)
     rx_sdr.set_rx_freq(center_freq)
     rx_sdr.set_rx_gain(70.0, 'manual')
 
