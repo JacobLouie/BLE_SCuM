@@ -1163,7 +1163,7 @@ void initialize_mote() {
     GPI_enables(0x0100);
 
     // Set GPO enables
-    GPO_enables(0xFFFF);
+    GPO_enables(0x0FFF);
 
     // Set HCLK source as HF_CLOCK
     set_asc_bit(1147);
