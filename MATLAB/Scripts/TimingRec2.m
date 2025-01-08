@@ -303,6 +303,7 @@ ylabel('4 bit signed amplitude'); xlabel('Time (µ secs)');
 set(gca,'FontSize',20);
 ylim([-8.25 7.25]);
 xlim([xLIMlow xLIMhigh]);
+
 %{
 subplot(2,1,2);
 plot(xAxis,Q_data);
@@ -333,9 +334,9 @@ fillData  = 0;
 for U = 1:length(update_data)
     if (update_data(U) == 1)
         fillData = value(valueCount);
-        if (valueCount == 165)
-            fprintf('U =  %d\n',U); % 3-4 befor the start of packet found (good data)
-        end
+        %if (valueCount == 165)
+        %    fprintf('U =  %d\n',U); % 3-4 befor the start of packet found (good data)
+        %end
         valueCount = valueCount + 1;
     end
     plotValue(U) = fillData;
