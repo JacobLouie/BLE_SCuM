@@ -40,10 +40,13 @@ int main(void){
 	ANALOG_CFG_REG__10 = 0x0018; // turn off divider
 	//LC_FREQCHANGE(24,4,6);		//-500kHz from true 2.04GHz CF
 
-	//LC_FREQCHANGE(20,12,12);		
-	LC_FREQCHANGE(20,12,3);	//-500kHz from true 2.04GHz CF
 
-
+	//LC_FREQCHANGE(20,11,10); //802.15.4
+	//LC_FREQCHANGE(20,10,17); //802.15.4
+	//LC_FREQCHANGE(20,12,9); // 2.402GHz CF
+	//LC_FREQCHANGE(20,16,9);	// 2.405GHz CF
+	LC_FREQCHANGE(20,16,11);	// 2.405GHz CF
+	
 	// Program analog scan chain
   analog_scan_chain_write();
   analog_scan_chain_load();
@@ -66,7 +69,7 @@ int main(void){
 	//SWEEP CODE
 	
 	/*
-	mid = 15;
+	mid = 18;
 	fine = 0;
 	
 	while(mid < 31){
@@ -76,17 +79,17 @@ int main(void){
 			for(i=0; i<100; i++);
 		}
 		mid++;
-		if (mid == 16) mid = 15; fine = 0; //21-23 for TX 802.15.4
+		if (mid == 23) mid = 18; fine = 0; //21-23 for TX 802.15.4
 		//18-12
 	}
 	*/
 	/*
-	fine = 15;
+	fine = 0;
 	while(fine < 31){
-			LC_FREQCHANGE(20,15,fine); //18 //20 //13
+			LC_FREQCHANGE(20,12,fine); //18 //20 //13
 			fine++;
 			for(i=0; i<100; i++);
-			if (fine == 31) fine = 15;
+			if (fine == 31) fine = 0;
 	}
 	*/
 	printf("done\r\n");
