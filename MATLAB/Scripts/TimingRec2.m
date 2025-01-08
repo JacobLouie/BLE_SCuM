@@ -157,7 +157,7 @@ i_4 = 0;
 q_4 = 0;
 adjust = 0;
 shift_counter = 0;
-update_data = 0;
+update_data = zeros(1,MFDATALENGTH*8 + 1,'double')';
 
 for i = 1:MFDATALENGTH*8
     I_k(1:BUFFER_SIZE-1) = I_k(2:BUFFER_SIZE);
@@ -167,7 +167,7 @@ for i = 1:MFDATALENGTH*8
     Q_k(BUFFER_SIZE) = Q_data(i);
 
      %MF
-    if(update_data == 1)
+    if(update_data(i) == 1)
         sum1_cos = 0;
         sum2_sin = 0;
         sum3_cos = 0;
@@ -256,9 +256,9 @@ for i = 1:MFDATALENGTH*8
     end
 
     if shift_counter == sample_point
-        update_data = 1;
+        update_data(i+1) = 1;
     else
-        update_data = 0;
+        update_data(i+1) = 0;
     end
 
 
@@ -286,6 +286,71 @@ diffUpdateData(2:end) = diff(updateNow);
 diffUpdateData(1) = sample_point;
 %}
 % -----------------------------------------------------------------------------------------
+%Plot 2's complement
+close all
+
+
+ADC_clock = 1/16; % micro second scale
+xLIMlow = 1312*ADC_clock;
+xLIMhigh = xLIMlow+30;
+xAxis = linspace(0,ADC_clock*length(data.I),length(data.I));
+figure;
+subplot(2,1,1);
+plot(xAxis,I_data);
+hold on;
+title("I 2's complement");
+ylabel('4 bit signed amplitude'); xlabel('Time (µ secs)');
+set(gca,'FontSize',20);
+ylim([-8.25 7.25]);
+xlim([xLIMlow xLIMhigh]);
+%{
+subplot(2,1,2);
+plot(xAxis,Q_data);
+hold on;
+title("Q 2's complement");
+ylabel('4 bit signed amplitude'); xlabel('Time (µ secs)');
+set(gca,'FontSize',20);
+ylim([-8.25 7.25]);
+xlim([xLIMlow xLIMhigh]);
+figure;
+%}
+%-------------------------------------------------------------------
+%{
+%Plot binary data
+subplot(2,1,1);
+plot(xAxis(1:length(update_data)),update_data);
+hold on;
+title("Timing Recovery Update");
+ylabel('1 = update'); xlabel('Time (µ secs)');
+set(gca,'FontSize',20);
+ylim([-0.1 1.1]);
+xlim([xLIMlow xLIMhigh]);
+%}
+subplot(2,1,2);
+plotValue = zeros(1,length(update_data),'double')';
+valueCount = 1;
+fillData  = 0;
+for U = 1:length(update_data)
+    if (update_data(U) == 1)
+        fillData = value(valueCount);
+        if (valueCount == 165)
+            fprintf('U =  %d\n',U); % 3-4 befor the start of packet found (good data)
+        end
+        valueCount = valueCount + 1;
+    end
+    plotValue(U) = fillData;
+end
+plot(xAxis(1:length(update_data)),plotValue);
+hold on;
+title("Binary data");
+ylabel("Binary '1' or '0'"); xlabel('Time (µ secs)');
+microXscale =  -0 + (0:length(update_data)/10);
+set(gca,'xtick',microXscale);
+set(gca,'FontSize',20);
+ylim([-0.1 1.1]);
+xlim([xLIMlow xLIMhigh]);
+figure
+%-------------------------------------------------------------------
 if exist('VerilogMFOut','var') == 1
         if (istable( VerilogMFOut ) == 1)
             VerilogMFOut = table2array(VerilogMFOut);

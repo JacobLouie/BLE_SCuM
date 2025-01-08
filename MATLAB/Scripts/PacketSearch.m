@@ -3,7 +3,7 @@
 % 0 = No Invert
 Inverse_Data = 0;
 
-MFDATALENGTH = 31250;%19000;%2000;;
+MFDATALENGTH = 25000;%31250;%19000;%2000;
 
 if exist('VerilogMFOut','var') == 1
         if (istable( VerilogMFOut ) == 1)
