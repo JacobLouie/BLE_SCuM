@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    center_freq = 2.402e9 # Hz
+    center_freq = 2.405e9 # Hz
     IF = 2.5e6 # Hz
     num_samples = 6000000
     sample_rate = 16e6 # Hz
@@ -35,10 +35,10 @@ if __name__ == "__main__":
     samples_per_bit = sample_rate * bit_time
     packet_cycle_time = 0#0.5e-3 # s
 
-    packet = '1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
+    #packet = '1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
     #packet = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
     #packet = 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
-    #packet = 'F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F'
+    packet = 'F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F'
     #packet = 'FFFFFFFFFFFFFFF000000000000FFFFFFFFFFF000000000000FFF'
     #packet = 'FFFFFFF0F0F0F0F0F0F0F0F0F0F0F0FFF0F0F0F0F0F0FFFFFFFFF'
     print(f"Packet: 0x{packet}")
