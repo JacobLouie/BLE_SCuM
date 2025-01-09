@@ -63,7 +63,7 @@ elseif MODE == 3
 end
 
 DATA_LENGTH = 8;
-MFDATALENGTH = 20000;%50000;%31250;%56250;%19000;%2000;
+MFDATALENGTH = 1790;%20000;%50000;%31250;%56250;%19000;%2000;
 BUFFER_SIZE = 11;
 %{
 I_data              = zeros(1,length(data.y),'double')';
@@ -292,7 +292,7 @@ close all
 
 ADC_clock = 1/16; % micro second scale
 xLIMlow = 1312*ADC_clock;
-xLIMhigh = xLIMlow+30;
+xLIMhigh = xLIMlow+15;
 xAxis = linspace(0,ADC_clock*length(data.I),length(data.I));
 figure;
 subplot(2,1,1);
@@ -377,7 +377,10 @@ else
 end
 
 
-HexKey = ["1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
+%HexKey = ["1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
+%DK-nRF
+%HexKey = ["C96077B8C96077B8"];
+HexKey = ["D9C3522E"];
 BinKey = hexToBinaryVector(HexKey);         % Full key search
 BinKeySTR = strrep(num2str(BinKey(2:end)), ' ', '');
 searchSTR = BinKeySTR;

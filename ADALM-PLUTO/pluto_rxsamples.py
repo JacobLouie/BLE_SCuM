@@ -29,13 +29,13 @@ if __name__ == "__main__":
     IF = 2.5e6 # Hz
     num_samples = 6000000
     sample_rate = 16e6 # Hz
-    bit_time = 1e-6 # s  // 802.15.4
+    bit_time = 1.0e-6 # s  // 802.15.4
     #bit_time = 2.0e-6 # s   // BLE
     df = 0.5
     samples_per_bit = sample_rate * bit_time
     packet_cycle_time = 0#0.5e-3 # s
 
-    #packet = '1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
+    #packet = 'f0f01556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
     #packet = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
     #packet = 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
     packet = 'F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F'
