@@ -12,7 +12,7 @@ MODE = 1;
 % 0 = No Invert
 Inverse_Data = 0;
 
-%for OFFSET = 0:7
+%for OFFSET = 0:end
 OFFSET  = 0;
 
 % Templates were made in another matlab file (Template.m)
@@ -63,7 +63,7 @@ elseif MODE == 3
 end
 
 DATA_LENGTH = 8;
-MFDATALENGTH = 1790;%20000;%50000;%31250;%56250;%19000;%2000;
+MFDATALENGTH = 20000;%1780;%20000;%50000;%31250;%56250;%19000;%2000;
 BUFFER_SIZE = 11;
 %{
 I_data              = zeros(1,length(data.y),'double')';
@@ -92,17 +92,17 @@ for i = 1:length(Q_data)
     Q_data_RAW(i) = typecast(uint8(bin2dec(tempStringQ)),'int8');
 end
 %}
-I_data              = zeros(1,length(data.I),'double')';
-Q_data              = zeros(1,length(data.Q),'double')';
+I_data              = zeros(1,length(data.I-OFFSET),'double')';
+Q_data              = zeros(1,length(data.Q-OFFSET),'double')';
 
-I_data = data.I;
-Q_data = data.Q;
+%I_data = data.I;
+%Q_data = data.Q;
 
 % Convert to decimal into 2's complemnet 
 
 % Signed buffer
-for i = 1:length(data.I)
-    tempStringI = dec2bin(data.I(i),8);
+for i = 1:length(data.I)-OFFSET
+    tempStringI = dec2bin(data.I(i+OFFSET),8);
     if tempStringI(5) - '0' == 1
         tempStringI = ['1111',tempStringI(5:8)];
     end
@@ -110,8 +110,8 @@ for i = 1:length(data.I)
 end
 
 % Signed buffer
-for i = 1:length(data.Q)
-    tempStringI = dec2bin(data.Q(i),8);
+for i = 1:length(data.Q)-OFFSET
+    tempStringI = dec2bin(data.Q(i+OFFSET),8);
     if tempStringI(5) - '0' == 1
         tempStringI = ['1111',tempStringI(5:8)];
     end
@@ -291,7 +291,7 @@ close all
 
 
 ADC_clock = 1/16; % micro second scale
-xLIMlow = 1312*ADC_clock;
+xLIMlow = 24;%1312*ADC_clock;
 xLIMhigh = xLIMlow+15;
 xAxis = linspace(0,ADC_clock*length(data.I),length(data.I));
 figure;
@@ -304,7 +304,7 @@ set(gca,'FontSize',20);
 ylim([-8.25 7.25]);
 xlim([xLIMlow xLIMhigh]);
 
-%{
+
 subplot(2,1,2);
 plot(xAxis,Q_data);
 hold on;
@@ -314,7 +314,7 @@ set(gca,'FontSize',20);
 ylim([-8.25 7.25]);
 xlim([xLIMlow xLIMhigh]);
 figure;
-%}
+
 %-------------------------------------------------------------------
 %{
 %Plot binary data
@@ -327,7 +327,7 @@ set(gca,'FontSize',20);
 ylim([-0.1 1.1]);
 xlim([xLIMlow xLIMhigh]);
 %}
-subplot(2,1,2);
+%subplot(2,1,2);
 plotValue = zeros(1,length(update_data),'double')';
 valueCount = 1;
 fillData  = 0;
@@ -379,10 +379,14 @@ end
 
 %HexKey = ["1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
 %DK-nRF
-%HexKey = ["C96077B8C96077B8"];
-HexKey = ["D9C3522E"];
+%HexKey = ["C96077B8C96077B8" + ...
+%    "C96077B8C96077B8" + ...
+%    "C96077B8C96077B8"];
+%HexKey = ["D9C3522E"]; % 0
+%HexKey = ["C96077B8"]; % 15/F_hex
+HexKey = ["AAAAAAAA"]; %preamble
 BinKey = hexToBinaryVector(HexKey);         % Full key search
-BinKeySTR = strrep(num2str(BinKey(2:end)), ' ', '');
+BinKeySTR = strrep(num2str(BinKey(1:end)), ' ', '');
 searchSTR = BinKeySTR;
 BinKey = reshape(BinKeySTR.'-'0',1,[]);
          
@@ -419,7 +423,8 @@ else
 end
    
 xlim([-230 MFDATALENGTH]);
-ylim([0 250])
+ylim([0 250]);
+%ylim([0 (max(Score+Score2)*1.05)])
 fontsize(gcf,24,"points");
     
 %disp("Sample Point: " + sample_point)
