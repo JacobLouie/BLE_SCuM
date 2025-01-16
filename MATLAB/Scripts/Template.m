@@ -17,7 +17,7 @@ Magnitude = 15; % +-15
 
 % 1 = 802.15.4
 % 2 = BLE
-MODE = 2;
+MODE = 1;
 %---------------------------------------------------%
 % Data rate
 fs1 = 128*10^6; % 16MHz Clock (sampling frequency)

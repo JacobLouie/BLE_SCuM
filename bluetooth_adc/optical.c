@@ -249,11 +249,11 @@ void optical_sfd_isr(void) {
         }
 				// To get good chip ADC clock working (Jacob)
         //set_IF_clock_frequency(IF_coarse, IF_fine, 0);
-				set_IF_clock_frequency(25, 11, 0);
+				set_IF_clock_frequency(25, 12, 0);
         //scm3c_hw_interface_set_IF_coarse(IF_coarse);
 				scm3c_hw_interface_set_IF_coarse(25);
         //scm3c_hw_interface_set_IF_fine(IF_fine);
-				scm3c_hw_interface_set_IF_fine(11);
+				scm3c_hw_interface_set_IF_fine(12);
 
         analog_scan_chain_write();
         analog_scan_chain_load();

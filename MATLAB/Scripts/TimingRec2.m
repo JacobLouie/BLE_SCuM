@@ -384,7 +384,7 @@ end
 %    "C96077B8C96077B8"];
 %HexKey = ["D9C3522E"]; % 0
 %HexKey = ["C96077B8"]; % 15/F_hex
-HexKey = ["AAAAAAAA"]; %preamble
+%HexKey = ["AAAAAAAA"]; %preamble
 BinKey = hexToBinaryVector(HexKey);         % Full key search
 BinKeySTR = strrep(num2str(BinKey(1:end)), ' ', '');
 searchSTR = BinKeySTR;
