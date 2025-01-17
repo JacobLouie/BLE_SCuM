@@ -24,11 +24,10 @@ int main(void){
 	ANALOG_CFG_REG__10 = 0x0018; // turn off divider
 
 
-	//LC_FREQCHANGE(20,12,9); // 2.402GHz CF
-	//LC_FREQCHANGE(20,16,9);	// 2.405GHz CF
+	//LC_FREQCHANGE(20,16,8);	// 2.405GHz CF
 	//LC_FREQCHANGE(20,16,12);	// 2.405GHz CF
-	LC_FREQCHANGE(20,16,12);	// 2.405GHz CF
-	//LC_FREQCHANGE(20,16,16);	// 2.405GHz CF
+	LC_FREQCHANGE(20,16,9);	// 2.405GHz CF
+
 	
 	// Program analog scan chain
   analog_scan_chain_write();
