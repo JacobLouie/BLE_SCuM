@@ -44,7 +44,6 @@ def createFSK(bitstream: str, amp: float, center_freq: float, df: float, samples
         for ix, df_mult in enumerate(filtered_bitstream[:-1]):
             phase_offset = atan2(np.imag(gfsk_wave[ix]), np.real(gfsk_wave[ix]))
             gfsk_wave[ix + 1] = np.exp(1j * (2 * pi * (center_freq + df * df_mult) * next_t + phase_offset))
-            
         fsk_wave = gfsk_wave
     else:
         # Create FSK Wave

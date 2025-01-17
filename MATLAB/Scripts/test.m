@@ -1,6 +1,6 @@
 %switches
 startInterval = 1;
-endInterval =  100000;%840000;%%450000;%300000;%%900000;%2500
+endInterval = 200000;%14800;%200000;%1900000;%100000;%840000;%%450000;%300000;%%900000;%2500
 middleFreq = 2.50e+06;
 adcCLKperiod = (62.5*10^-9);
 risingEdgeOffset = 0; %time in uS
@@ -21,6 +21,8 @@ microXscale1 =  0 + (0:endInterval)*1;
 %change scale
 data.x = data.x * 10^6;
 
+% use to check if ADC clock is aligned for correct packet time
+data.x = linspace(0,1/16*length(data.x),length(data.x))';
 
 %plot data
 subplot(2,1,1);

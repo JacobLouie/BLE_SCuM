@@ -29,26 +29,19 @@ if __name__ == "__main__":
     IF = 2.5e6 # Hz
     num_samples = 6000000
     sample_rate = 16e6 # Hz
-    bit_time = 0.95e-6 # s  // 802.15.4
+    bit_time = 1e-6 # s  // 802.15.4
     #bit_time = 2.0e-6 # s   // BLE
     df = 0.5
     samples_per_bit = sample_rate * bit_time
     packet_cycle_time = 0#0.5e-3 # s
 
-    packet = 'AAAAAAAA1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
-    #packet = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-    #packet = 'CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC'
-    #packet = 'F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F'
-    #packet = 'FFFFFFFFFFFFFFF000000000000FFFFFFFFFFF000000000000FFF'
-    #packet = 'FFFFFFF0F0F0F0F0F0F0F0F0F0F0F0FFF0F0F0F0F0F0FFFFFFFFF'
-    # 802.15.4 Packet (F0F0F0)
-    # 32 bit preamble 10101...
-    #packet = 'AAAAAAAAC96077B8D9C3522EC96077B8D9C3522EC96077B8D9C3522E'
+    packet = '1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
+    #packet = 'F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F' #53 bits
     print(f"Packet: 0x{packet}")
     #print(f"Raw PDU: 0x{packet_decode(packet, 37)}")
     packet_bits = hex2bin(packet*100)
 
-    tx_sdr = PlutoTransmitter(center_freq, bit_time, df, -40, IF)
+    tx_sdr = PlutoTransmitter(center_freq, bit_time, df, -50, IF)
     tx_sdr.set_packet(packet_bits)
 
     '''

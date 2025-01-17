@@ -985,11 +985,11 @@ void radio_init_tx() {
     ANALOG_CFG_REG__11 = 0x0080;
 
     // Set current in LC tank
-    set_LC_current(127); //was 127 (jacob)
+    set_LC_current(127);
 
     // Set LDO voltages for PA and LO
-    set_PA_supply(63); //was 63
-    set_LO_supply(127, 0); //was 127
+    set_PA_supply(63);
+    set_LO_supply(127, 0);
 }
 
 void radio_init_divider(unsigned int div_value) {
@@ -1163,7 +1163,7 @@ void initialize_mote() {
     GPI_enables(0x0100);
 
     // Set GPO enables
-    GPO_enables(0x0FFF);
+    GPO_enables(0x0FFF); 	// Turned off Bank 4 (jacob)
 
     // Set HCLK source as HF_CLOCK
     set_asc_bit(1147);
