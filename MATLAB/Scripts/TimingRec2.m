@@ -65,9 +65,11 @@ end
 DATA_LENGTH = 8;
 MFDATALENGTH = 20000;%1780;%20000;%50000;%31250;%56250;%19000;%2000;
 BUFFER_SIZE = 11;
+
 %{
 I_data              = zeros(1,length(data.y),'double')';
 Q_data_RAW          = zeros(1,length(data.y),'double')';
+
 % Signed buffer
 for i = 1:length(data.y)
     tempStringI = dec2bin(data.y(i),8);
@@ -92,11 +94,13 @@ for i = 1:length(Q_data)
     Q_data_RAW(i) = typecast(uint8(bin2dec(tempStringQ)),'int8');
 end
 %}
-I_data              = zeros(1,length(data.I-OFFSET),'double')';
-Q_data              = zeros(1,length(data.Q-OFFSET),'double')';
-
 %I_data = data.I;
 %Q_data = data.Q;
+
+
+
+I_data              = zeros(1,length(data.I-OFFSET),'double')';
+Q_data              = zeros(1,length(data.Q-OFFSET),'double')';
 
 % Convert to decimal into 2's complemnet 
 
@@ -293,7 +297,7 @@ close all
 ADC_clock = 1/16; % micro second scale
 xLIMlow = 24;%1312*ADC_clock;
 xLIMhigh = xLIMlow+15;
-xAxis = linspace(0,ADC_clock*length(data.I),length(data.I));
+xAxis = linspace(0,ADC_clock*length(I_data),length(I_data));
 figure;
 subplot(2,1,1);
 plot(xAxis,I_data);

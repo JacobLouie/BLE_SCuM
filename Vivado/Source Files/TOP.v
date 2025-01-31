@@ -19,12 +19,12 @@ module TOP(
     output clk_Debug,
     output [3:0] I_Debug
     );
-    
+
     assign select = LED[1:0];
     assign rst = LED[2];    //Switch[15] = LED #15
     assign clk_Debug = clk;
     assign I_Debug = I_BPF;
-
+    
     Matched_Filter filter(
         .clk(clk),
         .select(select),
@@ -47,5 +47,14 @@ module TOP(
 	    .e_k_shift(2),          // 2
         .tau_shift(11)          // 11
     );
-
+     
+    /*
+    debug(
+        .clk(clk),
+        .rst(rst),
+        .I_BPF(I_BPF),
+        .clk_Debug(clk_Debug),
+        .I_Debug(I_Debug)
+    );
+    */
 endmodule

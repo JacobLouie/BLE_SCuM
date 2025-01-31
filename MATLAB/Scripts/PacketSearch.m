@@ -3,7 +3,7 @@
 % 0 = No Invert
 Inverse_Data = 0;
 
-MFDATALENGTH = 25000;%31250;%19000;%2000;
+MFDATALENGTH = 220000;%25000;%31250;%19000;%2000;
 
 if exist('VerilogMFOut','var') == 1
         if (istable( VerilogMFOut ) == 1)
@@ -30,7 +30,7 @@ end
 
 HexKey = ["1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
 BinKey = hexToBinaryVector(HexKey);         % Full key search
-BinKeySTR = strrep(num2str(BinKey(2:end)), ' ', '');
+BinKeySTR = strrep(num2str(BinKey(1:end)), ' ', '');
 searchSTR = BinKeySTR;
 BinKey = reshape(BinKeySTR.'-'0',1,[]);
          
@@ -79,6 +79,7 @@ for i = 1:length(totScore)
         packCount = packCount + 1;
     end
 end
+
 packCount = floor(MFDATALENGTH/208);
 disp("Packets Found: " + FindTotal + " of " + packCount);
 

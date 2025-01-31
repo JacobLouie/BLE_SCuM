@@ -26,7 +26,9 @@ int main(void){
 
 	//LC_FREQCHANGE(20,16,8);	// 2.405GHz CF
 	//LC_FREQCHANGE(20,16,12);	// 2.405GHz CF
-	LC_FREQCHANGE(20,16,9);	// 2.405GHz CF
+	//LC_FREQCHANGE(20,16,7);	// 2.405GHz CF
+	LC_FREQCHANGE(20,16,2);	// 2.405GHz CF
+	//LC_FREQCHANGE(20,12,22);	// 2.405GHz CF
 
 	
 	// Program analog scan chain
@@ -36,8 +38,8 @@ int main(void){
 	radio_rxEnable();
 	radio_rxNow();
 	
-	//LCsweepMid(15,18);
-	//LCsweepFine(16,0,31);
+	//LCsweepMid(11,13);
+	//LCsweepFine(12,19,25);
 
 	
 	
@@ -58,7 +60,7 @@ void LCsweepMid(int MIDstart, int MIDend){
 			for(i=0; i<100; i++); //wait
 		}
 		mid++;
-		if (MIDend == 23) mid = MIDstart; fine = 0;
+		if (mid == MIDend) mid = MIDstart; fine = 0;
 	}
 };
 
@@ -70,7 +72,7 @@ void LCsweepFine(int MID, int FINEstart, int FINEend){
 	while(fine < 31){
 		LC_FREQCHANGE(20,MID,fine);
 		fine++;
-		for(i=0; i<100; i++);
+		for(i=0; i<10000; i++);
 		if (fine == FINEend) fine = FINEstart;
 	}
 };
