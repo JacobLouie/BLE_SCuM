@@ -66,7 +66,7 @@ DATA_LENGTH = 8;
 MFDATALENGTH = 20000;%1780;%20000;%50000;%31250;%56250;%19000;%2000;
 BUFFER_SIZE = 11;
 
-%{
+
 I_data              = zeros(1,length(data.y),'double')';
 Q_data_RAW          = zeros(1,length(data.y),'double')';
 
@@ -93,12 +93,12 @@ for i = 1:length(Q_data)
     end
     Q_data_RAW(i) = typecast(uint8(bin2dec(tempStringQ)),'int8');
 end
-%}
+
 %I_data = data.I;
 %Q_data = data.Q;
 
 
-
+%{
 I_data              = zeros(1,length(data.I-OFFSET),'double')';
 Q_data              = zeros(1,length(data.Q-OFFSET),'double')';
 
@@ -121,7 +121,7 @@ for i = 1:length(data.Q)-OFFSET
     end
     Q_data(i) = typecast(uint8(bin2dec(tempStringI)),'int8');
 end
-
+%}
 %Timing Recovery constants
 sample_point    = 1; %1
 e_k_shift       = 2; %2

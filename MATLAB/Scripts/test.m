@@ -1,6 +1,6 @@
 %switches
 startInterval = 1;
-endInterval = 1900000;%14800;%200000;%1900000;%100000;%840000;%%450000;%300000;%%900000;%2500
+endInterval = 1700000;%14800;%200000;%1900000;%100000;%840000;%%450000;%300000;%%900000;%2500
 middleFreq = 2.50e+06;
 adcCLKperiod = (62.5*10^-9);
 risingEdgeOffset = 0; %time in uS
@@ -62,7 +62,7 @@ ylim([min(data.y) max(data.y)+2]);
 %title("802.15.4 packet");
 %title("SCUM BLE Transmit to SCUM ADC");
 
-title("4 1's 4 0's (Frequency Deviation = 500 kHz)(symbol Rate = 2Msps)(-40 dBm)");
+title("4 1's 4 0's (Frequency Deviation = 500 kHz)(symbol Rate = 2Msps)(-50 dBm)");
 %title("4 1's 4 0's (Frequency Deviation = 250 kHz)(symbol Rate = 1Msps)(-40 dBm)");
 %title("4 1's 4 0's (MF OUT)(Frequency Deviation = 500 kHz)(symbol Rate = 2Msps)(-40 dBm)");
 %title("4 1's 4 0's (MF OUT)(Frequency Deviation = 250 kHz)(symbol Rate = 1Msps)(-40 dBm)");

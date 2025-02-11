@@ -3,7 +3,7 @@
 % 0 = No Invert
 Inverse_Data = 0;
 
-MFDATALENGTH = 220000;%25000;%31250;%19000;%2000;
+MFDATALENGTH = 220000;%220000;%25000;%31250;%19000;%2000;
 
 if exist('VerilogMFOut','var') == 1
         if (istable( VerilogMFOut ) == 1)
@@ -28,7 +28,8 @@ else
 end
 
 
-HexKey = ["1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
+%HexKey = ["1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
+HexKey = ["F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F"];
 BinKey = hexToBinaryVector(HexKey);         % Full key search
 BinKeySTR = strrep(num2str(BinKey(1:end)), ' ', '');
 searchSTR = BinKeySTR;

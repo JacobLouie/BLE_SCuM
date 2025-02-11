@@ -9,7 +9,7 @@
 
 // LC_code used to the initial LC frequency, before optical calibration
 #define DEFUALT_INIT_LC_CODE 250//740//board#2:160//813//625
-#define REFERENCE_LC_TARGET 250070//(2.405GHz - 2500 kHz)
+#define REFERENCE_LC_TARGET 250100//(2.405GHz - 2500 kHz)
 
 //=========================== typedef =========================================
 
