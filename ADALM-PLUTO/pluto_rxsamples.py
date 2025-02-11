@@ -29,7 +29,7 @@ if __name__ == "__main__":
     IF = 2.5e6 # Hz
     num_samples = 6000000
     sample_rate = 16e6 # Hz
-    bit_time = 1e-6 # s  // 802.15.4
+    bit_time = 0.5e-6 # s  // 802.15.4
     #bit_time = 2.0e-6 # s   // BLE
     df = 0.5
     samples_per_bit = sample_rate * bit_time
@@ -42,6 +42,7 @@ if __name__ == "__main__":
     packet_bits = hex2bin(packet*100)
 
     tx_sdr = PlutoTransmitter(center_freq, bit_time, df, -50, IF)
+    tx_sdr.set_sample_rate()
     tx_sdr.set_packet(packet_bits)
 
     '''
