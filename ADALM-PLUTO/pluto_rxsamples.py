@@ -41,11 +41,11 @@ if __name__ == "__main__":
     #print(f"Raw PDU: 0x{packet_decode(packet, 37)}")
     packet_bits = hex2bin(packet*100)
 
-    tx_sdr = PlutoTransmitter(center_freq, bit_time, df, -50, IF)
+    tx_sdr = PlutoTransmitter(center_freq, bit_time, df, -50, IF, sdr='ip:192.168.2.1')
     tx_sdr.set_sample_rate()
     tx_sdr.set_packet(packet_bits)
 
-    '''
+    
     print("Starting transmitter!")
     while True:
         # Your loop logic here
@@ -59,7 +59,7 @@ if __name__ == "__main__":
             print("Loop terminated by user")
             break
     exit()
-    '''
+    
     rx_sdr = PlutoReceiver(center_freq, bit_time, df, sample_rate, IF)
     rx_sdr.set_rx_freq(center_freq)
     rx_sdr.set_rx_gain(70.0, 'manual')
