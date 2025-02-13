@@ -381,7 +381,7 @@ else
 end
 
 
-HexKey = ["556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
+HexKey = ["1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
 %DK-nRF
 %HexKey = ["C96077B8C96077B8" + ...
 %    "C96077B8C96077B8" + ...
