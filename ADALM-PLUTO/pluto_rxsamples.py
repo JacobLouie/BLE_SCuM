@@ -30,7 +30,7 @@ if __name__ == "__main__":
     num_samples = 6000000
     sample_rate = 16e6 # Hz
     bit_time = 0.5e-6 # s  // 802.15.4
-    #bit_time = 2.0e-6 # s   // BLE
+    #bit_time = 1.0e-6 # s   // BLE
     df = 0.5
     samples_per_bit = sample_rate * bit_time
     packet_cycle_time = 0#0.5e-3 # s
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     tx_sdr.set_sample_rate()
     tx_sdr.set_packet(packet_bits)
 
-    
+    '''
     print("Starting transmitter!")
     while True:
         # Your loop logic here
@@ -59,9 +59,10 @@ if __name__ == "__main__":
             print("Loop terminated by user")
             break
     exit()
-    
-    rx_sdr = PlutoReceiver(center_freq, bit_time, df, sample_rate, IF)
+    '''
+    rx_sdr = PlutoReceiver(center_freq, bit_time, df, sample_rate, IF, sdr='ip:192.168.2.1')
     rx_sdr.set_rx_freq(center_freq)
+    rx_sdr.set_sample_rate()
     rx_sdr.set_rx_gain(70.0, 'manual')
 
     print("Starting transmitter!")
