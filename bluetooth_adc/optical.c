@@ -254,9 +254,9 @@ void optical_sfd_isr(void) {
 				
 				// To get good chip ADC clock working (jacob)
 				// 16MHz manual
-				set_IF_clock_frequency(25, 10, 0); 
-				scm3c_hw_interface_set_IF_coarse(25); 
-				scm3c_hw_interface_set_IF_fine(10);
+				set_IF_clock_frequency(24, 18, 0); 
+				scm3c_hw_interface_set_IF_coarse(24); 
+				scm3c_hw_interface_set_IF_fine(18);
 				
 				// Pluto work around 15.344-15.368MHz ADC clock (jacob)
 				//set_IF_clock_frequency(27, 13, 0); //28,5
