@@ -5,8 +5,8 @@ from Modules.ble_hardware import AD2Transmitter, PlutoTransmitter
 
 if __name__ == "__main__":
     freqs = {0:2.405e09, 37: 2.402e09, 38: 2.426e09, 39: 2.480e09} # 0 changed to 2.405 for SCuM test only
-    symbol_time = 0.5e-6 #802.15.4
-    #symbol_time = 1e-6 #BLE
+    #symbol_time = 0.5e-6 #802.15.4
+    symbol_time = 1e-6 #BLE
     bt = 0.5
     tx_power = -50
     ifreq = 2.5e6

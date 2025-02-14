@@ -47,14 +47,5 @@ module TOP(
 	    .e_k_shift(2),          // 2
         .tau_shift(11)          // 11
     );
-     
-    /*
-    debug(
-        .clk(clk),
-        .rst(rst),
-        .I_BPF(I_BPF),
-        .clk_Debug(clk_Debug),
-        .I_Debug(I_Debug)
-    );
-    */
+
 endmodule
