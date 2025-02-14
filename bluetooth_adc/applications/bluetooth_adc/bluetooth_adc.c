@@ -28,7 +28,7 @@ int main(void){
 	//LC_FREQCHANGE(20,16,12);	// 2.405GHz CF
 	//LC_FREQCHANGE(20,16,7);	// 2.405GHz CF
 	//LC_FREQCHANGE(20,15,18);	// 2.405GHz CF
-	LC_FREQCHANGE(20,15,19);	// 2.405GHz CF
+	LC_FREQCHANGE(20,15,18);	// 2.405GHz CF
 
 	
 	// Program analog scan chain
