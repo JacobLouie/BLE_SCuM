@@ -3,7 +3,7 @@
 % Flags 
 % 802.15.4 mode = 1 (2MHz-3MHz)
 % BLE mode = 0 (2MHz-2.5MHz)
-% BLE mode = 2 (1.5MHz-2MHz)
+% BLE mode = 2 (2MHz-3MHz)
 % BLE mode = 3 (1MHz-1.5MHz)
 MODE = 1;
 
@@ -42,18 +42,21 @@ if MODE == 1
     TemplateSin1 = Sin2MHzTemp(1:8);
     TemplateCos2 = Cos3MHzTemp(1:8);
     TemplateSin2 = Sin3MHzTemp(1:8);
+
 % BLE mode (2MHz-2.5MHz)
 elseif MODE == 0
     TemplateCos1 = Cos2MHzTemp;
     TemplateSin1 = Sin2MHzTemp;
     TemplateCos2 = Cos25MHzTemp;
     TemplateSin2 = Sin25MHzTemp;
-% BLE mode (1.5MHz-2MHz)
+
+% BLE mode (2MHz-3MHz)
 elseif MODE == 2
-    TemplateCos1 = Cos15MHzTemp;
-    TemplateSin1 = Sin15MHzTemp;
-    TemplateCos2 = Cos2MHzTemp;
-    TemplateSin2 = Sin2MHzTemp;
+    TemplateCos1 = Cos2MHzTemp;
+    TemplateSin1 = Sin2MHzTemp;
+    TemplateCos2 = Cos3MHzTemp;
+    TemplateSin2 = Sin3MHzTemp;
+
 % BLE mode (1MHz-1.5MHz)
 elseif MODE == 3
     TemplateCos1 = Cos1MHzTemp;
@@ -62,11 +65,18 @@ elseif MODE == 3
     TemplateSin2 = Sin15MHzTemp;    
 end
 
-DATA_LENGTH = 8;
-MFDATALENGTH = 20000;%1780;%20000;%50000;%31250;%56250;%19000;%2000;
-BUFFER_SIZE = 11;
+% 802.15.4 8 samples per bit (with 16 MHz ADC)
+if MODE == 1
+    BIT_LENGTH = 8;
+% BLE 16 samples per bit (with 16 MHz ADC)
+else
+    BIT_LENGTH = 16;
+end
 
-%{
+MFDATALENGTH = 20000;%1780;%20000;%50000;%31250;%56250;%19000;%2000;
+BUFFER_SIZE = 19;
+
+
 I_data              = zeros(1,length(data.y),'double')';
 Q_data_RAW          = zeros(1,length(data.y),'double')';
 
@@ -93,12 +103,12 @@ for i = 1:length(Q_data)
     end
     Q_data_RAW(i) = typecast(uint8(bin2dec(tempStringQ)),'int8');
 end
-%}
+
 %I_data = data.I;
 %Q_data = data.Q;
 
 
-
+%{
 I_data              = zeros(1,length(data.I-OFFSET),'double')';
 Q_data              = zeros(1,length(data.Q-OFFSET),'double')';
 
@@ -121,7 +131,7 @@ for i = 1:length(data.Q)-OFFSET
     end
     Q_data(i) = typecast(uint8(bin2dec(tempStringI)),'int8');
 end
-
+%}
 %Timing Recovery constants
 sample_point    = 1; %1
 e_k_shift       = 2; %2
@@ -180,17 +190,32 @@ for i = 1:MFDATALENGTH*8
         sum6_sin = 0;
         sum7_cos = 0;
         sum8_sin = 0;
-            for j = 1:DATA_LENGTH
-                % Low MHz
-                sum1_cos = sum1_cos + TemplateCos1(j) * I_k(3+j);
-                sum2_sin = sum2_sin + TemplateSin1(j) * I_k(3+j);
-                sum5_cos = sum5_cos + TemplateCos1(j) * Q_k(3+j);
-                sum6_sin = sum6_sin + TemplateSin1(j) * Q_k(3+j);
-                % %High MHz
-                sum3_cos = sum3_cos + TemplateCos2(j) * I_k(3+j);
-                sum4_sin = sum4_sin + TemplateSin2(j) * I_k(3+j);
-                sum7_cos = sum7_cos + TemplateCos2(j) * Q_k(3+j);
-                sum8_sin = sum8_sin + TemplateSin2(j) * Q_k(3+j);
+            for j = 1:BIT_LENGTH
+                % 802.15.4 mode
+                if (MODE == 1)
+                    % Low MHz
+                    sum1_cos = sum1_cos + TemplateCos1(j) * I_k(11+j);
+                    sum2_sin = sum2_sin + TemplateSin1(j) * I_k(11+j);
+                    sum5_cos = sum5_cos + TemplateCos1(j) * Q_k(11+j);
+                    sum6_sin = sum6_sin + TemplateSin1(j) * Q_k(11+j);
+                    % %High MHz
+                    sum3_cos = sum3_cos + TemplateCos2(j) * I_k(11+j);
+                    sum4_sin = sum4_sin + TemplateSin2(j) * I_k(11+j);
+                    sum7_cos = sum7_cos + TemplateCos2(j) * Q_k(11+j);
+                    sum8_sin = sum8_sin + TemplateSin2(j) * Q_k(11+j);
+                % BLE mode
+                else
+                    % Low MHz
+                    sum1_cos = sum1_cos + TemplateCos1(j) * I_k(3+j);
+                    sum2_sin = sum2_sin + TemplateSin1(j) * I_k(3+j);
+                    sum5_cos = sum5_cos + TemplateCos1(j) * Q_k(3+j);
+                    sum6_sin = sum6_sin + TemplateSin1(j) * Q_k(3+j);
+                    % %High MHz
+                    sum3_cos = sum3_cos + TemplateCos2(j) * I_k(3+j);
+                    sum4_sin = sum4_sin + TemplateSin2(j) * I_k(3+j);
+                    sum7_cos = sum7_cos + TemplateCos2(j) * Q_k(3+j);
+                    sum8_sin = sum8_sin + TemplateSin2(j) * Q_k(3+j);
+                end
             end
             
         % Low MHz
@@ -221,22 +246,22 @@ for i = 1:MFDATALENGTH*8
     
 
     % Do error calc
-    if (shift_counter == mod(7 + dtau,8))
+    if (shift_counter == mod(BIT_LENGTH-1 + dtau,BIT_LENGTH))
 
         do_error_calc = 1;
         shift_counter = 0;
 
-        i_1 = I_k(9);
-	    q_1 = Q_k(9);
+        i_1 = I_k(BUFFER_SIZE-3); % end of buffer -2
+	    q_1 = Q_k(BUFFER_SIZE-3); % end of buffer -2
 	    
-	    i_2 = I_k(1);
-	    q_2 = Q_k(1);
+	    i_2 = I_k(1); % 1 = start of buffer
+	    q_2 = Q_k(1); % 1 = start of buffer
 	    
-	    i_3 = I_k(11);
-	    q_3 = Q_k(11);
+	    i_3 = I_k(BUFFER_SIZE); % BIT_LENGTH+3 or BUFFER_SIZE
+	    q_3 = Q_k(BUFFER_SIZE); % BIT_LENGTH+3 or BUFFER_SIZE
     
-	    i_4 = I_k(3);
-	    q_4 = Q_k(3);
+	    i_4 = I_k(3); % 3 = start of buffer + 2
+	    q_4 = Q_k(3); % 3 = start of buffer + 2
 
         %}
         dtau = tau_1 - tau;
