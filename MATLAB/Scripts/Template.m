@@ -1,7 +1,7 @@
 % Create sin and cos Template for _MHz signal
-F1 = 3*10^6;     % 3MHz signal
+%F1 = 3*10^6;     % 3MHz signal
 %F1 = 2*10^6;     % 2MHz signal
-%F1 = 2.5*10^6;   % 2.5MHz signal
+F1 = 2.5*10^6;   % 2.5MHz signal
 %F1 = 1.5*10^6;   % 1.5MHz signal
 %F1 = 1*10^6;     % 1MHz signal
 
@@ -17,7 +17,7 @@ Magnitude = 15; % +-15
 
 % 1 = 802.15.4
 % 2 = BLE
-MODE = 1;
+MODE = 2;
 %---------------------------------------------------%
 % Data rate
 fs1 = 128*10^6; % 16MHz Clock (sampling frequency)

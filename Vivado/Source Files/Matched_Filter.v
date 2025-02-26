@@ -316,20 +316,20 @@ module Matched_Filter(
                 sum8_sine = sum8_sine + temp_score8;
             end
         end
-        // For Bluetooth LE (1.5MHz - 2MHz template)
+        // For Bluetooth LE (2MHz - 3MHz template)
         else if(select == 2) begin
             // Data length is 16 bits long for BLE
             for (j = 0; j < 16; j = j + 1) begin
                 // Low MHz
-                temp_score1 = Template_Cos15MHz[j] * I_Buffer[j];
-                temp_score2 = Template_Sin15MHz[j] * I_Buffer[j];
-                temp_score5 = Template_Cos15MHz[j] * Q_Buffer[j];
-                temp_score6 = Template_Sin15MHz[j] * Q_Buffer[j];
+                temp_score1 = Template_Cos2MHz[j] * I_Buffer[j];
+                temp_score2 = Template_Sin2MHz[j] * I_Buffer[j];
+                temp_score5 = Template_Cos2MHz[j] * Q_Buffer[j];
+                temp_score6 = Template_Sin2MHz[j] * Q_Buffer[j];
                 // High MHz
-                temp_score3 = Template_Cos2MHz[j] * I_Buffer[j];
-                temp_score4 = Template_Sin2MHz[j] * I_Buffer[j];
-                temp_score7 = Template_Cos2MHz[j] * Q_Buffer[j];
-                temp_score8 = Template_Sin2MHz[j] * Q_Buffer[j];
+                temp_score3 = Template_Cos3MHz[j] * I_Buffer[j];
+                temp_score4 = Template_Sin3MHz[j] * I_Buffer[j];
+                temp_score7 = Template_Cos3MHz[j] * Q_Buffer[j];
+                temp_score8 = Template_Sin3MHz[j] * Q_Buffer[j];
     
                 // Low MHz
                 sum1_cosine = sum1_cosine + temp_score1;
@@ -381,10 +381,10 @@ module Matched_Filter(
                 temp_score5 = Template_Cos2MHz[j] * Q_Buffer[j];
                 temp_score6 = Template_Sin2MHz[j] * Q_Buffer[j];
                 // High MHz
-                temp_score3 = Template_Cos3MHz[j] * I_Buffer[j];
-                temp_score4 = Template_Sin3MHz[j] * I_Buffer[j];
-                temp_score7 = Template_Cos3MHz[j] * Q_Buffer[j];
-                temp_score8 = Template_Sin3MHz[j] * Q_Buffer[j];
+                temp_score3 = Template_Cos25MHz[j] * I_Buffer[j];
+                temp_score4 = Template_Sin25MHz[j] * I_Buffer[j];
+                temp_score7 = Template_Cos25MHz[j] * Q_Buffer[j];
+                temp_score8 = Template_Sin25MHz[j] * Q_Buffer[j];
                 
                 // Low MHz
                 sum1_cosine = sum1_cosine + temp_score1;

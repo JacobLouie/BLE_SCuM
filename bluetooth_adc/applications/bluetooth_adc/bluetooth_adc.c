@@ -24,11 +24,9 @@ int main(void){
 	ANALOG_CFG_REG__10 = 0x0018; // turn off divider
 
 
-	//LC_FREQCHANGE(20,16,8);	// 2.405GHz CF
-	//LC_FREQCHANGE(20,16,12);	// 2.405GHz CF
-	//LC_FREQCHANGE(20,16,7);	// 2.405GHz CF
-	//LC_FREQCHANGE(20,15,18);	// 2.405GHz CF
-	LC_FREQCHANGE(20,15,18);	// 2.405GHz CF
+	//LC_FREQCHANGE(20,15,18);	// 2.405GHz CF | 2.5MHz IF
+	//LC_FREQCHANGE(20,15,19);	// 2.405GHz CF | 2.5MHz IF
+	LC_FREQCHANGE(20,15,21);	// 2.405GHz CF | 2.25MHz IF
 
 	
 	// Program analog scan chain
@@ -38,7 +36,7 @@ int main(void){
 	radio_rxEnable();
 	radio_rxNow();
 	
-	//LCsweepMid(11,13);
+	//LCsweepMid(15,16);
 	//LCsweepFine(12,19,25);
 
 	

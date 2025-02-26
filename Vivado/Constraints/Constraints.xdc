@@ -1,7 +1,7 @@
 #Clock
 create_clock -period 62.500 -name clk -waveform {0.000 16.500} [get_ports clk];
 ##Pmod Header JB
-set_property -dict {PACKAGE_PIN H16 IOSTANDARD LVCMOS33} [get_ports clk];                               #JB[10]
+set_property -dict {PACKAGE_PIN H16 IOSTANDARD LVCMOS33 DRIVE 16} [get_ports clk];                               #JB[10]
 
 
 ##Switches
@@ -11,14 +11,14 @@ set_property -dict {PACKAGE_PIN V10 IOSTANDARD LVCMOS33} [get_ports rst];       
 
 ##Pmod Headers
 ##Pmod Header JA
-set_property -dict {PACKAGE_PIN C17 IOSTANDARD LVCMOS33} [get_ports {I_BPF[0]}];                        #JA[1]
-set_property -dict {PACKAGE_PIN D18 IOSTANDARD LVCMOS33} [get_ports {I_BPF[1]}];                        #JA[2]
-set_property -dict {PACKAGE_PIN E18 IOSTANDARD LVCMOS33} [get_ports {I_BPF[2]}];                        #JA[3]
-set_property -dict {PACKAGE_PIN G17 IOSTANDARD LVCMOS33} [get_ports {I_BPF[3]}];                        #JA[4]
-set_property -dict {PACKAGE_PIN D17 IOSTANDARD LVCMOS33} [get_ports {Q_BPF[0]}];                        #JA[7]
-set_property -dict {PACKAGE_PIN E17 IOSTANDARD LVCMOS33} [get_ports {Q_BPF[1]}];                        #JA[8]
-set_property -dict {PACKAGE_PIN F18 IOSTANDARD LVCMOS33} [get_ports {Q_BPF[2]}];                        #JA[9]
-set_property -dict {PACKAGE_PIN G18 IOSTANDARD LVCMOS33} [get_ports {Q_BPF[3]}];                        #JA[10]
+set_property -dict {PACKAGE_PIN C17 IOSTANDARD LVCMOS33 DRIVE 16} [get_ports {I_BPF[0]}];                        #JA[1]
+set_property -dict {PACKAGE_PIN D18 IOSTANDARD LVCMOS33 DRIVE 16} [get_ports {I_BPF[1]}];                        #JA[2]
+set_property -dict {PACKAGE_PIN E18 IOSTANDARD LVCMOS33 DRIVE 16} [get_ports {I_BPF[2]}];                        #JA[3]
+set_property -dict {PACKAGE_PIN G17 IOSTANDARD LVCMOS33 DRIVE 16} [get_ports {I_BPF[3]}];                        #JA[4]
+set_property -dict {PACKAGE_PIN D17 IOSTANDARD LVCMOS33 DRIVE 16} [get_ports {Q_BPF[0]}];                        #JA[7]
+set_property -dict {PACKAGE_PIN E17 IOSTANDARD LVCMOS33 DRIVE 16} [get_ports {Q_BPF[1]}];                        #JA[8]
+set_property -dict {PACKAGE_PIN F18 IOSTANDARD LVCMOS33 DRIVE 16} [get_ports {Q_BPF[2]}];                        #JA[9]
+set_property -dict {PACKAGE_PIN G18 IOSTANDARD LVCMOS33 DRIVE 16} [get_ports {Q_BPF[3]}];                        #JA[10]
 
 ## LEDs
 set_property -dict {PACKAGE_PIN H17 IOSTANDARD LVCMOS33} [get_ports {LED[0]}];                          #LED[0]
