@@ -27,9 +27,9 @@ class Transmitter:
             raise ValueError("No packet to transmit")
         
         if cycle_time > 0:
-            sleep_time = cycle_time - (self.symbol_time * len(self.packet))
+            sleep_time = cycle_time + (self.symbol_time * len(self.packet))-.001
         else:
-            sleep_time = 0
+            sleep_time = (self.symbol_time * len(self.packet))-.001 # trial and error constant
 
         if cycles is None:
             t = current_thread()
