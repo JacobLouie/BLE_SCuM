@@ -5,13 +5,6 @@ import csv
 import threading
 from argparse import ArgumentParser
 
-import keyboard
-import sys
-sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules")
-sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\ble_hardware")
-sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\link_layer")
-sys.path.append(r"C:\Users\6RF4001\Desktop\BLE_SCuM\ADALM-PLUTO\Modules\phy")
-
 from Modules.ble_hardware import PlutoTransmitter, PlutoReceiver
 from Modules.helpers import hex2bin
 from Modules.link_layer import packet_decode
@@ -25,44 +18,23 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    center_freq = 2.405e9 # Hz
+    center_freq = 2.402e9 # Hz
     IF = 2.5e6 # Hz
-    num_samples = 6000000
+    num_samples = 250000
     sample_rate = 16e6 # Hz
-    bit_time = 0.5e-6 # s  // 802.15.4
-    #bit_time = 1.0e-6 # s   // BLE
-    df = 0.5
+    bit_time = 0.5e-6 # s
     samples_per_bit = sample_rate * bit_time
-    packet_cycle_time = 0#0.5e-3 # s
+    packet_cycle_time = 0.5e-3 # s
 
-    packet = '1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
-    #packet = 'F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F' #53 bits
+    packet = '556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6'
     print(f"Packet: 0x{packet}")
-    #print(f"Raw PDU: 0x{packet_decode(packet, 37)}")
-    packet_bits = hex2bin(packet*100)
+    print(f"Raw PDU: 0x{packet_decode(packet, 37)}")
+    packet_bits = hex2bin(packet)
 
-    tx_sdr = PlutoTransmitter(center_freq, bit_time, df, -50, IF, sdr='ip:192.168.2.1')
-    tx_sdr.set_sample_rate()
+    tx_sdr = PlutoTransmitter(center_freq, bit_time, 0.5, -70, IF)
     tx_sdr.set_packet(packet_bits)
-
-    '''
-    print("Starting transmitter!")
-    while True:
-        # Your loop logic here
-        #tx_thread = threading.Thread(target=tx_sdr.transmit, args=(None, packet_cycle_time))
-        #tx_thread.start()
-        tx_sdr.transmit(1,packet_cycle_time)
-
-
-        # Check for 'q' key press to break the loop
-        if keyboard.is_pressed('q'):
-            print("Loop terminated by user")
-            break
-    exit()
-    '''
-    rx_sdr = PlutoReceiver(center_freq, bit_time, df, sample_rate, IF, sdr='ip:192.168.2.1')
+    rx_sdr = PlutoReceiver(center_freq, bit_time, 0.5, sample_rate, IF)
     rx_sdr.set_rx_freq(center_freq)
-    rx_sdr.set_sample_rate()
     rx_sdr.set_rx_gain(70.0, 'manual')
 
     print("Starting transmitter!")
@@ -70,7 +42,7 @@ if __name__ == "__main__":
     tx_thread.start()
 
     samples = rx_sdr.receive(num_samples)
-    
+
     tx_thread.alive = False
     tx_thread.join()
 

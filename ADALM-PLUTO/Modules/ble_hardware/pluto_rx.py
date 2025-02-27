@@ -1,5 +1,5 @@
 import adi
-from . import Receiver
+from .base import Receiver
 import numpy as np
 
 

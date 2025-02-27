@@ -1,13 +1,12 @@
 import adi
-from . import Transmitter
 import os
 import sys
 from pathlib import Path
+from .base import Transmitter
 
 iq_path = os.path.join(Path(__file__).resolve().parent, os.getenv("IQ_PATH", "../phy"))
 sys.path.insert(0, iq_path)
 from iq import createFSK
-
 
 class PlutoTransmitter(Transmitter):
     '''
@@ -23,9 +22,8 @@ class PlutoTransmitter(Transmitter):
             self.sdr = adi.Pluto(sdr)
         else:
             self.sdr = sdr
-            
+        
         super().__init__(tx_freq, symbol_time, bt, tx_power, ifreq, *args, **kwargs)
-    
         self.packet = None
         self.samples = None
         self.sdr.tx_rf_bandwidth = int(4 * max(abs(ifreq - self.df), abs(ifreq + self.df)))
@@ -34,7 +32,7 @@ class PlutoTransmitter(Transmitter):
         '''
         Set the transmit frequency
         '''
-        #self.tx_freq = int(tx_freq - self.ifreq)
+        # self.tx_freq = int(tx_freq - self.ifreq)
         self.tx_freq = int(tx_freq)
         self.sdr.tx_lo = self.tx_freq
 
@@ -44,9 +42,8 @@ class PlutoTransmitter(Transmitter):
         '''
         self.sdr.tx_destroy_buffer()
         self.packet = packet
-        #self.samples = createFSK(self.packet, 2 ** 14, self.ifreq, self.df, samples_per_bit=int(self.sample_rate * self.symbol_time), bit_time=self.symbol_time)
-        self.samples = createFSK(self.packet, 2 ** 14, 0, self.df, samples_per_bit=int(self.sample_rate * self.symbol_time), bit_time=self.symbol_time)
-
+        self.samples = createFSK(self.packet, 2 ** 14, self.ifreq, self.df, samples_per_bit=int(self.sample_rate * self.symbol_time), bit_time=self.symbol_time)
+        #self.samples = createFSK(self.packet, 2 ** 14, 0, self.df, samples_per_bit=int(self.sample_rate * self.symbol_time), bit_time=self.symbol_time)
 
     def set_tx_power(self, power: float) -> None:
         '''
@@ -75,6 +72,15 @@ class PlutoTransmitter(Transmitter):
         '''
         if self.samples is None:
             raise ValueError("No samples to transmit")
+        self.sdr.tx(self.samples)
+
+    def repeating_transmit(self) -> None:
+        '''
+        Send repeating packet
+        '''
+        if self.samples is None:
+            raise ValueError("No samples to transmit")
+        self.sdr.tx_cyclic_buffer = True
         self.sdr.tx(self.samples)
 
     def close(self) -> None:

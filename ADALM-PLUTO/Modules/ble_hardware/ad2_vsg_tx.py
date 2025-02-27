@@ -1,3 +1,4 @@
+import time
 import pyvisa
 from ctypes import *
 from . import Transmitter
@@ -82,6 +83,8 @@ class AD2Transmitter(Transmitter):
             self.vsg.write_raw(b'RAD:CUST:FILT GAUS')
             self.vsg.write_raw(f'RAD:CUST:MOD:FSK:DEV {self.df}')
             self.vsg.write_raw(f'RAD:CUST:SRAT {1/symbol_time}')
+            self.vsg.write_raw(b'OUTP ON')
+            self.vsg.write_raw(b'OUTP:MOD ON')
         else:
             self.vsg = False
             print("VSG not supported on this platform, manual configuration required")
@@ -129,11 +132,18 @@ class AD2Transmitter(Transmitter):
         '''
         # Generate Clock & Data
         self.gen_clock()
+        dwf.FDwfDigitalOutConfigure(self.ad2, c_int(0))
         self.gen_data()
 
         # Transmit the packet
-        dwf.FDwfDigitalOutRunSet(self.ad2, c_double(len(self.packet) * self.symbol_time))
+        transmission_time = len(self.packet) * self.symbol_time
+        dwf.FDwfDigitalOutRunSet(self.ad2, c_double(transmission_time))
         dwf.FDwfDigitalOutConfigure(self.ad2, c_int(1))
+
+        # Wait for transmission to complete
+        time.sleep(transmission_time)
+
+        dwf.FDwfDigitalOutConfigure(self.ad2, c_int(0))
         dwf.FDwfDigitalOutReset(self.ad2)
 
     def gen_clock(self) -> None:
@@ -144,9 +154,9 @@ class AD2Transmitter(Transmitter):
         # 1MHz pulse on IO pin 0
         dwf.FDwfDigitalOutEnableSet(self.ad2, c_int(0), c_int(1))
         # prescaler to 2MHz, SystemFrequency/1MHz/2
-        dwf.FDwfDigitalOutDividerSet(self.ad2, c_int(0), c_int(int(self.hzSys.value/self.symbol_time/2)))
+        dwf.FDwfDigitalOutDividerSet(self.ad2, c_int(0), c_int(int(self.hzSys.value / (1 / self.symbol_time) / 2)))
         # 1 tick high, 1 tick low
-        dwf.FDwfDigitalOutCounterSet(self.ad2, c_int(1), c_int(0), c_int(1))
+        dwf.FDwfDigitalOutCounterSet(self.ad2, c_int(0), c_int(1), c_int(1))
 
     def gen_data(self) -> None:
         '''
@@ -165,9 +175,10 @@ class AD2Transmitter(Transmitter):
         dwf.FDwfDigitalOutEnableSet(self.ad2, c_int(pin), c_int(1))
         dwf.FDwfDigitalOutTypeSet(self.ad2, c_int(pin), DwfDigitalOutTypeCustom)
         # 1MHz sample rate
-        dwf.FDwfDigitalOutDividerSet(self.ad2, c_int(pin), c_int(int(self.hzSys.value/self.symbol_time))) # set sample rate
         dwf.FDwfDigitalOutDataSet(self.ad2, c_int(pin), byref(rgbdata), c_int(len(self.packet)))
-
+        dwf.FDwfDigitalOutDividerSet(self.ad2, c_int(pin), c_int(int(self.hzSys.value/(1 / self.symbol_time))))# set sample rate
+        # Ensure one-shot output
+        #dwf.FDwfDigitalOutRepeatSet(self.ad2, c_int(1))  # Output data only once
     def close(self) -> None:
         '''
         Close the transmitter
