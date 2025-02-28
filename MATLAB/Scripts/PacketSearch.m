@@ -66,25 +66,27 @@ else
     " MF Packets Found = 0");
 end
 %}
+ylabel('Score (Max = Packet Length)'); xlabel('Bit Number');
 xlim([-230 MFDATALENGTH]);
 
-ylim([0 250])
+ylim([0 length(BinKey)*1.05])
 fontsize(gcf,24,"points");
 disp("------------------------------------------------------")
 % Chip error rate calc
 chipCount = 0;
 packCount = 0;
 for i = 1:length(totScore)
-    if totScore(i) >= 130
+    if totScore(i) >= 150
         chipCount = chipCount + totScore(i);
         packCount = packCount + 1;
     end
 end
 
-packCount = floor(MFDATALENGTH/208);
+%packCount = floor(MFDATALENGTH/208);
 disp("Packets Found: " + FindTotal + " of " + packCount);
 
-TotChip = MFDATALENGTH;
+%TotChip = MFDATALENGTH;
+TotChip = length(BinKey)*packCount;
 disp("Chip Rate: " + chipCount + "/" + TotChip + " = " + chipCount/TotChip);
 %disp("@-60dBm");
 

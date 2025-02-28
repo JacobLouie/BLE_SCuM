@@ -23,21 +23,23 @@ int main(void){
 	
 	ANALOG_CFG_REG__10 = 0x0018; // turn off divider
 
-
-	//LC_FREQCHANGE(20,15,18);	// 2.405GHz CF | 2.5MHz IF
-	//LC_FREQCHANGE(20,15,19);	// 2.405GHz CF | 2.5MHz IF
-	LC_FREQCHANGE(20,15,21);	// 2.405GHz CF | 2.25MHz IF
+	
+	LC_FREQCHANGE(20,15,18);	// 2.405GHz CF, 2.4025 Offset| 2.5MHz IF (BLE and 802)
+	//LC_FREQCHANGE(20,15,19);	// 2.405GHz CF, 2.4025 Offset| 2.5MHz IF (BLE and 802)
+	//LC_FREQCHANGE(20,14,27);	// 2.405GHz CF, 2.4025 Offset| 2.5MHz IF (BLE and 802)
+	//LC_FREQCHANGE(20,16,12);	// 2.405GHz CF, 2.4025 Offset| 2.5MHz IF (BLE and 802)
+	
 
 	
 	// Program analog scan chain
   analog_scan_chain_write();
   analog_scan_chain_load();
-
+	
 	radio_rxEnable();
 	radio_rxNow();
 	
-	//LCsweepMid(15,16);
-	//LCsweepFine(12,19,25);
+	//LCsweepMid(13,14);
+	//LCsweepFine(12,15,20);
 
 	
 	
