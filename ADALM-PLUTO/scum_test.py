@@ -4,9 +4,10 @@ from Modules.progressbar import printProgressBar
 from Modules.ble_hardware import AD2Transmitter, PlutoTransmitter
 
 if __name__ == "__main__":
-    freqs = {37: 2.405e09, 38: 2.426e09, 39: 2.480e09}
-    symbol_time = 1e-6
+    freqs = {37: 2.405e09, 38: 2.40492e09, 39: 2.4051e09}
+    symbol_time = 0.5e-6
     bt = 0.5
+    df = 500e3#790e3
     tx_power = -50
     ifreq = 2.5e6
     freqs = {ch: f - ifreq for ch, f in freqs.items()}

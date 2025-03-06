@@ -1,13 +1,18 @@
 
 from time import sleep
 from threading import current_thread
+from typing import Optional
 class Transmitter:
-    def __init__(self, tx_freq: float, symbol_time: float, bt: float, tx_power: float, *args, **kwargs):
+    def __init__(self, tx_freq: float, symbol_time: float, bt: float, tx_power: float, *args, df: Optional[float]=None, **kwargs):
         self.set_tx_freq(tx_freq)
         self.set_tx_power(tx_power)
         self.symbol_time = symbol_time
         self.bt = bt
-        self.df = bt / (symbol_time * 2)
+        if df is not None:
+            self.df = df
+        else:
+            self.df = bt / (symbol_time * 2)
+            print("none" + str(self.df))
         self.sample_rate = 16_000_000 # Default sample rate
         self.packet = ""
 
@@ -49,11 +54,14 @@ class Transmitter:
         raise NotImplementedError("close must be implemented by subclass")
 
 class Receiver:
-    def __init__(self, rx_freq: float, symbol_time: float, bt: float, samples_per_bit: float, *args, **kwargs):
+    def __init__(self, rx_freq: float, symbol_time: float, bt: float, samples_per_bit: float, *args, df: Optional[float]=None, **kwargs):
         self.set_rx_freq(rx_freq)
         self.symbol_time = symbol_time
         self.bt = bt
-        self.df = bt / (symbol_time * 2)
+        if df is not None:
+            self.df = df
+        else:
+            self.df = bt / (symbol_time * 2)         
         self.samples_per_bit = samples_per_bit
 
     def set_rx_freq(self, rx_freq: float):
