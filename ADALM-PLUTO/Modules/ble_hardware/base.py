@@ -12,7 +12,6 @@ class Transmitter:
             self.df = df
         else:
             self.df = bt / (symbol_time * 2)
-            print("none" + str(self.df))
         self.sample_rate = 16_000_000 # Default sample rate
         self.packet = ""
 
