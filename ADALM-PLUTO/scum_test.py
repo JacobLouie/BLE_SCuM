@@ -5,7 +5,7 @@ from Modules.ble_hardware import AD2Transmitter, PlutoTransmitter
 
 if __name__ == "__main__":
     freqs = {37: 2.405e09, 38: 2.40492e09, 39: 2.4051e09}
-    symbol_time = 0.5e-6
+    symbol_time = 1e-6
     bt = 0.5
     df = 500e3#790e3
     tx_power = -50
@@ -15,9 +15,9 @@ if __name__ == "__main__":
     channels = [37]
 
     if input("Use AD2 or Pluto? (a/p) ").lower() == 'a':
-        sdr = AD2Transmitter(freqs[37], symbol_time, bt, tx_power)
+        sdr = AD2Transmitter(freqs[37], symbol_time, bt, tx_power, df=df)
     else:
-        sdr = PlutoTransmitter(freqs[37], symbol_time, bt, tx_power, ifreq, sdr='ip:192.168.2.1')
+        sdr = PlutoTransmitter(freqs[37], symbol_time, bt, tx_power, ifreq, df=df, sdr='ip:192.168.2.1')
         sdr.set_sample_rate()
         
     packet = hex2bin('1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6') # Packet for SCuM test
