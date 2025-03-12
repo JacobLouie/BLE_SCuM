@@ -24,7 +24,7 @@ module Timing_Recovery_BLE(
 	// Number of I/Q samples held in shift register
     localparam BUFFER_SIZE = 19;//11 
 	// Number of bits in error accumulator
-    localparam ERROR_RES = 18; 
+    localparam ERROR_RES = 19;//18 
 
     integer i;
 
@@ -37,8 +37,10 @@ module Timing_Recovery_BLE(
 
     reg signed [ERROR_RES-1:0] y1, y2, e_k;
     reg signed [ERROR_RES-1:0] tau_int, tau_int_1;
-	reg signed [6:0] tau, tau_1;
-	reg signed [2:0] dtau;
+	//reg signed [6:0] tau, tau_1;
+	reg signed [7:0] tau, tau_1;
+	//reg signed [2:0] dtau;
+	reg signed [3:0] dtau;
 	
 	reg [3:0] shift_counter;
 	wire do_error_calc;
@@ -78,6 +80,18 @@ module Timing_Recovery_BLE(
 			q_4 <= 0;
 		end
 		else begin
+            i_1 <= I_k[4'd8];
+            q_1 <= Q_k[4'd8];
+            
+            i_2 <= I_k[4'd0];
+            q_2 <= Q_k[4'd0];
+            
+            i_3 <= I_k[4'd10];
+            q_3 <= Q_k[4'd10];
+    
+            i_4 <= I_k[4'd2];
+            q_4 <= Q_k[4'd2];
+		    /*
 			if(do_error_calc) begin
                 if (select == 1) begin
                     i_1 <= I_k[4'd8];
@@ -104,8 +118,8 @@ module Timing_Recovery_BLE(
     
                     i_4 <= I_k[5'd2];
                     q_4 <= Q_k[5'd2];
-                end
-			end
+                end    
+			end */ 
 		end
 	end
 	
