@@ -8,6 +8,12 @@ risingEdgeOffset = 0; %time in uS
 floor = 1;
 xtickFlag = .5;
 
+data = readtable('data.txt');
+
+if exist('data','var') == 1
+    data.Properties.VariableNames(1) = "x";
+    data.Properties.VariableNames(2) = "y";
+end 
 
 %make data start at 0
 data.x = data.x - data.x(1);
