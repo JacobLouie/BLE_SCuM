@@ -741,7 +741,7 @@ void radio_init_rx_MF() {
     set_asc_bit(425);
 
     // Set gain for I and Q (63 is the max)
-    set_IF_gain_ASC(0,0);
+    set_IF_gain_ASC(63,63);
 
     // Set gm for stg3 ADC drivers
     // Sets the transconductance for the third amplifier which drives the ADC

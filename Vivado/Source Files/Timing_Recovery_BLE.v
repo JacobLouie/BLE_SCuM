@@ -33,7 +33,7 @@ module Timing_Recovery_BLE(
     reg signed [3:0] Q_k [0:BUFFER_SIZE-1];
 	
 	// Intermediate values for calculating timing error
-	reg signed [3:0] i_1, q_1, i_2, q_2, i_3, q_3, i_4, q_4;
+	reg signed [4:0] i_1, q_1, i_2, q_2, i_3, q_3, i_4, q_4;
 
     reg signed [ERROR_RES-1:0] y1, y2, e_k;
     reg signed [ERROR_RES-1:0] tau_int, tau_int_1;
@@ -80,6 +80,7 @@ module Timing_Recovery_BLE(
 			q_4 <= 0;
 		end
 		else begin
+		    /*
             i_1 <= I_k[4'd8];
             q_1 <= Q_k[4'd8];
             
@@ -91,7 +92,8 @@ module Timing_Recovery_BLE(
     
             i_4 <= I_k[4'd2];
             q_4 <= Q_k[4'd2];
-		    /*
+            */
+		    
 			if(do_error_calc) begin
                 if (select == 1) begin
                     i_1 <= I_k[4'd8];
@@ -119,7 +121,7 @@ module Timing_Recovery_BLE(
                     i_4 <= I_k[5'd2];
                     q_4 <= Q_k[5'd2];
                 end    
-			end */ 
+			end // 
 		end
 	end
 	
