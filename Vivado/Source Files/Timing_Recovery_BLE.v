@@ -80,20 +80,7 @@ module Timing_Recovery_BLE(
 			q_4 <= 0;
 		end
 		else begin
-		    /*
-            i_1 <= I_k[4'd8];
-            q_1 <= Q_k[4'd8];
-            
-            i_2 <= I_k[4'd0];
-            q_2 <= Q_k[4'd0];
-            
-            i_3 <= I_k[4'd10];
-            q_3 <= Q_k[4'd10];
-    
-            i_4 <= I_k[4'd2];
-            q_4 <= Q_k[4'd2];
-            */
-		    
+
 			if(do_error_calc) begin
                 if (select == 1) begin
                     i_1 <= I_k[4'd8];
@@ -121,7 +108,7 @@ module Timing_Recovery_BLE(
                     i_4 <= I_k[5'd2];
                     q_4 <= Q_k[5'd2];
                 end    
-			end // 
+			end
 		end
 	end
 	
