@@ -1,15 +1,11 @@
 % Create sin and cos Template for _MHz signal
-%F1 = 3*10^6;     % 3MHz signal
-%F1 = 2*10^6;     % 2MHz signal
-F1 = 2.5*10^6;   % 2.5MHz signal
-%F1 = 1.5*10^6;   % 1.5MHz signal
-%F1 = 1*10^6;     % 1MHz signal
+%F1 = 3*10^6;     % 3.0 MHz
+%F1 = 2*10^6;     % 2.0 MHz
+%F1 = 2.5*10^6;   % 2.5 MHz
+%F1 = 2.25*10^6;   % 2.25 MHz
+F1 = 2.75*10^6;   % 2.75 MHz  
 
-%F1 = 3.5*10^6;   % 1.5MHz signal
-%F1 = 4*10^6;   % 1.5MHz signal
-%F1 = 1.6*10^6;   % 1.6MHz signal
-%F1 = 1.75*10^6;  % 1.75MHz signal
-%F1 = 4*10^6;     % 2MHz signal
+
 
 % Magnitude
 Magnitude = 15; % +-15
@@ -65,15 +61,15 @@ stem(t2,Template2,Color="r");
 for i = 1:length(Template1)
     % check if negative
     if Template1(i) < 0 
-        VerilogCosTemplate(i,1) = "assign Template_Cos3MHz["+(i-1)+"] = -11'd"+(abs(Template1(i)))+";";
+        VerilogCosTemplate(i,1) = "assign Template_Cos275MHz["+(i-1)+"] = -5'd"+(abs(Template1(i)))+";";
     else
-        VerilogCosTemplate(i,1) = "assign Template_Cos3MHz["+(i-1)+"] = 11'd"+Template1(i)+";";
+        VerilogCosTemplate(i,1) = "assign Template_Cos275MHz["+(i-1)+"] = 5'd"+Template1(i)+";";
     end
     % check if negative
     if Template2(i) < 0 
-        VerilogSinTemplate(i,1) = "assign Template_Sin3MHz["+(i-1)+"] = -11'd"+(abs(Template2(i)))+";";
+        VerilogSinTemplate(i,1) = "assign Template_Sin275MHz["+(i-1)+"] = -5'd"+(abs(Template2(i)))+";";
     else
-        VerilogSinTemplate(i,1) = "assign Template_Sin3MHz["+(i-1)+"] = 11'd"+Template2(i)+";";
+        VerilogSinTemplate(i,1) = "assign Template_Sin275MHz["+(i-1)+"] = 5'd"+Template2(i)+";";
     end
 end
 
