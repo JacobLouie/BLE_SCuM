@@ -248,9 +248,9 @@ void optical_sfd_isr(void) {
             IF_fine -= 1;
         }
 				// What normal chips should use
-				set_IF_clock_frequency(IF_coarse, IF_fine, 0);
-				scm3c_hw_interface_set_IF_fine(IF_fine); 
-				scm3c_hw_interface_set_IF_coarse(IF_coarse);
+        set_IF_clock_frequency(IF_coarse, IF_fine, 0);
+        scm3c_hw_interface_set_IF_fine(IF_fine); 
+        scm3c_hw_interface_set_IF_coarse(IF_coarse);
 				
 				// To get good chip ADC clock working (jacob)
 				// 16MHz manual
