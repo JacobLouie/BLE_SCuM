@@ -27,15 +27,18 @@ set_property -dict {PACKAGE_PIN V11 IOSTANDARD LVCMOS33} [get_ports {LED[2]}];  
 
 ##Pmod Header JC
 #DRIVE 16 SLEW FAST
-set_property -dict {PACKAGE_PIN G6 IOSTANDARD LVCMOS33} [get_ports clk_Debug];                          #JC[4]
-set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33} [get_ports value];                              #JC[3]
-set_property -dict {PACKAGE_PIN F6 IOSTANDARD LVCMOS33} [get_ports update];                             #JC[2]
+set_property -dict {PACKAGE_PIN G6 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports clk_Debug];                          #JC[4]
+set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports value];                              #JC[3]
+set_property -dict {PACKAGE_PIN F6 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports update];                             #JC[2]
 
 ##Pmod Header JD
 #DRIVE 16 SLEW FAST
-set_property -dict {PACKAGE_PIN H4 IOSTANDARD LVCMOS33} [get_ports {I_Debug[0]}];                       #JD[1]
-set_property -dict {PACKAGE_PIN H1 IOSTANDARD LVCMOS33} [get_ports {I_Debug[1]}];                       #JD[2]
-set_property -dict {PACKAGE_PIN G1 IOSTANDARD LVCMOS33} [get_ports {I_Debug[2]}];                       #JD[3]
-set_property -dict {PACKAGE_PIN G3 IOSTANDARD LVCMOS33} [get_ports {I_Debug[3]}];                       #JD[4]
-
+set_property -dict {PACKAGE_PIN H4 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports {I_Debug[0]}];                       #JD[1]
+set_property -dict {PACKAGE_PIN H1 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports {I_Debug[1]}];                       #JD[2]
+set_property -dict {PACKAGE_PIN G1 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports {I_Debug[2]}];                       #JD[3]
+set_property -dict {PACKAGE_PIN G3 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports {I_Debug[3]}];                       #JD[4]
+set_property -dict {PACKAGE_PIN H2 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports {Q_Debug[0]}];                       #JD[7]
+set_property -dict {PACKAGE_PIN G4 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports {Q_Debug[1]}];                       #JD[8]
+set_property -dict {PACKAGE_PIN G2 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports {Q_Debug[2]}];                       #JD[9]
+set_property -dict {PACKAGE_PIN F3 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports {Q_Debug[3]}];                       #JD[10]
 

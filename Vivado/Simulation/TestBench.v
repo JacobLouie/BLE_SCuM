@@ -68,9 +68,9 @@ module TestBench();
 	    .I_in(I_data), 
 	    .Q_in(Q_data), // Set Low if no Input
         .update_data(update_data),	
-	    .sample_point(1),       // 1
-	    .e_k_shift(2),          // 2
-        .tau_shift(11)          // 11
+	    .sample_point(3'd1),       // 1
+	    .e_k_shift(4'd2),          // 2
+        .tau_shift(5'd11)          // 11
     );
 
     always @(posedge new_data)begin

@@ -9,9 +9,11 @@
 
 module Matched_Filter(
     input wire clk,                                 // 16MHz clock
-    input wire [1:0] select,                        // Select between BLE template and 802.15.4 template (0 = BLE, 1 = 802.15.4)
-                                                    // Changes the BLE templates (2 = BLE mode with 1.5MHz and 2 MHz template)
-                                                    // Changes the BLE templates (3 = BLE mode with 1MHz and 1.5MHz template)
+    input wire [1:0] select,                        // Select between BLE template and 802.15.4 template 
+                                                    // 0 = BLE, 2MHz-2.5MHz templates (16 samples/bit)
+                                                    // 1 = 802.15.4, 2MHz-3MHz templates (8 samples/bit)
+                                                    // 2 = BLE, 2MHz-3MHz templates (16 samples/bit)
+                                                    // 3 = BLE, 2.25MHz-2.75MHz templates (16 samples/bit)
     input wire rst,                                 // Reset for buffer
     input wire update,                              // get new data value                               
     input wire [3:0] I_BPF,                         // Band Pass Fillter 4 bit ADC as input
@@ -27,84 +29,91 @@ module Matched_Filter(
     // Initialize Templates for Bluetooth LE
     // BLE needs 1MHz/1.5MHz and 2MHz
     // Array size 8 of 5 bit values (ADC + Sign)
-    wire signed [4:0] Template_Cos1MHz [0:15];              // Cosine   1 MHz
-    wire signed [4:0] Template_Sin1MHz [0:15];              // Sine     1 MHz
-    wire signed [4:0] Template_Cos15MHz [0:15];             // Cosine   1.5 MHz
-    wire signed [4:0] Template_Sin15MHz [0:15];             // Sine     1.5 MHz
+    wire signed [4:0] Template_Cos225MHz [0:15];              // Cosine   2.25 MHz
+    wire signed [4:0] Template_Sin225MHz [0:15];              // Sine     2.25 MHz
+    wire signed [4:0] Template_Cos275MHz [0:15];             // Cosine   2.75 MHz
+    wire signed [4:0] Template_Sin275MHz [0:15];             // Sine     2.75 MHz
     wire signed [4:0] Template_Cos25MHz [0:15];             // Cosine   2.5 MHz
     wire signed [4:0] Template_Sin25MHz [0:15];             // Sine     2.5 MHz
     
-    // Cosine 1MHz
-    assign Template_Cos1MHz[0] = 5'd15;
-    assign Template_Cos1MHz[1] = 5'd14;
-    assign Template_Cos1MHz[2] = 5'd11;
-    assign Template_Cos1MHz[3] = 5'd6;
-    assign Template_Cos1MHz[4] = 5'd0;
-    assign Template_Cos1MHz[5] = -5'd6;
-    assign Template_Cos1MHz[6] = -5'd11;
-    assign Template_Cos1MHz[7] = -5'd14;
-    assign Template_Cos1MHz[8] = -5'd15;
-    assign Template_Cos1MHz[9] = -5'd14;
-    assign Template_Cos1MHz[10] = -5'd11;
-    assign Template_Cos1MHz[11] = -5'd6;
-    assign Template_Cos1MHz[12] = 5'd0;
-    assign Template_Cos1MHz[13] = 5'd6;
-    assign Template_Cos1MHz[14] = 5'd11;
-    assign Template_Cos1MHz[15] = 5'd14;
+    wire signed [4:0] Template_CosLow [0:15];
+    wire signed [4:0] Template_SinLow [0:15];
+    wire signed [4:0] Template_CosHigh [0:15];
+    wire signed [4:0] Template_SinHigh [0:15];
     
-    // Sine 1MHz
-    assign Template_Sin1MHz[0] = 5'd0;
-    assign Template_Sin1MHz[1] = 5'd6;
-    assign Template_Sin1MHz[2] = 5'd11;
-    assign Template_Sin1MHz[3] = 5'd14;
-    assign Template_Sin1MHz[4] = 5'd15;
-    assign Template_Sin1MHz[5] = 5'd14;
-    assign Template_Sin1MHz[6] = 5'd11;
-    assign Template_Sin1MHz[7] = 5'd6;
-    assign Template_Sin1MHz[8] = 5'd0;
-    assign Template_Sin1MHz[9] = -5'd6;
-    assign Template_Sin1MHz[10] = -5'd11;
-    assign Template_Sin1MHz[11] = -5'd14;
-    assign Template_Sin1MHz[12] = -5'd15;
-    assign Template_Sin1MHz[13] = -5'd14;
-    assign Template_Sin1MHz[14] = -5'd11;
-    assign Template_Sin1MHz[15] = -5'd6;
     
-    // Cosine 1.5MHz
-    assign Template_Cos15MHz[0] = 5'd15;
-    assign Template_Cos15MHz[1] = 5'd12;
-    assign Template_Cos15MHz[2] = 5'd6;
-    assign Template_Cos15MHz[3] = -5'd3;
-    assign Template_Cos15MHz[4] = -5'd11;
-    assign Template_Cos15MHz[5] = -5'd15;
-    assign Template_Cos15MHz[6] = -5'd14;
-    assign Template_Cos15MHz[7] = -5'd8;
-    assign Template_Cos15MHz[8] = 5'd0;
-    assign Template_Cos15MHz[9] = 5'd8;
-    assign Template_Cos15MHz[10] = 5'd14;
-    assign Template_Cos15MHz[11] = 5'd15;
-    assign Template_Cos15MHz[12] = 5'd11;
-    assign Template_Cos15MHz[13] = 5'd3;
-    assign Template_Cos15MHz[14] = -5'd6;
-    assign Template_Cos15MHz[15] = -5'd12;
 
-    // Sine 1.5MHz
-    assign Template_Sin15MHz[0] = 5'd0;
-    assign Template_Sin15MHz[1] = 5'd8;
-    assign Template_Sin15MHz[2] = 5'd14;
-    assign Template_Sin15MHz[3] = 5'd15;
-    assign Template_Sin15MHz[4] = 5'd11;
-    assign Template_Sin15MHz[5] = 5'd3;
-    assign Template_Sin15MHz[6] = -5'd6;
-    assign Template_Sin15MHz[7] = -5'd12;
-    assign Template_Sin15MHz[8] = -5'd15;
-    assign Template_Sin15MHz[9] = -5'd12;
-    assign Template_Sin15MHz[10] = -5'd6;
-    assign Template_Sin15MHz[11] = 5'd3;
-    assign Template_Sin15MHz[12] = 5'd11;
-    assign Template_Sin15MHz[13] = 5'd15;
-    assign Template_Sin15MHz[14] = 5'd14;
-    assign Template_Sin15MHz[15] = 5'd8;
+    // Cosine 2.25MHz
+    assign Template_Cos225MHz[0] = 5'd15;
+    assign Template_Cos225MHz[1] = 5'd10;
+    assign Template_Cos225MHz[2] = -5'd3;
+    assign Template_Cos225MHz[3] = -5'd13;
+    assign Template_Cos225MHz[4] = -5'd14;
+    assign Template_Cos225MHz[5] = -5'd4;
+    assign Template_Cos225MHz[6] = 5'd8;
+    assign Template_Cos225MHz[7] = 5'd15;
+    assign Template_Cos225MHz[8] = 5'd11;
+    assign Template_Cos225MHz[9] = -5'd1;
+    assign Template_Cos225MHz[10] = -5'd12;
+    assign Template_Cos225MHz[11] = -5'd14;
+    assign Template_Cos225MHz[12] = -5'd6;
+    assign Template_Cos225MHz[13] = 5'd7;
+    assign Template_Cos225MHz[14] = 5'd15;
+    assign Template_Cos225MHz[15] = 5'd12;
+    
+    // Sine 2.25MHz
+    assign Template_Sin225MHz[0] = 5'd0;
+    assign Template_Sin225MHz[1] = 5'd12;
+    assign Template_Sin225MHz[2] = 5'd15;
+    assign Template_Sin225MHz[3] = 5'd7;
+    assign Template_Sin225MHz[4] = -5'd6;
+    assign Template_Sin225MHz[5] = -5'd14;
+    assign Template_Sin225MHz[6] = -5'd12;
+    assign Template_Sin225MHz[7] = -5'd1;
+    assign Template_Sin225MHz[8] = 5'd11;
+    assign Template_Sin225MHz[9] = 5'd15;
+    assign Template_Sin225MHz[10] = 5'd8;
+    assign Template_Sin225MHz[11] = -5'd4;
+    assign Template_Sin225MHz[12] = -5'd14;
+    assign Template_Sin225MHz[13] = -5'd13;
+    assign Template_Sin225MHz[14] = -5'd3;
+    assign Template_Sin225MHz[15] = 5'd10;
+    
+    // Cosine 2.75MHz
+    assign Template_Cos275MHz[0] = 5'd15;
+    assign Template_Cos275MHz[1] = 5'd7;
+    assign Template_Cos275MHz[2] = -5'd8;
+    assign Template_Cos275MHz[3] = -5'd15;
+    assign Template_Cos275MHz[4] = -5'd6;
+    assign Template_Cos275MHz[5] = 5'd10;
+    assign Template_Cos275MHz[6] = 5'd15;
+    assign Template_Cos275MHz[7] = 5'd4;
+    assign Template_Cos275MHz[8] = -5'd11;
+    assign Template_Cos275MHz[9] = -5'd14;
+    assign Template_Cos275MHz[10] = -5'd3;
+    assign Template_Cos275MHz[11] = 5'd12;
+    assign Template_Cos275MHz[12] = 5'd14;
+    assign Template_Cos275MHz[13] = 5'd1;
+    assign Template_Cos275MHz[14] = -5'd12;
+    assign Template_Cos275MHz[15] = -5'd13;
+
+    // Sine 2.75MHz
+    assign Template_Sin275MHz[0] = 5'd0;
+    assign Template_Sin275MHz[1] = 5'd13;
+    assign Template_Sin275MHz[2] = 5'd12;
+    assign Template_Sin275MHz[3] = -5'd1;
+    assign Template_Sin275MHz[4] = -5'd14;
+    assign Template_Sin275MHz[5] = -5'd12;
+    assign Template_Sin275MHz[6] = 5'd3;
+    assign Template_Sin275MHz[7] = 5'd14;
+    assign Template_Sin275MHz[8] = 5'd11;
+    assign Template_Sin275MHz[9] = -5'd4;
+    assign Template_Sin275MHz[10] = -5'd15;
+    assign Template_Sin275MHz[11] = -5'd10;
+    assign Template_Sin275MHz[12] = 5'd6;
+    assign Template_Sin275MHz[13] = 5'd15;
+    assign Template_Sin275MHz[14] = 5'd8;
+    assign Template_Sin275MHz[15] = -5'd7;
     
     // Cosine 2.5MHz
     assign Template_Cos25MHz[0] = 5'd15;
@@ -220,7 +229,27 @@ module Matched_Filter(
     assign Template_Sin3MHz[13] = 5'd6;
     assign Template_Sin3MHz[14] = -5'd11;
     assign Template_Sin3MHz[15] = -5'd14;
-
+    
+    genvar k;
+    generate
+    // 0 = BLE, 2MHz-2.5MHz templates (16 samples/bit)
+    // 1 = 802.15.4, 2MHz-3MHz templates (8 samples/bit)
+    // 2 = BLE, 2MHz-3MHz templates (16 samples/bit)
+    // 3 = BLE, 2.25MHz-2.75MHz templates (16 samples/bit)
+        for (k = 0; k < 16; k = k + 1) begin : assign_templates
+            assign Template_CosLow[k] = (select == 3) ? Template_Cos225MHz[k] :
+                                        Template_Cos2MHz[k];
+            assign Template_SinLow[k] = (select == 3) ? Template_Sin225MHz[k] :
+                                        Template_Sin2MHz[k];
+            assign Template_CosHigh[k] = (select == 0) ? Template_Cos25MHz[k] :
+                                         (select == 3) ? Template_Cos275MHz[k] :                                       
+                                         Template_Cos3MHz[k];  
+            assign Template_SinHigh[k] = (select == 0) ? Template_Sin25MHz[k] :
+                                         (select == 3) ? Template_Sin275MHz[k] :                                       
+                                         Template_Sin3MHz[k];                                                                 
+        end
+    endgenerate
+    
     always@(posedge clk or negedge rst)begin
         // Clear the buffer 
         if(!rst) begin
@@ -242,16 +271,16 @@ module Matched_Filter(
     
     // Template Correlation
     // Correlation between template and I_BPF
-    reg signed [7:0] temp_score1, temp_score2, temp_score3, temp_score4;
-    reg signed [7:0] temp_score5, temp_score6, temp_score7, temp_score8;
-    reg signed [11:0] sum1_cosine, sum2_sine, sum3_cosine, sum4_sine;
-    reg signed [11:0] sum5_cosine, sum6_sine, sum7_cosine, sum8_sine;
+    reg signed [9:0] temp_score1, temp_score2, temp_score3, temp_score4;
+    reg signed [9:0] temp_score5, temp_score6, temp_score7, temp_score8;
+    reg signed [20:0] sum1_cosine, sum2_sine, sum3_cosine, sum4_sine;
+    reg signed [20:0] sum5_cosine, sum6_sine, sum7_cosine, sum8_sine;
 
     
     // Squared in order to make remove negative (Magnitude)
-    reg signed [23:0] sum1_squared_cosine, sum2_squared_sine,       
+    reg signed [21:0] sum1_squared_cosine, sum2_squared_sine,       
                       sum3_squared_cosine, sum4_squared_sine;
-    reg signed [23:0] sum5_squared_cosine, sum6_squared_sine,       
+    reg signed [21:0] sum5_squared_cosine, sum6_squared_sine,       
                       sum7_squared_cosine, sum8_squared_sine;
                       
     // Final score values
@@ -288,76 +317,22 @@ module Matched_Filter(
         sum6_squared_sine = 0;
         sum7_squared_cosine = 0;
         sum8_squared_sine = 0;
+        
         // Get score by mutiplying the I_BPF in the buffer by the templates
         // For 802.15.4
         if(select == 1) begin
             // Data length is 8 bits long for 802.15.4
             for (j = 0; j < 8; j = j + 1) begin
                 // Low MHz
-                temp_score1 = Template_Cos2MHz[j] * I_Buffer[j+8];
-                temp_score2 = Template_Sin2MHz[j] * I_Buffer[j+8];
-                temp_score5 = Template_Cos2MHz[j] * Q_Buffer[j+8];
-                temp_score6 = Template_Sin2MHz[j] * Q_Buffer[j+8];
+                temp_score1 = Template_CosLow[j] * I_Buffer[j+8];
+                temp_score2 = Template_SinLow[j] * I_Buffer[j+8];
+                temp_score5 = Template_CosLow[j] * Q_Buffer[j+8];
+                temp_score6 = Template_SinLow[j] * Q_Buffer[j+8];
                 // High MHz
-                temp_score3 = Template_Cos3MHz[j] * I_Buffer[j+8];
-                temp_score4 = Template_Sin3MHz[j] * I_Buffer[j+8];
-                temp_score7 = Template_Cos3MHz[j] * Q_Buffer[j+8];
-                temp_score8 = Template_Sin3MHz[j] * Q_Buffer[j+8];
-        
-                // Low MHz
-                sum1_cosine = sum1_cosine + temp_score1;
-                sum2_sine = sum2_sine + temp_score2; 
-                sum5_cosine = sum5_cosine + temp_score5;
-                sum6_sine = sum6_sine + temp_score6;
-                // High MHz
-                sum3_cosine = sum3_cosine + temp_score3; 
-                sum4_sine = sum4_sine + temp_score4;
-                sum7_cosine = sum7_cosine + temp_score7; 
-                sum8_sine = sum8_sine + temp_score8;
-            end
-        end
-        // For Bluetooth LE (2MHz - 3MHz template)
-        else if(select == 2) begin
-            // Data length is 16 bits long for BLE
-            for (j = 0; j < 16; j = j + 1) begin
-                // Low MHz
-                temp_score1 = Template_Cos2MHz[j] * I_Buffer[j];
-                temp_score2 = Template_Sin2MHz[j] * I_Buffer[j];
-                temp_score5 = Template_Cos2MHz[j] * Q_Buffer[j];
-                temp_score6 = Template_Sin2MHz[j] * Q_Buffer[j];
-                // High MHz
-                temp_score3 = Template_Cos3MHz[j] * I_Buffer[j];
-                temp_score4 = Template_Sin3MHz[j] * I_Buffer[j];
-                temp_score7 = Template_Cos3MHz[j] * Q_Buffer[j];
-                temp_score8 = Template_Sin3MHz[j] * Q_Buffer[j];
-    
-                // Low MHz
-                sum1_cosine = sum1_cosine + temp_score1;
-                sum2_sine = sum2_sine + temp_score2; 
-                sum5_cosine = sum5_cosine + temp_score5;
-                sum6_sine = sum6_sine + temp_score6;
-                // High MHz
-                sum3_cosine = sum3_cosine + temp_score3; 
-                sum4_sine = sum4_sine + temp_score4;
-                sum7_cosine = sum7_cosine + temp_score7; 
-                sum8_sine = sum8_sine + temp_score8;
-            end
-        
-        end
-        // For Bluetooth LE (1MHz - 1.5MHz template)
-        else if (select == 3) begin
-            // Data length is 16 bits long for BLE
-            for (j = 0; j < 16; j = j + 1) begin
-                // Low MHz
-                temp_score1 = Template_Cos1MHz[j] * I_Buffer[j];
-                temp_score2 = Template_Sin1MHz[j] * I_Buffer[j];
-                temp_score5 = Template_Cos1MHz[j] * Q_Buffer[j];
-                temp_score6 = Template_Sin1MHz[j] * Q_Buffer[j];
-                // High MHz
-                temp_score3 = Template_Cos15MHz[j] * I_Buffer[j];
-                temp_score4 = Template_Sin15MHz[j] * I_Buffer[j];
-                temp_score7 = Template_Cos15MHz[j] * Q_Buffer[j];
-                temp_score8 = Template_Sin15MHz[j] * Q_Buffer[j];
+                temp_score3 = Template_CosHigh[j] * I_Buffer[j+8];
+                temp_score4 = Template_SinHigh[j] * I_Buffer[j+8];
+                temp_score7 = Template_CosHigh[j] * Q_Buffer[j+8];
+                temp_score8 = Template_SinHigh[j] * Q_Buffer[j+8];
                 
                 // Low MHz
                 sum1_cosine = sum1_cosine + temp_score1;
@@ -368,23 +343,23 @@ module Matched_Filter(
                 sum3_cosine = sum3_cosine + temp_score3; 
                 sum4_sine = sum4_sine + temp_score4;
                 sum7_cosine = sum7_cosine + temp_score7; 
-                sum8_sine = sum8_sine + temp_score8;
-            end          
-        end    
-        // For Bluetooth LE (2MHz - 2.5MHz template)
+                sum8_sine = sum8_sine + temp_score8;                
+            end
+        end
+        // For Bluetooth LE
         else begin
             // Data length is 16 bits long for BLE
             for (j = 0; j < 16; j = j + 1) begin
                 // Low MHz
-                temp_score1 = Template_Cos2MHz[j] * I_Buffer[j];
-                temp_score2 = Template_Sin2MHz[j] * I_Buffer[j];
-                temp_score5 = Template_Cos2MHz[j] * Q_Buffer[j];
-                temp_score6 = Template_Sin2MHz[j] * Q_Buffer[j];
+                temp_score1 = Template_CosLow[j] * I_Buffer[j];
+                temp_score2 = Template_SinLow[j] * I_Buffer[j];
+                temp_score5 = Template_CosLow[j] * Q_Buffer[j];
+                temp_score6 = Template_SinLow[j] * Q_Buffer[j];
                 // High MHz
-                temp_score3 = Template_Cos25MHz[j] * I_Buffer[j];
-                temp_score4 = Template_Sin25MHz[j] * I_Buffer[j];
-                temp_score7 = Template_Cos25MHz[j] * Q_Buffer[j];
-                temp_score8 = Template_Sin25MHz[j] * Q_Buffer[j];
+                temp_score3 = Template_CosHigh[j] * I_Buffer[j];
+                temp_score4 = Template_SinHigh[j] * I_Buffer[j];
+                temp_score7 = Template_CosHigh[j] * Q_Buffer[j];
+                temp_score8 = Template_SinHigh[j] * Q_Buffer[j];
                 
                 // Low MHz
                 sum1_cosine = sum1_cosine + temp_score1;
@@ -397,7 +372,8 @@ module Matched_Filter(
                 sum7_cosine = sum7_cosine + temp_score7; 
                 sum8_sine = sum8_sine + temp_score8;
             end
-        end 
+        end
+        
         // and square each sum
         // Low MHz
         sum1_squared_cosine = sum1_cosine * sum1_cosine;
@@ -410,9 +386,9 @@ module Matched_Filter(
         sum7_squared_cosine = sum7_cosine * sum7_cosine; 
         sum8_squared_sine = sum8_sine * sum8_sine;      
     end 
-    // Add 1MHz(BLE)    /1.5MHz(BLE)    /2MHz(BLE)      /2MHz(802.15.4) score together
+    // Add 2MHz(BLE)    /Add 2.25MHz(BLE)   /Add 2MHz(BLE)  /2MHz(802.15.4) score together
     assign Low_MHz_Score = sum1_squared_cosine + sum2_squared_sine + sum5_squared_cosine + sum6_squared_sine;
-    // Add 1.5MHz(BLE)  /2MHz(BLE)      /2.5MHz(BLE)    /3MHz(802.15.4) score together
+    // Add 2.5MHz(BLE)  /Add 2.75MHz(BLE)   /3MHz(BLE)      /3MHz(802.15.4) score together
     assign High_MHz_Score = sum3_squared_cosine + sum4_squared_sine + sum7_squared_cosine + sum8_squared_sine;  
     // Use this to compare to SCUM value (debug info);
     //assign MF_Output = {High_MHz_Score[16:13],Low_MHz_Score[16:13]};

@@ -22,9 +22,9 @@ module Timing_Recovery_BLE(
    );
    
 	// Number of I/Q samples held in shift register
-    localparam BUFFER_SIZE = 19;//11 
+    localparam BUFFER_SIZE = 19; 
 	// Number of bits in error accumulator
-    localparam ERROR_RES = 19;//18 
+    localparam ERROR_RES = 19; //18
 
     integer i;
 
@@ -33,14 +33,12 @@ module Timing_Recovery_BLE(
     reg signed [3:0] Q_k [0:BUFFER_SIZE-1];
 	
 	// Intermediate values for calculating timing error
-	reg signed [4:0] i_1, q_1, i_2, q_2, i_3, q_3, i_4, q_4;
+	reg signed [3:0] i_1, q_1, i_2, q_2, i_3, q_3, i_4, q_4;
 
     reg signed [ERROR_RES-1:0] y1, y2, e_k;
     reg signed [ERROR_RES-1:0] tau_int, tau_int_1;
-	//reg signed [6:0] tau, tau_1;
-	reg signed [7:0] tau, tau_1;
-	//reg signed [2:0] dtau;
-	reg signed [3:0] dtau;
+	reg signed [7:0] tau, tau_1; //6
+	reg signed [3:0] dtau; //2
 	
 	reg [3:0] shift_counter;
 	wire do_error_calc;
@@ -80,7 +78,6 @@ module Timing_Recovery_BLE(
 			q_4 <= 0;
 		end
 		else begin
-
 			if(do_error_calc) begin
                 if (select == 1) begin
                     i_1 <= I_k[4'd8];
@@ -104,14 +101,13 @@ module Timing_Recovery_BLE(
                     
                     i_3 <= I_k[5'd18];
                     q_3 <= Q_k[5'd18];
-    
+                    
                     i_4 <= I_k[5'd2];
                     q_4 <= Q_k[5'd2];
                 end    
 			end
 		end
-	end
-	
+	end	
 	// 802.15.4 Mode (select = 1)
 	// 18 17 16 15 ... 10 9 8 7 6 5 4 3 2 1 0
 	//                  x | x           x | X
@@ -135,21 +131,21 @@ module Timing_Recovery_BLE(
 
         e_k = y1 - y2;
 		tau_int = tau_int_1 - (e_k >>> e_k_shift);
-		tau = tau_int >>> tau_shift;
+        tau = tau_int >>> tau_shift;
 	end
 
 	// Store the old estimates of tau
 	always @(posedge clk or negedge rst) begin
 	    if (!rst) begin
-			tau_int_1 <= 0;
-			tau_1 <= 0;
-			dtau <= 0;
+            tau_int_1 <= 0;
+            tau_1 <= 0;
+            dtau <= 0;
 		end
 		else begin
 			if(do_error_calc) begin
-				tau_int_1 <= tau_int;
+                tau_int_1 <= tau_int;
 				tau_1 <= tau;
-				dtau <= tau_1 - tau;
+                dtau <= tau_1 - tau;
 			end
 		end
 	end
@@ -161,7 +157,7 @@ module Timing_Recovery_BLE(
 	// Increment the counter to shift new samples in until time to calculate error
 	always @(posedge clk or negedge rst) begin
 		if (!rst) begin
-			shift_counter <= 15; //0
+			shift_counter <= 15;
 		end
 		else begin
 			if(do_error_calc) 
@@ -172,7 +168,4 @@ module Timing_Recovery_BLE(
 	end
 
 endmodule
-
-
-//-------------------------------------------------------------------------------
 
