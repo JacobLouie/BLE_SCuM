@@ -73,10 +73,10 @@ else
     BIT_LENGTH = 16;
 end
 
-MFDATALENGTH = 20000;%1780;%20000;%50000;%31250;%56250;%19000;%2000;
+MFDATALENGTH = 23000;%1780;%20000;%50000;%31250;%56250;%19000;%2000;
 BUFFER_SIZE = 19;
 
-
+%{
 I_data              = zeros(1,length(data.y),'double')';
 Q_data_RAW          = zeros(1,length(data.y),'double')';
 
@@ -103,11 +103,7 @@ for i = 1:length(Q_data)
     end
     Q_data_RAW(i) = typecast(uint8(bin2dec(tempStringQ)),'int8');
 end
-
-%I_data = data.I;
-%Q_data = data.Q;
-
-
+%}
 %{
 I_data              = zeros(1,length(data.I-OFFSET),'double')';
 Q_data              = zeros(1,length(data.Q-OFFSET),'double')';
@@ -132,6 +128,10 @@ for i = 1:length(data.Q)-OFFSET
     Q_data(i) = typecast(uint8(bin2dec(tempStringI)),'int8');
 end
 %}
+
+I_data = data.I;
+Q_data = data.Q;
+
 %Timing Recovery constants
 sample_point    = 1; %1
 e_k_shift       = 2; %2
@@ -251,8 +251,8 @@ for i = 1:MFDATALENGTH*8
         do_error_calc = 1;
         shift_counter = 0;
 
-        i_1 = I_k(BUFFER_SIZE-3); % end of buffer -2
-	    q_1 = Q_k(BUFFER_SIZE-3); % end of buffer -2
+        i_1 = I_k(BUFFER_SIZE-2); % end of buffer -2
+	    q_1 = Q_k(BUFFER_SIZE-2); % end of buffer -2
 	    
 	    i_2 = I_k(1); % 1 = start of buffer
 	    q_2 = Q_k(1); % 1 = start of buffer
@@ -406,7 +406,7 @@ else
 end
 
 
-HexKey = ["1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
+HexKey = ["556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
 %DK-nRF
 %HexKey = ["C96077B8C96077B8" + ...
 %    "C96077B8C96077B8" + ...
@@ -414,7 +414,7 @@ HexKey = ["1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6"];
 %HexKey = ["D9C3522E"]; % 0
 %HexKey = ["C96077B8"]; % 15/F_hex
 %HexKey = ["AAAAAAAA"]; %preamble
-BinKey = hexToBinaryVector(HexKey);         % Full key search
+BinKey = hexToBinaryVector(HexKey,strlength(HexKey)*4);         % Full key search
 BinKeySTR = strrep(num2str(BinKey(1:end)), ' ', '');
 searchSTR = BinKeySTR;
 BinKey = reshape(BinKeySTR.'-'0',1,[]);
