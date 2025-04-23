@@ -4,12 +4,20 @@ from Modules.progressbar import printProgressBar
 from Modules.ble_hardware import AD2Transmitter, PlutoTransmitter
 
 if __name__ == "__main__":
-    freqs = {37: 2.405e09, 38: 2.40492e09, 39: 2.4051e09}
-    symbol_time = 1e-6
+    freqs = {37: 2.405e09, 38: 2.426e09, 39: 2.480e09}
+    MODE = 0    # 0 = 802.15.4
+                # 1 = BLE
+    if MODE == 0: # 802.15.4
+        symbol_time = 0.5e-6 
+        df = 500e3
+        ifreq = 2.5e6
+    else: # BLE
+        symbol_time = 1e-6
+        df = 500e3
+        ifreq = 2.5e6
+
     bt = 0.5
-    df = 250e3#500e3
-    tx_power = -50
-    ifreq = 2.25e6
+    tx_power = -60
     freqs = {ch: f - ifreq for ch, f in freqs.items()}
 
     channels = [37]
@@ -20,9 +28,17 @@ if __name__ == "__main__":
         sdr = PlutoTransmitter(freqs[37], symbol_time, bt, tx_power, ifreq, df=df, sdr='ip:192.168.2.1')
         sdr.set_sample_rate()
         
-    packet = hex2bin('1556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6') # Packet for SCuM test
-    #packet = hex2bin('F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F') #212 bits
-    sdr.set_packet(packet*100)
+    packet1 = hex2bin('556b7d9171f14373cc31328d04ee0c2872f924dd6dd05b437ef6') # Packet for SCuM test
+    #packet1 = hex2bin('556b7d9171b14373cc31328d04ee0ce872f924dd6dd05b662a80') # Adv Packet
+    #packet1 = hex2bin('556b7d9171b14373cc31328d04ee0c0872f924dd6dd05bfc3e35') #Adv Packet 2
+    
+    #print(whiten_fullPacket(hex(int(packet1, 2)),37))
+
+    #packet2 = hex2bin('556b7d9171917b73cc31328d040e7388523cbbcc2613') # Scan Response Packet
+
+    #packet1 = hex2bin('F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F0F') #212 bits
+    sdr.set_packet(packet1*100)
+    sdr.set_tx_freq(freqs[37])
 
     while True:
         try:
@@ -32,10 +48,14 @@ if __name__ == "__main__":
             break
         
         for i in range(amt):
-            printProgressBar(i + 1, amt, prefix="Progress:", suffix="Complete", length=50)
+            printProgressBar(i + 1, amt, prefix="Progress:", suffix="Complete", length=50)        
             for ch in channels:
-                sdr.set_tx_freq(freqs[ch])
-                sdr.transmit(symbol_time*len(packet*100)*2)
+                #sdr.set_packet(packet1*100)
+                sdr.transmit(symbol_time*len(packet1*100)*2)
+                
+
+                #sdr.set_packet(packet2)
+                #sdr.transmit(symbol_time*len(packet2*1)*2)
                 
 
     sdr.close()
