@@ -24,7 +24,7 @@ module Timing_Recovery_BLE(
 	// Number of I/Q samples held in shift register
     localparam BUFFER_SIZE = 19; 
 	// Number of bits in error accumulator
-    localparam ERROR_RES = 19; //18
+    localparam ERROR_RES = 19;
 
     integer i;
 
@@ -37,8 +37,8 @@ module Timing_Recovery_BLE(
 
     reg signed [ERROR_RES-1:0] y1, y2, e_k;
     reg signed [ERROR_RES-1:0] tau_int, tau_int_1;
-	reg signed [7:0] tau, tau_1; //6
-	reg signed [3:0] dtau; //2
+	reg signed [7:0] tau, tau_1;
+	reg signed [3:0] dtau;
 	
 	reg [3:0] shift_counter;
 	wire do_error_calc;
@@ -48,7 +48,7 @@ module Timing_Recovery_BLE(
    
     // Save new I/Q samples in buffer
     // Newest data is at the greatest index
-    always @(posedge clk or negedge  rst) begin
+    always @(posedge clk or negedge rst) begin
         if (!rst) begin
             for (i = 0; i < BUFFER_SIZE; i = i + 1) begin 
                 I_k[i] <= 0;
@@ -79,32 +79,17 @@ module Timing_Recovery_BLE(
 		end
 		else begin
 			if(do_error_calc) begin
-                if (select == 1) begin
-                    i_1 <= I_k[4'd8];
-                    q_1 <= Q_k[4'd8];
-                    
-                    i_2 <= I_k[4'd0];
-                    q_2 <= Q_k[4'd0];
-                    
-                    i_3 <= I_k[4'd10];
-                    q_3 <= Q_k[4'd10];
-    
-                    i_4 <= I_k[4'd2];
-                    q_4 <= Q_k[4'd2];
-                end
-                else begin
-                    i_1 <= I_k[5'd16];
-                    q_1 <= Q_k[5'd16];
-                    
-                    i_2 <= I_k[5'd0];
-                    q_2 <= Q_k[5'd0];
-                    
-                    i_3 <= I_k[5'd18];
-                    q_3 <= Q_k[5'd18];
-                    
-                    i_4 <= I_k[5'd2];
-                    q_4 <= Q_k[5'd2];
-                end    
+                i_1 <= I_k[4'd8];
+                q_1 <= Q_k[4'd8];
+                
+                i_2 <= I_k[4'd0];
+                q_2 <= Q_k[4'd0];
+                
+                i_3 <= I_k[4'd10];
+                q_3 <= Q_k[4'd10];
+
+                i_4 <= I_k[4'd2];
+                q_4 <= Q_k[4'd2];  
 			end
 		end
 	end	
@@ -168,4 +153,3 @@ module Timing_Recovery_BLE(
 	end
 
 endmodule
-
