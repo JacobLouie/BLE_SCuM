@@ -20,9 +20,9 @@ module TestBench();
         // Mode select 
         // 802.15.4 mode = 1 (2MHz-3MHz)
         // BLE mode = 0 (2MHz-2.5MHz)
-        // BLE mode = 2 (1.5MHz-2MHz)
-        // BLE mode = 3 (1MHz-1.5MHz)
-        select = 1; 
+        // BLE mode = 2 (2MHz-3MHz)
+        // BLE mode = 3 (2.25MHz-2.75MHz)
+        select = 3; 
         rst = 0;
         sampleCount = 0;
         #100
