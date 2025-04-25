@@ -1,11 +1,16 @@
+data = readtable('pluto I_Q.txt');
 
+if exist('data','var') == 1
+    data.Properties.VariableNames(1) = "I";
+    data.Properties.VariableNames(2) = "Q";
+end 
 
 % Flags 
 % 802.15.4 mode = 1 (2MHz-3MHz)
 % BLE mode = 0 (2MHz-2.5MHz)
 % BLE mode = 2 (2MHz-3MHz)
-% BLE mode = 3 (1MHz-1.5MHz)
-MODE = 1;
+% BLE mode = 3 (2.25MHz-2.75MHz)
+MODE = 3;
 
 % Raw binary data needs to be inversed
 % 1 = Invert 
@@ -28,13 +33,13 @@ Sin2MHzTemp     = [0;11;15;11;0;-11;-15;-11;0;11;15;11;0;-11;-15;-11];
 Cos25MHzTemp    = [15;8;-6;-15;-11;3;14;12;0;-12;-14;-3;11;15;6;-8];
 Sin25MHzTemp    = [0;12;14;3;-11;-15;-6;8;15;8;-6;-15;-11;3;14;12];
 
-% 1.5MHz Templates
-Cos15MHzTemp    = [15;12;6;-3;-11;-15;-14;-8;0;8;14;15;11;3;-6;-12];
-Sin15MHzTemp    = [0;8;14;15;11;3;-6;-12;-15;-12;-6;3;11;15;14;8];
+% 2.25MHz Templates
+Cos225MHzTemp    = [15;10;-3;-13;-14;-4;8;15;11;-1;-12;-14;-6;7;15;12];
+Sin225MHzTemp    = [0;12;15;7;-6;-14;-12;-1;11;15;8;-4;-14;-13;-3;10];
 
-% 1MHz Templates
-Cos1MHzTemp    = [15;14;11;6;0;-6;-11;-14;-15;-14;-11;-6;0;6;11;14];
-Sin1MHzTemp    = [0;6;11;14;15;14;11;6;0;-6;-11;-14;-15;-14;-11;-6];
+% 2.75MHz Templates
+Cos275MHzTemp    = [15;7;-8;-15;-6;10;15;4;-11;-14;-3;12;14;1;-12;-13];
+Sin275MHzTemp    = [0;13;12;-1;-14;-12;3;14;11;-4;-15;-10;6;15;8;-7];
 
 % 802.15.4 mode
 if MODE == 1 
@@ -57,12 +62,12 @@ elseif MODE == 2
     TemplateCos2 = Cos3MHzTemp;
     TemplateSin2 = Sin3MHzTemp;
 
-% BLE mode (1MHz-1.5MHz)
+% BLE mode (2.25MHz-2.75MHz)
 elseif MODE == 3
-    TemplateCos1 = Cos1MHzTemp;
-    TemplateSin1 = Sin1MHzTemp;
-    TemplateCos2 = Cos15MHzTemp;
-    TemplateSin2 = Sin15MHzTemp;    
+    TemplateCos1 = Cos225MHzTemp;
+    TemplateSin1 = Sin225MHzTemp;
+    TemplateCos2 = Cos275MHzTemp;
+    TemplateSin2 = Sin275MHzTemp;    
 end
 
 % 802.15.4 8 samples per bit (with 16 MHz ADC)
@@ -73,7 +78,7 @@ else
     BIT_LENGTH = 16;
 end
 
-MFDATALENGTH = 23000;%1780;%20000;%50000;%31250;%56250;%19000;%2000;
+MFDATALENGTH = round((size(data,1)/BIT_LENGTH)*0.9);%1780;%20000;%50000;%31250;%56250;%19000;%2000;
 BUFFER_SIZE = 19;
 
 %{
@@ -160,6 +165,8 @@ y2 = 0;
 e_k = 0;
 tau_int_1 = 0;
 tau_1 = 0;
+tau_int = 0;
+tau = 0;
 dtau = 0;
 i_1 = 0;
 q_1 = 0;
@@ -171,9 +178,9 @@ i_4 = 0;
 q_4 = 0;
 adjust = 0;
 shift_counter = 0;
-update_data = zeros(1,MFDATALENGTH*8 + 1,'double')';
+update_data = zeros(1,MFDATALENGTH*BIT_LENGTH + 1,'double')';
 
-for i = 1:MFDATALENGTH*8
+for i = 1:MFDATALENGTH*BIT_LENGTH
     I_k(1:BUFFER_SIZE-1) = I_k(2:BUFFER_SIZE);
     Q_k(1:BUFFER_SIZE-1) = Q_k(2:BUFFER_SIZE);
 
@@ -242,8 +249,7 @@ for i = 1:MFDATALENGTH*8
             value(dataCount) = 1;
         end
         dataCount = dataCount + 1;
-    end  
-    
+    end
 
     % Do error calc
     if (shift_counter == mod(BIT_LENGTH-1 + dtau,BIT_LENGTH))
@@ -263,21 +269,14 @@ for i = 1:MFDATALENGTH*8
 	    i_4 = I_k(3); % 3 = start of buffer + 2
 	    q_4 = Q_k(3); % 3 = start of buffer + 2
 
-        %}
         dtau = tau_1 - tau;
         tau_int_1 = tau_int;
 	    tau_1 = tau;        
-		
 
-        %debug
-        
         if dtau ~= 0
-            %disp(dtau);
-            %disp(i)
             adjust(i) = i;
         end
         
-
     % Don't error calc
     else 
         do_error_calc = 0;
@@ -290,19 +289,34 @@ for i = 1:MFDATALENGTH*8
         update_data(i+1) = 0;
     end
 
+    % Do error calc
+    if (shift_counter == mod(BIT_LENGTH-1 + dtau,BIT_LENGTH))
+        do_error_calc = 1;
+    end
+    if (do_error_calc == 1)
+        i_1 = I_k(BUFFER_SIZE-10);
+        q_1 = Q_k(BUFFER_SIZE-10);
+    
+        i_2 = I_k(1); 
+        q_2 = Q_k(1);
+    
+        i_3 = I_k(BUFFER_SIZE-8);
+        q_3 = Q_k(BUFFER_SIZE-8);
+
+        i_4 = I_k(3);
+        q_4 = Q_k(3);  
+    end
+   
 
     y1 = (i_1*i_1 - q_1*q_1)  * (i_2*i_2 - q_2*q_2) + 4*(i_1*q_1*i_2*q_2);
     y2 = (i_3*i_3 - q_3*q_3)  * (i_4*i_4 - q_4*q_4) + 4*(i_3*q_3*i_4*q_4);
 
     e_k = y1 - y2;
 
-
-
-	%tau_int = tau_int_1 - (e_k >>> e_k_shift); % Verilog version
+    %tau_int = tau_int_1 - (e_k >>> e_k_shift); % Verilog version
     tau_int = tau_int_1 - typecast(int32(bitshift(fi(e_k,1,32,0),e_k_shift*-1)),'int32');
-	%tau = tau_int >>> tau_shift; % Verilog version
+    %tau = tau_int >>> tau_shift; % Verilog version
     tau = typecast(int32(bitshift(fi(tau_int,1,32,0),tau_shift*-1)),'int32');
-    
 end
 %Low_MHz_Score = nonzeros(Low_MHz_Score');
 %High_MHz_Score = nonzeros(High_MHz_Score');
@@ -323,7 +337,9 @@ ADC_clock = 1/16; % micro second scale
 xLIMlow = 24;%1312*ADC_clock;
 xLIMhigh = xLIMlow+15;
 xAxis = linspace(0,ADC_clock*length(I_data),length(I_data));
+%{
 figure;
+
 subplot(2,1,1);
 plot(xAxis,I_data);
 hold on;
@@ -343,7 +359,9 @@ set(gca,'FontSize',20);
 ylim([-8.25 7.25]);
 xlim([xLIMlow xLIMhigh]);
 figure;
+%}
 
+%}
 %-------------------------------------------------------------------
 %{
 %Plot binary data
@@ -358,18 +376,27 @@ xlim([xLIMlow xLIMhigh]);
 %}
 %subplot(2,1,2);
 plotValue = zeros(1,length(update_data),'double')';
+plotMFlow = zeros(1,length(update_data),'double')';
+plotMFhigh = zeros(1,length(update_data),'double')';
 valueCount = 1;
 fillData  = 0;
+fillMFlow = 0;
+fillMFhigh = 0;
 for U = 1:length(update_data)
     if (update_data(U) == 1)
         fillData = value(valueCount);
+        fillMFlow = Low_MHz_Score(U);
+        fillMFhigh = High_MHz_Score(U);
         %if (valueCount == 165)
         %    fprintf('U =  %d\n',U); % 3-4 befor the start of packet found (good data)
         %end
         valueCount = valueCount + 1;
     end
     plotValue(U) = fillData;
+    plotMFlow(U) = fillMFlow;
+    plotMFhigh(U) = fillMFhigh;
 end
+%{
 plot(xAxis(1:length(update_data)),plotValue);
 hold on;
 title("Binary data");
@@ -380,6 +407,18 @@ set(gca,'FontSize',20);
 ylim([-0.1 1.1]);
 xlim([xLIMlow xLIMhigh]);
 figure
+%}
+
+
+
+plot(xAxis(1:length(plotMFlow)),plotMFhigh-plotMFlow);
+hold on;
+title("MFlow");
+ylabel('Score'); xlabel('Time (µ secs)');
+set(gca,'FontSize',20);
+%ylim([-8.25 7.25]);
+xlim([0 xAxis(length(plotMFlow))]);
+figure;
 %-------------------------------------------------------------------
 if exist('VerilogMFOut','var') == 1
         if (istable( VerilogMFOut ) == 1)
