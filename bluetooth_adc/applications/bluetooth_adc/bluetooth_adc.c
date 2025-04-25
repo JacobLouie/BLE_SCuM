@@ -29,7 +29,11 @@ int main(void){
 
 	
 	//LC_FREQCHANGE(20,15,22);	// 2.405GHz CF, 2.4025 Offset| 2.25MHz IF (BLE and 802)
-	LC_FREQCHANGE(20,15,22);	// 2.405GHz CF, 2.4025 Offset| 2.25MHz IF (BLE and 802)
+	//LC_FREQCHANGE(20,15,10); // 2.405GHz CF, 2.4025 Offset| 2.25MHz IF (BLE and 802)
+	LC_FREQCHANGE(20,3,23); // 2.405GHz CF, 2.4025 Offset| 2.25MHz IF (BLE and 802)
+	
+	//LC_FREQCHANGE(20,0,5); // 2.402GHz CF, 2.3995 Offset| 2.25MHz IF (BLE and 802)
+	//LC_FREQCHANGE(19,15,22); // 2.402GHz CF, 2.3995 Offset| 2.25MHz IF (BLE and 802)
 	
 	// Program analog scan chain
   analog_scan_chain_write();
@@ -38,8 +42,8 @@ int main(void){
 	radio_rxEnable();
 	radio_rxNow();
 	
-	//LCsweepMid(13,14);
-	//LCsweepFine(12,15,20);
+	//LCsweepMid(6,15);
+	//LCsweepFine(3,0,30);
 
 	
 	

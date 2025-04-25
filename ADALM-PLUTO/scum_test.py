@@ -13,17 +13,18 @@ if __name__ == "__main__":
         ifreq = 2.5e6
     else: # BLE
         symbol_time = 1e-6
-        df = 500e3
+        df = 250e3
         ifreq = 2.5e6
 
     bt = 0.5
-    tx_power = -60
+    tx_power = -50
     freqs = {ch: f - ifreq for ch, f in freqs.items()}
 
     channels = [37]
 
     if input("Use AD2 or Pluto? (a/p) ").lower() == 'a':
         sdr = AD2Transmitter(freqs[37], symbol_time, bt, tx_power, df=df)
+        sdr.set_sample_rate()
     else:
         sdr = PlutoTransmitter(freqs[37], symbol_time, bt, tx_power, ifreq, df=df, sdr='ip:192.168.2.1')
         sdr.set_sample_rate()
