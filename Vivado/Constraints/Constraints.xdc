@@ -24,6 +24,7 @@ set_property -dict {PACKAGE_PIN G18 IOSTANDARD LVCMOS33} [get_ports {Q_BPF[3]}];
 ## LEDs
 set_property -dict {PACKAGE_PIN H17 IOSTANDARD LVCMOS33} [get_ports {LED[0]}];          #LED[0]
 set_property -dict {PACKAGE_PIN K15 IOSTANDARD LVCMOS33} [get_ports {LED[1]}];          #LED[1]
+set_property -dict {PACKAGE_PIN J13 IOSTANDARD LVCMOS33} [get_ports packet_detectedLED];#LED[2]
 set_property -dict {PACKAGE_PIN V11 IOSTANDARD LVCMOS33} [get_ports {LED[2]}];          #LED[15]
 
 ##Pmod Header JC
@@ -31,6 +32,8 @@ set_property -dict {PACKAGE_PIN V11 IOSTANDARD LVCMOS33} [get_ports {LED[2]}];  
 set_property -dict {PACKAGE_PIN G6 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports clk_Debug];       #JC[4]
 set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports value];           #JC[3]
 set_property -dict {PACKAGE_PIN F6 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports update];          #JC[2]
+set_property -dict {PACKAGE_PIN K1 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports packet_detected]; #JC[1]
+
 
 ##Pmod Header JD
 #DRIVE 16 SLEW FAST
