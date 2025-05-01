@@ -1,0 +1,12 @@
+.\objects\ble_tx.o: ble_tx.c
+.\objects\ble_tx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\ble_tx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\ble_tx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\ble_tx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\ble_tx.o: ble.h
+.\objects\ble_tx.o: ../../tuning.h
+.\objects\ble_tx.o: ../../memory_map.h
+.\objects\ble_tx.o: ../../optical.h
+.\objects\ble_tx.o: ../../radio.h
+.\objects\ble_tx.o: ../../rftimer.h
+.\objects\ble_tx.o: ../../scm3c_hw_interface.h

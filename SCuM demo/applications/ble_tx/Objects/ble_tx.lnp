@@ -1,0 +1,17 @@
+--cpu Cortex-M0
+".\objects\ble_tx.o"
+".\objects\ble.o"
+".\objects\cm0dsasm.o"
+".\objects\retarget.o"
+".\objects\optical.o"
+".\objects\radio.o"
+".\objects\adc.o"
+".\objects\gpio.o"
+".\objects\uart.o"
+".\objects\rftimer.o"
+".\objects\scm3c_hw_interface.o"
+".\objects\tuning.o"
+--strict --scatter ".\Objects\ble_tx.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\ble_tx.map" -o .\Objects\ble_tx.axf

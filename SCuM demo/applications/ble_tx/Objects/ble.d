@@ -1,0 +1,10 @@
+.\objects\ble.o: ble.c
+.\objects\ble.o: ble.h
+.\objects\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\ble.o: ../../tuning.h
+.\objects\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\ble.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\ble.o: ../../memory_map.h
+.\objects\ble.o: ../../radio.h
+.\objects\ble.o: ../../scm3c_hw_interface.h
