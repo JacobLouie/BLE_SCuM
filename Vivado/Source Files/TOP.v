@@ -19,36 +19,38 @@ module TOP(
     output clk_Debug,
     output [3:0] I_Debug,
     output [3:0] Q_Debug,
-    output packet_detectedLED,          // led[2]
-    output packet_detected
+    output packet_detectedLED          // led[2]
     );
-    
     assign LED[1:0] = select;
     assign LED[2] = rst;    //Switch[15] = LED #15
     assign clk_Debug = clk;
     assign I_Debug = I_BPF;
     assign Q_Debug = Q_BPF;
     
-    parameter TARGET = 32_000_000;
-    reg [28:0]timer;
-    reg timeOff;
-   
-   assign packet_detectedLED = timeOff ? 1'b1:1'b0;
+    
+    parameter TARGET = 25_000_000;
+    reg [24:0]timer;
+    reg timeOn; 
+    
+    assign packet_detectedLED = timeOn;
     always @(posedge clk or negedge rst) begin
         if (!rst) begin
             timer <= 0;
-            timeOff <= 1;
+            timeOn <= 0;
         end
-        else if (packet_detected | ~timeOff) begin
+        else if (packet_detected | timeOn) begin
             if (timer == TARGET - 1) begin
                 timer <= 0;
-                timeOff <= 1;
-            end else begin
-                timer <= timer + 1;
-                timeOff <= 0;
+                timeOn <= 0;
             end
-        end else begin
-            timeOff <= 0;
+            else begin
+                timer <= timer + 1;
+                timeOn <= 1;
+            end
+        end
+        else begin
+            timer <= 0;
+            timeOn <= 0;
         end
     end
 
@@ -74,21 +76,24 @@ module TOP(
 	    .e_k_shift(4'd2),          // 2
         .tau_shift(5'd11)          // 11
     );
+    
     parameter PACKET_LEN_MAX = 376;
     parameter PREAMBLE_LEN = 8;
     parameter ACC_ADDR_LEN = 32;
     parameter CRC_POLY = 24'h00065B;
     parameter CRC_INIT = 24'h555555;
+    
     // dummy output wires
-    wire packet_out, packet_len;
-    Packet_Sniffer  #(
+    wire [PACKET_LEN_MAX-PREAMBLE_LEN-1:0] packet_out;
+    wire [8:0] packet_len;
+   
+    Packet_Sniffer #(
         .PACKET_LEN_MAX(PACKET_LEN_MAX),
         .PREAMBLE_LEN(PREAMBLE_LEN),
         .ACC_ADDR_LEN(ACC_ADDR_LEN),
         .CRC_POLY(CRC_POLY),
         .CRC_INIT(CRC_INIT)
     ) Detect(
-        .clk(clk),
         .symbol_clk(update),
         .rst(rst),
         .en(1'b1), 
@@ -96,7 +101,7 @@ module TOP(
         .acc_addr(32'h6b7d9171),
         .channel(6'd37), 
         .packet_detected(packet_detected),
-        .packet_out(packet_out), 
+        .packet_out(packet_out),
         .packet_len(packet_len)
     );
 endmodule

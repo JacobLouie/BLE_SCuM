@@ -4,7 +4,6 @@ create_clock -period 62.5 -name clk [get_ports clk];
 ##Pmod Header JB
 set_property -dict {PACKAGE_PIN H16 IOSTANDARD LVCMOS33} [get_ports clk];               #JB[10]
 
-
 ##Switches
 set_property -dict {PACKAGE_PIN J15 IOSTANDARD LVCMOS33} [get_ports {select[0]}];       #SW[0]
 set_property -dict {PACKAGE_PIN L16 IOSTANDARD LVCMOS33} [get_ports {select[1]}];       #SW[1]
@@ -32,8 +31,6 @@ set_property -dict {PACKAGE_PIN V11 IOSTANDARD LVCMOS33} [get_ports {LED[2]}];  
 set_property -dict {PACKAGE_PIN G6 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports clk_Debug];       #JC[4]
 set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports value];           #JC[3]
 set_property -dict {PACKAGE_PIN F6 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports update];          #JC[2]
-set_property -dict {PACKAGE_PIN K1 IOSTANDARD LVCMOS33 DRIVE 16 SLEW FAST} [get_ports packet_detected]; #JC[1]
-
 
 ##Pmod Header JD
 #DRIVE 16 SLEW FAST

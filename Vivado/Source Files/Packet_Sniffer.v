@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 module Packet_Sniffer (
-    clk, symbol_clk, rst, en, symbol_in,
+    symbol_clk, rst, en, symbol_in,
     packet_detected, packet_out, packet_len,
-    acc_addr, channel
+    acc_addr, channel, acc_addr_matched, bit
 );
     parameter PACKET_LEN_MAX = 376;
     parameter PREAMBLE_LEN = 8;
@@ -10,73 +10,77 @@ module Packet_Sniffer (
     parameter CRC_POLY = 24'h00065B;
     parameter CRC_INIT = 24'h555555;
 
-    input wire clk, symbol_clk, rst, en, symbol_in;
+    input wire symbol_clk, rst, en, symbol_in;
     input wire [ACC_ADDR_LEN-1:0] acc_addr;
     input wire [5:0] channel;
 
     output reg packet_detected;
     output reg [PACKET_LEN_MAX-PREAMBLE_LEN-1:0] packet_out;
     output reg [8:0] packet_len; // 9 bits can cover up to 512 bits
+    output wire acc_addr_matched;
+    output reg bit;
 
     // Internal signals
     reg [PACKET_LEN_MAX-PREAMBLE_LEN-1:0] rx_buffer;
+    reg [ACC_ADDR_LEN-1:0] rx_acc_addr;
     reg state, nextState;
     reg [8:0] bit_counter;
     reg packet_finished;
-    wire acc_addr_matched;
     wire dewhitened;
     wire crc_pass;
-    reg symbol_delayed;
+    integer i;
     
-
-    // Save RX buffer
-    always @(posedge symbol_clk or negedge rst) begin
-        if (!rst) begin
-            rx_buffer <= 0;
-        end
-        else begin
-            rx_buffer <= {rx_buffer[PACKET_LEN_MAX-PREAMBLE_LEN-2:0], (state ? dewhitened : symbol_in)};
-        end
+    reg [PACKET_LEN_MAX-PREAMBLE_LEN-1:0] mask;
+    
+    always @(*) begin
+        mask = {PACKET_LEN_MAX-PREAMBLE_LEN{1'b0}};
+        mask = (1 << packet_len) - 1;
     end
-
-    // Save Packet Output
+    
+    
     always @(posedge packet_detected or negedge rst) begin
         if (!rst) begin
-            packet_out <= 0;
             packet_len <= 0;
         end 
         else begin
-            packet_out <= rx_buffer;
             packet_len <= bit_counter + PREAMBLE_LEN + ACC_ADDR_LEN;
         end
     end
-
+    
+    always @(posedge symbol_clk or negedge rst) begin
+        if (!rst) begin
+            packet_out <= 0;
+        end 
+        else if (packet_detected) begin
+            packet_out <= rx_buffer & mask;
+        end
+    end
     // State Machine
-    always @(posedge clk or negedge rst) begin
+    always @(negedge symbol_clk or negedge rst) begin
         if (!rst) begin
             state <= 0;
         end 
-        else if (en && symbol_clk) begin
+        else if (en) begin
             state <= nextState;
         end
     end
 
-    always @(*) begin
-        packet_detected = crc_pass && (bit_counter[2:0] == 3'b000);
+    always @(*) begin 
+        packet_detected = crc_pass && (bit_counter[2:0] == 3'b000); 
         if (bit_counter == PACKET_LEN_MAX - PREAMBLE_LEN - ACC_ADDR_LEN)
             packet_finished = 1'b1;
         else
             packet_finished = 1'b0;
 
         case (state)
-            1'b0: nextState = acc_addr_matched && en;
-            1'b1: nextState = ~(packet_detected || packet_finished) && en;
-            default: nextState = 1'b0;
+            1'b0: nextState <= acc_addr_matched && en;
+            1'b1: nextState <= ~(packet_detected || packet_finished) && en;
+            default: nextState <= 1'b0;
         endcase
     end
 
     // Bit Counter
-    always @(posedge symbol_clk or negedge rst) begin
+    always @(negedge symbol_clk or negedge rst) begin
         if (!rst)
             bit_counter <= 0;
         else if (en) begin
@@ -86,8 +90,39 @@ module Packet_Sniffer (
                 bit_counter <= 0;
         end
     end
+    
+    reg symbol_in_d;
+    always @(posedge symbol_clk or negedge rst) begin
+        if (!rst)
+            symbol_in_d <= 0;
+        else
+            symbol_in_d <= symbol_in;
+    end
+    
+    // Save RX buffer
+    always @(negedge symbol_clk or negedge rst) begin
+        if (!rst) begin
+            rx_buffer <= 0;
+        end
+        else begin
+            rx_buffer <= {rx_buffer[PACKET_LEN_MAX-PREAMBLE_LEN-2:0], (state ? dewhitened : symbol_in)};
+        end
+    end
+    always @(posedge symbol_clk or negedge rst) begin
+        if (!rst) begin
+            rx_acc_addr <= 0;
+        end
+        else begin
+            rx_acc_addr <= {rx_acc_addr[ACC_ADDR_LEN-2:0], symbol_in };
+        end
+    end
+    
+    always @(*) begin
+        bit <= rx_buffer[0];
+    end
 
-    assign acc_addr_matched = (rx_buffer[ACC_ADDR_LEN-1:0] == acc_addr);
+    //assign acc_addr_matched = (rx_buffer[ACC_ADDR_LEN-1:0] == acc_addr);
+    assign acc_addr_matched = (rx_acc_addr == acc_addr);
 
     // Instantiate Dewhiten
     dewhiten dw (
@@ -119,20 +154,18 @@ module dewhiten (
     input wire symbol_clk, en, symbol_in;
     input wire [5:0] dewhiten_init;     // BLE channel (6 bits)
     output reg symbol_out;
-    reg [6:0] lfsr;  // Whitening LFSR (7 bits)
+    reg [6:0] lfsr;
     reg [6:0] next_lfsr;
-    reg feedback;
 
     always @(posedge symbol_clk or negedge en) begin
         if (!en) begin
             lfsr = {1'b1, dewhiten_init};
-            symbol_out = symbol_in ^ lfsr[0];
+            //symbol_out = symbol_in ^ lfsr[0];
         end 
         else begin
             symbol_out = symbol_in ^ lfsr[0];
-            feedback = lfsr[0];
-            next_lfsr = {feedback, lfsr[6:1]};
-            next_lfsr[2] = next_lfsr[2] ^ feedback; // feedback into bit 4
+            next_lfsr = {lfsr[0], lfsr[6:1]};
+            next_lfsr[2] = next_lfsr[2] ^ lfsr[0];
             lfsr = next_lfsr;
         end
     end
@@ -154,7 +187,7 @@ module crc #(
     reg [CRC_LEN-1:0] crc_lfsr;
     reg msb, feedback;
 
-    always @(posedge symbol_clk or negedge en) begin
+    always @(negedge symbol_clk or negedge en) begin
         if (!en) begin
             crc_lfsr <= crc_init;
         end
@@ -166,6 +199,9 @@ module crc #(
             if (feedback) begin
                 crc_lfsr <= ({crc_lfsr[CRC_LEN-2:0], 1'b0}) ^ crc_poly;
             end
+        end
+        else begin 
+            crc_lfsr <= crc_init;
         end
     end
     always @(*) begin
