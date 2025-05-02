@@ -1,26 +1,21 @@
 `timescale 1ns / 1ps
-module Packet_Sniffer (
-    symbol_clk, rst, en, symbol_in,
-    packet_detected, packet_out, packet_len,
-    acc_addr, channel, acc_addr_matched, bit
+module Packet_Sniffer #(
+    parameter PACKET_LEN_MAX = 376,
+    parameter PREAMBLE_LEN = 8,
+    parameter ACC_ADDR_LEN = 32,
+    parameter CRC_POLY = 24'h00065B,
+    parameter CRC_INIT = 24'h555555
+)(
+    input wire symbol_clk, rst, en, symbol_in,
+    input wire [ACC_ADDR_LEN-1:0] acc_addr,
+    input wire [5:0] channel,
+
+    output reg packet_detected,
+    output reg [PACKET_LEN_MAX-PREAMBLE_LEN-1:0] packet_out,
+    output reg [8:0] packet_len
 );
-    parameter PACKET_LEN_MAX = 376;
-    parameter PREAMBLE_LEN = 8;
-    parameter ACC_ADDR_LEN = 32;
-    parameter CRC_POLY = 24'h00065B;
-    parameter CRC_INIT = 24'h555555;
 
-    input wire symbol_clk, rst, en, symbol_in;
-    input wire [ACC_ADDR_LEN-1:0] acc_addr;
-    input wire [5:0] channel;
-
-    output reg packet_detected;
-    output reg [PACKET_LEN_MAX-PREAMBLE_LEN-1:0] packet_out;
-    output reg [8:0] packet_len; // 9 bits can cover up to 512 bits
-    output wire acc_addr_matched;
-    output reg bit;
-
-    // Internal signals
+    // Internal state
     reg [PACKET_LEN_MAX-PREAMBLE_LEN-1:0] rx_buffer;
     reg [ACC_ADDR_LEN-1:0] rx_acc_addr;
     reg state, nextState;
@@ -28,58 +23,26 @@ module Packet_Sniffer (
     reg packet_finished;
     wire dewhitened;
     wire crc_pass;
-    integer i;
-    
-    reg [PACKET_LEN_MAX-PREAMBLE_LEN-1:0] mask;
-    
-    always @(*) begin
-        mask = {PACKET_LEN_MAX-PREAMBLE_LEN{1'b0}};
-        mask = (1 << packet_len) - 1;
-    end
-    
-    
-    always @(posedge packet_detected or negedge rst) begin
-        if (!rst) begin
-            packet_len <= 0;
-        end 
-        else begin
-            packet_len <= bit_counter + PREAMBLE_LEN + ACC_ADDR_LEN;
-        end
-    end
-    
-    always @(posedge symbol_clk or negedge rst) begin
-        if (!rst) begin
-            packet_out <= 0;
-        end 
-        else if (packet_detected) begin
-            packet_out <= rx_buffer & mask;
-        end
-    end
-    // State Machine
+
+    // RX buffer update
     always @(negedge symbol_clk or negedge rst) begin
-        if (!rst) begin
-            state <= 0;
-        end 
-        else if (en) begin
-            state <= nextState;
-        end
-    end
-
-    always @(*) begin 
-        packet_detected = crc_pass && (bit_counter[2:0] == 3'b000); 
-        if (bit_counter == PACKET_LEN_MAX - PREAMBLE_LEN - ACC_ADDR_LEN)
-            packet_finished = 1'b1;
+        if (!rst)
+            rx_buffer <= 0;
         else
-            packet_finished = 1'b0;
-
-        case (state)
-            1'b0: nextState <= acc_addr_matched && en;
-            1'b1: nextState <= ~(packet_detected || packet_finished) && en;
-            default: nextState <= 1'b0;
-        endcase
+            rx_buffer <= {rx_buffer[PACKET_LEN_MAX-PREAMBLE_LEN-2:0], (state ? dewhitened : symbol_in)};
     end
 
-    // Bit Counter
+    // Access address shift register
+    always @(posedge symbol_clk or negedge rst) begin
+        if (!rst)
+            rx_acc_addr <= 0;
+        else
+            rx_acc_addr <= {rx_acc_addr[ACC_ADDR_LEN-2:0], symbol_in};
+    end
+
+    assign acc_addr_matched = (rx_acc_addr == acc_addr);
+
+    // Bit counter logic
     always @(negedge symbol_clk or negedge rst) begin
         if (!rst)
             bit_counter <= 0;
@@ -90,41 +53,49 @@ module Packet_Sniffer (
                 bit_counter <= 0;
         end
     end
+
+    // Packet finished check
+    always @(*) begin
+        packet_finished = (bit_counter == PACKET_LEN_MAX - PREAMBLE_LEN - ACC_ADDR_LEN);
+        packet_detected = crc_pass && (bit_counter[2:0] == 3'b000);
+    end
     
-    reg symbol_in_d;
+    // Save packet length when detected
+    always @(posedge packet_detected or negedge rst) begin
+        if (!rst)
+            packet_len <= 0;
+        else
+            packet_len <= bit_counter + PREAMBLE_LEN + ACC_ADDR_LEN;
+    end
+
+    // Output mask for valid bits
+    wire [PACKET_LEN_MAX-PREAMBLE_LEN-1:0] mask = (1 << packet_len) - 1;
+
+    // Output data when packet is latched
     always @(posedge symbol_clk or negedge rst) begin
         if (!rst)
-            symbol_in_d <= 0;
-        else
-            symbol_in_d <= symbol_in;
+            packet_out <= 0;
+        else if (packet_detected)
+            packet_out <= rx_buffer & mask;
     end
-    
-    // Save RX buffer
+
+    // FSM state logic
     always @(negedge symbol_clk or negedge rst) begin
-        if (!rst) begin
-            rx_buffer <= 0;
-        end
-        else begin
-            rx_buffer <= {rx_buffer[PACKET_LEN_MAX-PREAMBLE_LEN-2:0], (state ? dewhitened : symbol_in)};
-        end
+        if (!rst)
+            state <= 0;
+        else if (en)
+            state <= nextState;
     end
-    always @(posedge symbol_clk or negedge rst) begin
-        if (!rst) begin
-            rx_acc_addr <= 0;
-        end
-        else begin
-            rx_acc_addr <= {rx_acc_addr[ACC_ADDR_LEN-2:0], symbol_in };
-        end
-    end
-    
+
     always @(*) begin
-        bit <= rx_buffer[0];
+        case (state)
+            1'b0: nextState = acc_addr_matched && en;
+            1'b1: nextState = ~(packet_detected || packet_finished) && en;
+            default: nextState = 1'b0;
+        endcase
     end
 
-    //assign acc_addr_matched = (rx_buffer[ACC_ADDR_LEN-1:0] == acc_addr);
-    assign acc_addr_matched = (rx_acc_addr == acc_addr);
-
-    // Instantiate Dewhiten
+    // Dewhitening module
     dewhiten dw (
         .symbol_clk(symbol_clk),
         .en(state),
@@ -133,10 +104,8 @@ module Packet_Sniffer (
         .symbol_out(dewhitened)
     );
 
-    // Instantiate CRC
-    crc #(
-        .CRC_LEN(24)
-    ) chk (
+    // CRC module
+    crc #(.CRC_LEN(24)) chk (
         .symbol_clk(symbol_clk),
         .en(state),
         .dewhitened(dewhitened),
@@ -147,65 +116,54 @@ module Packet_Sniffer (
 
 endmodule
 
+// Dewhitening module
 module dewhiten (
-    symbol_clk, en, symbol_in,
-    dewhiten_init, symbol_out
+    input wire symbol_clk, en, symbol_in,
+    input wire [5:0] dewhiten_init,
+    output reg symbol_out
 );
-    input wire symbol_clk, en, symbol_in;
-    input wire [5:0] dewhiten_init;     // BLE channel (6 bits)
-    output reg symbol_out;
     reg [6:0] lfsr;
     reg [6:0] next_lfsr;
 
     always @(posedge symbol_clk or negedge en) begin
-        if (!en) begin
-            lfsr = {1'b1, dewhiten_init};
-            //symbol_out = symbol_in ^ lfsr[0];
-        end 
+        if (!en)
+            lfsr <= {1'b1, dewhiten_init};
         else begin
-            symbol_out = symbol_in ^ lfsr[0];
+            symbol_out <= symbol_in ^ lfsr[0];
             next_lfsr = {lfsr[0], lfsr[6:1]};
             next_lfsr[2] = next_lfsr[2] ^ lfsr[0];
-            lfsr = next_lfsr;
+            lfsr <= next_lfsr;
         end
     end
 endmodule
 
+// CRC module
 module crc #(
     parameter CRC_LEN = 24
 )(
-    symbol_clk, en,
-    dewhitened, crc_pass,
-    crc_init, crc_poly
+    input wire symbol_clk, en,
+    input wire dewhitened,
+    output reg crc_pass,
+    input wire [CRC_LEN-1:0] crc_init,
+    input wire [CRC_LEN-1:0] crc_poly
 );
-    input wire symbol_clk, en;
-    input wire dewhitened;
-    output reg crc_pass;
-    input wire [CRC_LEN-1:0] crc_init;
-    input wire [CRC_LEN-1:0] crc_poly;
-
     reg [CRC_LEN-1:0] crc_lfsr;
     reg msb, feedback;
 
     always @(negedge symbol_clk or negedge en) begin
-        if (!en) begin
+        if (!en)
             crc_lfsr <= crc_init;
-        end
-        else if (en) begin
+        else begin
             msb = crc_lfsr[CRC_LEN-1];
             feedback = msb ^ dewhitened;
-    
+
             crc_lfsr <= {crc_lfsr[CRC_LEN-2:0], 1'b0};
-            if (feedback) begin
+            if (feedback)
                 crc_lfsr <= ({crc_lfsr[CRC_LEN-2:0], 1'b0}) ^ crc_poly;
-            end
-        end
-        else begin 
-            crc_lfsr <= crc_init;
         end
     end
+
     always @(*) begin
         crc_pass = (crc_lfsr == 0);
     end
-    
 endmodule
