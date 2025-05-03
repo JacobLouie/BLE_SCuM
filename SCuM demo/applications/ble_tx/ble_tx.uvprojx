@@ -327,7 +327,7 @@
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
             <uGnu>0</uGnu>
-            <useXO>0</useXO>
+            <useXO>1</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
             <vShortEn>1</vShortEn>
@@ -397,6 +397,16 @@
               <FileName>ble.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\ble.h</FilePath>
+            </File>
+            <File>
+              <FileName>ble_transceiver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ble_transceiver.c</FilePath>
+            </File>
+            <File>
+              <FileName>ble_transceiver.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ble_transceiver.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -557,5 +567,14 @@
       </file>
     </files>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>ble_tx</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>

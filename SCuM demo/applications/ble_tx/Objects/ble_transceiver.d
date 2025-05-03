@@ -1,0 +1,11 @@
+.\objects\ble_transceiver.o: ble_transceiver.c
+.\objects\ble_transceiver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\ble_transceiver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\ble_transceiver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\ble_transceiver.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\ble_transceiver.o: ../../memory_map.h
+.\objects\ble_transceiver.o: ../../radio.h
+.\objects\ble_transceiver.o: ../../scm3c_hw_interface.h
+.\objects\ble_transceiver.o: ../../tuning.h
+.\objects\ble_transceiver.o: ble.h
+.\objects\ble_transceiver.o: ble_transceiver.h

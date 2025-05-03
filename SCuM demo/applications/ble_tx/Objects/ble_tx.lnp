@@ -1,6 +1,7 @@
 --cpu Cortex-M0
 ".\objects\ble_tx.o"
 ".\objects\ble.o"
+".\objects\ble_transceiver.o"
 ".\objects\cm0dsasm.o"
 ".\objects\retarget.o"
 ".\objects\optical.o"

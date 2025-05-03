@@ -1,19 +1,20 @@
 Dependencies for Project 'ble_tx', Target 'ble_tx': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (.\ble_tx.c)(0x68157849)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\ble_tx.o --omf_browse .\objects\ble_tx.crf --depend .\objects\ble_tx.d)
+F (.\ble_tx.c)(0x6815C213)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\ble_tx.o --omf_browse .\objects\ble_tx.crf --depend .\objects\ble_tx.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
-I (ble.h)(0x68153531)
+I (ble.h)(0x68158DAE)
 I (../../tuning.h)(0x681539F4)
 I (../../memory_map.h)(0x681539F4)
 I (../../optical.h)(0x681539F4)
 I (../../radio.h)(0x681539F4)
 I (../../rftimer.h)(0x681539F4)
 I (../../scm3c_hw_interface.h)(0x681539F4)
-F (.\ble.c)(0x68153531)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\ble.o --omf_browse .\objects\ble.crf --depend .\objects\ble.d)
-I (ble.h)(0x68153531)
+I (ble_transceiver.h)(0x6815C632)
+F (.\ble.c)(0x68158DD5)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\ble.o --omf_browse .\objects\ble.crf --depend .\objects\ble.d)
+I (ble.h)(0x68158DAE)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 I (../../tuning.h)(0x681539F4)
@@ -22,17 +23,29 @@ I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (../../memory_map.h)(0x681539F4)
 I (../../radio.h)(0x681539F4)
 I (../../scm3c_hw_interface.h)(0x681539F4)
-F (.\ble.h)(0x68153531)()
+F (.\ble.h)(0x68158DAE)()
+F (.\ble_transceiver.c)(0x6815C6A9)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\ble_transceiver.o --omf_browse .\objects\ble_transceiver.crf --depend .\objects\ble_transceiver.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
+I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
+I (../../memory_map.h)(0x681539F4)
+I (../../radio.h)(0x681539F4)
+I (../../scm3c_hw_interface.h)(0x681539F4)
+I (../../tuning.h)(0x681539F4)
+I (ble.h)(0x68158DAE)
+I (ble_transceiver.h)(0x6815C632)
+F (.\ble_transceiver.h)(0x6815C632)()
 F (..\..\cm0dsasm.s)(0x681539F4)(--cpu Cortex-M0 --pd "__EVAL SETA 1" -g --16 --apcs=interwork -IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include--pd "__UVISION_VERSION SETA 536" --pd "ARMCM0 SETA 1"--list .\listings\cm0dsasm.lst --xref -o .\objects\cm0dsasm.o --depend .\objects\cm0dsasm.d)
 F (..\..\Memory_Map.h)(0x681539F4)()
-F (..\..\retarget.c)(0x681539F4)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\retarget.o --omf_browse .\objects\retarget.crf --depend .\objects\retarget.d)
+F (..\..\retarget.c)(0x681539F4)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\retarget.o --omf_browse .\objects\retarget.crf --depend .\objects\retarget.d)
 I (C:\Keil_v5\ARM\ARMCC\include\rt_misc.h)(0x60252376)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x6025237E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (C:\Keil_v5\ARM\ARMCC\include\time.h)(0x60252378)
 I (..\..\memory_map.h)(0x681539F4)
-F (..\..\optical.c)(0x681539F4)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\optical.o --omf_browse .\objects\optical.crf --depend .\objects\optical.d)
+F (..\..\optical.c)(0x681539F4)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\optical.o --omf_browse .\objects\optical.crf --depend .\objects\optical.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x6025237E)
 I (..\..\memory_map.h)(0x681539F4)
@@ -40,9 +53,9 @@ I (..\..\radio.h)(0x681539F4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 I (..\..\scm3c_hw_interface.h)(0x681539F4)
-I (..\..\scum_defs.h)(0x68155212)
+I (..\..\scum_defs.h)(0x6815A094)
 F (..\..\optical.h)(0x681539F4)()
-F (..\..\radio.c)(0x681539F4)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\radio.o --omf_browse .\objects\radio.crf --depend .\objects\radio.d)
+F (..\..\radio.c)(0x681539F4)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\radio.o --omf_browse .\objects\radio.crf --depend .\objects\radio.d)
 I (..\..\radio.h)(0x681539F4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -54,7 +67,7 @@ I (..\..\memory_map.h)(0x681539F4)
 I (..\..\rftimer.h)(0x681539F4)
 I (..\..\scm3c_hw_interface.h)(0x681539F4)
 F (..\..\radio.h)(0x681539F4)()
-F (..\..\adc.c)(0x68153531)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\adc.o --omf_browse .\objects\adc.crf --depend .\objects\adc.d)
+F (..\..\adc.c)(0x68153531)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\adc.o --omf_browse .\objects\adc.crf --depend .\objects\adc.d)
 I (..\..\adc.h)(0x68153531)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -62,14 +75,14 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
 I (..\..\memory_map.h)(0x681539F4)
 I (..\..\scm3c_hw_interface.h)(0x681539F4)
 F (..\..\adc.h)(0x68153531)()
-F (..\..\gpio.c)(0x681539F4)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\gpio.o --omf_browse .\objects\gpio.crf --depend .\objects\gpio.d)
+F (..\..\gpio.c)(0x681539F4)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\gpio.o --omf_browse .\objects\gpio.crf --depend .\objects\gpio.d)
 I (..\..\memory_map.h)(0x681539F4)
 I (..\..\optical.h)(0x681539F4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 F (..\..\gpio.h)(0x681539F4)()
-F (..\..\uart.c)(0x681539F4)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\uart.o --omf_browse .\objects\uart.crf --depend .\objects\uart.d)
+F (..\..\uart.c)(0x681539F4)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\uart.o --omf_browse .\objects\uart.crf --depend .\objects\uart.d)
 F (..\..\uart.h)(0x681539F4)()
-F (..\..\rftimer.c)(0x681539F4)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\rftimer.o --omf_browse .\objects\rftimer.crf --depend .\objects\rftimer.d)
+F (..\..\rftimer.c)(0x681539F4)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\rftimer.o --omf_browse .\objects\rftimer.crf --depend .\objects\rftimer.d)
 I (..\..\rftimer.h)(0x681539F4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
@@ -80,9 +93,9 @@ I (..\..\gpio.h)(0x681539F4)
 I (..\..\radio.h)(0x681539F4)
 I (..\..\scm3c_hw_interface.h)(0x681539F4)
 F (..\..\rftimer.h)(0x681539F4)()
-F (..\..\scum_defs.h)(0x68155212)()
+F (..\..\scum_defs.h)(0x6815A094)()
 F (..\..\scm3c_hw_interface.h)(0x681539F4)()
-F (..\..\scm3c_hw_interface.c)(0x68154508)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\scm3c_hw_interface.o --omf_browse .\objects\scm3c_hw_interface.crf --depend .\objects\scm3c_hw_interface.d)
+F (..\..\scm3c_hw_interface.c)(0x68154508)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\scm3c_hw_interface.o --omf_browse .\objects\scm3c_hw_interface.crf --depend .\objects\scm3c_hw_interface.d)
 I (..\..\scm3c_hw_interface.h)(0x681539F4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x60252374)
@@ -92,8 +105,8 @@ I (..\..\optical.h)(0x681539F4)
 I (..\..\radio.h)(0x681539F4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (..\..\rftimer.h)(0x681539F4)
-I (..\..\scum_defs.h)(0x68155212)
-F (..\..\tuning.c)(0x681539F4)(--c99 -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\tuning.o --omf_browse .\objects\tuning.crf --depend .\objects\tuning.d)
+I (..\..\scum_defs.h)(0x6815A094)
+F (..\..\tuning.c)(0x681539F4)(--c99 --execute_only -c --cpu Cortex-M0 -D__EVAL -g -O0 --apcs=interwork -I ../../-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\ARM\ARMCM0\Include-IC:\Users\6RF4001\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\Device\Include-D__UVISION_VERSION="536" -DARMCM0-o .\objects\tuning.o --omf_browse .\objects\tuning.crf --depend .\objects\tuning.d)
 I (..\..\tuning.h)(0x681539F4)
 I (C:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x6025237C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025237E)

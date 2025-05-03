@@ -242,107 +242,11 @@ void ble_generate_packet(void) {
 
     memcpy(&ble_vars.packet[i], pdu_crc, BLE_PDU_LENGTH + BLE_CRC_LENGTH);
 }
-void ble_adv_packet(void) {
-    uint8_t i = 0;
-	
-		memset(ble_vars.packet, 0, sizeof(ble_vars.packet) * sizeof(uint8_t));
-		//0x556b7d9171b14373cc31328d04ee0ce872f924dd6dd05b662a80
-		ble_vars.packet[i++] = 0x55;
-    ble_vars.packet[i++] = 0x6b;
-    ble_vars.packet[i++] = 0x7d;
-    ble_vars.packet[i++] = 0x91;
-    ble_vars.packet[i++] = 0x71;
-    ble_vars.packet[i++] = 0xb1;
-    ble_vars.packet[i++] = 0x43;
-    ble_vars.packet[i++] = 0x73;
-    ble_vars.packet[i++] = 0xcc;
-    ble_vars.packet[i++] = 0x31;
-    ble_vars.packet[i++] = 0x32;
-    ble_vars.packet[i++] = 0x8d;
-    ble_vars.packet[i++] = 0x04;
-    ble_vars.packet[i++] = 0xee;
-    ble_vars.packet[i++] = 0x0c;
-    ble_vars.packet[i++] = 0xe8;
-    ble_vars.packet[i++] = 0x72;
-    ble_vars.packet[i++] = 0xf9;
-    ble_vars.packet[i++] = 0x24;
-    ble_vars.packet[i++] = 0xdd;
-    ble_vars.packet[i++] = 0x6d;
-    ble_vars.packet[i++] = 0xd0;
-    ble_vars.packet[i++] = 0x5b;
-    ble_vars.packet[i++] = 0x66;
-    ble_vars.packet[i++] = 0x2a;
-    ble_vars.packet[i++] = 0x80;
 
-
-		
-}
-void ble_scan_rsp_packet(void){
-		uint8_t i = 0;
-		
-		memset(ble_vars.packet, 0, sizeof(ble_vars.packet) * sizeof(uint8_t));
-	  //0x556b7d9171917b73cc31328d040e7388523cbbcc2613
-		ble_vars.packet[i++] = 0x55;
-    ble_vars.packet[i++] = 0x6b;
-    ble_vars.packet[i++] = 0x7d;
-    ble_vars.packet[i++] = 0x91;
-    ble_vars.packet[i++] = 0x71;
-    ble_vars.packet[i++] = 0x91;
-    ble_vars.packet[i++] = 0x7b;
-    ble_vars.packet[i++] = 0x73;
-    ble_vars.packet[i++] = 0xcc;
-    ble_vars.packet[i++] = 0x31;
-    ble_vars.packet[i++] = 0x32;
-    ble_vars.packet[i++] = 0x8d;
-    ble_vars.packet[i++] = 0x04;
-    ble_vars.packet[i++] = 0x0e;
-    ble_vars.packet[i++] = 0x73;
-    ble_vars.packet[i++] = 0x88;
-    ble_vars.packet[i++] = 0x52;
-    ble_vars.packet[i++] = 0x3c;
-    ble_vars.packet[i++] = 0xbb;
-    ble_vars.packet[i++] = 0xcc;
-    ble_vars.packet[i++] = 0x26;
-    ble_vars.packet[i++] = 0x13;
-
-
-
-		
-	
-}	
 void ble_gen_test_packet(void) {
     uint8_t i = 0;
 
     memset(ble_vars.packet, 0, sizeof(ble_vars.packet) * sizeof(uint8_t));
-
-		ble_vars.packet[i++] = 0x55;
-    ble_vars.packet[i++] = 0x6b;
-    ble_vars.packet[i++] = 0x7d;
-    ble_vars.packet[i++] = 0x91;
-    ble_vars.packet[i++] = 0x71;
-    ble_vars.packet[i++] = 0xf1;
-    ble_vars.packet[i++] = 0x43;
-    ble_vars.packet[i++] = 0x73;
-    ble_vars.packet[i++] = 0xcc;
-    ble_vars.packet[i++] = 0x31;
-    ble_vars.packet[i++] = 0x32;
-    ble_vars.packet[i++] = 0x8d;
-    ble_vars.packet[i++] = 0x04;
-    ble_vars.packet[i++] = 0xee;
-    ble_vars.packet[i++] = 0x0c;
-    ble_vars.packet[i++] = 0x28;
-    ble_vars.packet[i++] = 0x72;
-    ble_vars.packet[i++] = 0xf9;
-    ble_vars.packet[i++] = 0x24;
-    ble_vars.packet[i++] = 0xdd;
-    ble_vars.packet[i++] = 0x6d;
-    ble_vars.packet[i++] = 0xd0;
-    ble_vars.packet[i++] = 0x5b;
-    ble_vars.packet[i++] = 0x43;
-    ble_vars.packet[i++] = 0x7e;
-    ble_vars.packet[i++] = 0xf6;
-		
-		/*
     ble_vars.packet[i++] = 0x1D;
     ble_vars.packet[i++] = 0x55;
     ble_vars.packet[i++] = 0xAD;
@@ -370,8 +274,6 @@ void ble_gen_test_packet(void) {
     ble_vars.packet[i++] = 0xD1;
     ble_vars.packet[i++] = 0x2D;
     ble_vars.packet[i++] = 0xB8;
-		*/
-		
 }
 
 void ble_set_advertiser_address(const uint8_t* advertiser_address) {

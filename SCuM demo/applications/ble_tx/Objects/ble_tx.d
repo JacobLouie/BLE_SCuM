@@ -10,3 +10,4 @@
 .\objects\ble_tx.o: ../../radio.h
 .\objects\ble_tx.o: ../../rftimer.h
 .\objects\ble_tx.o: ../../scm3c_hw_interface.h
+.\objects\ble_tx.o: ble_transceiver.h

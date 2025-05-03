@@ -33,7 +33,7 @@ module TOP(
     parameter TARGET2 = 250_000;
     reg [24:0] timer;
     reg timeOn;
-    reg [17:0] timer2; 
+    reg [19:0] timer2; 
     reg timeOn2;
     reg detected_delay;
     wire packet_high;

@@ -82,9 +82,6 @@ void ble_generate_packet(void);
 // Generate a BLE test packet.
 void ble_generate_test_packet(void);
 
-void ble_adv_packet(void);
-void ble_scan_rsp_packet(void);
-
 // Set the advertiser address.
 void ble_set_advertiser_address(const uint8_t* advertiser_address);
 
