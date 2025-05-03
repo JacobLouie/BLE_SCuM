@@ -8,7 +8,7 @@
 //=========================== define ==========================================
 
 // LC_code used to the initial LC frequency, before optical calibration
-#define DEFUALT_INIT_LC_CODE 140
+#define DEFUALT_INIT_LC_CODE 150
 #define REFERENCE_LC_TARGET 249880
 
 //=========================== typedef =========================================

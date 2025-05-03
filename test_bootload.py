@@ -11,8 +11,8 @@ uart_ser = None
 
 nRF_port="COM5"
 #bluetooth adc
-#binary_image = "C:/Users/6RF4001/Desktop/scum-test-code-develop (Final Version)/scm_v3c/applications/freq_sweep_rx_simple/Objects/freq_sweep_rx_simple.bin"
-binary_image = "C:/Users/6RF4001/Desktop/BLE_SCuM/bluetooth_adc/applications/bluetooth_adc/Objects/bluetooth_adc.bin"
+binary_image = "C:/Users/6RF4001/Desktop/BLE_SCuM/SCuM demo/applications/ble_tx/Objects/ble_tx.bin"
+#binary_image = "C:/Users/6RF4001/Desktop/BLE_SCuM/bluetooth_adc/applications/bluetooth_adc/Objects/bluetooth_adc.bin"
 
 boot_mode='3wb'
 pad_random_payload=False

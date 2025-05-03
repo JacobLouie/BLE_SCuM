@@ -19,6 +19,7 @@ module TOP(
     output clk_Debug,
     output [3:0] I_Debug,
     output [3:0] Q_Debug,
+    output packet_trigger,
     output packet_detectedLED          // led[2]
     );
     assign LED[1:0] = select;
@@ -29,19 +30,33 @@ module TOP(
     
     
     parameter TARGET = 25_000_000;
-    reg [24:0]timer;
-    reg timeOn; 
+    parameter TARGET2 = 250_000;
+    reg [24:0] timer;
+    reg timeOn;
+    reg [17:0] timer2; 
+    reg timeOn2;
+    reg detected_delay;
+    wire packet_high;
     
+    always @(posedge clk or negedge rst) begin
+        if (!rst)
+            detected_delay <= 0;
+        else
+            detected_delay <= packet_detected;
+    end
+    
+    assign packet_high = packet_detected | detected_delay;
     assign packet_detectedLED = timeOn;
+    assign packet_trigger = timeOn2;
     always @(posedge clk or negedge rst) begin
         if (!rst) begin
             timer <= 0;
             timeOn <= 0;
         end
-        else if (packet_detected | timeOn) begin
+        else if (packet_high | timeOn) begin
             if (timer == TARGET - 1) begin
                 timer <= 0;
-                timeOn <= 0;
+                timeOn <= 0;    
             end
             else begin
                 timer <= timer + 1;
@@ -53,6 +68,29 @@ module TOP(
             timeOn <= 0;
         end
     end
+    
+    always @(posedge clk or negedge rst) begin
+        if (!rst) begin
+            timer2 <= 0;
+            timeOn2 <= 0;
+        end
+        else if (packet_high | timeOn2) begin
+            if (timer2 == TARGET2 - 1) begin
+                timer2 <= 0;
+                timeOn2 <= 0;    
+            end
+            else begin
+                timer2 <= timer2 + 1;
+                timeOn2 <= 1;
+            end
+        end
+        else begin
+            timer2 <= 0;
+            timeOn2 <= 0;
+        end
+    end
+    
+
 
     Matched_Filter filter(
         .clk(clk),
